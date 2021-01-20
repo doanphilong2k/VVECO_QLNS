@@ -1,0 +1,40 @@
+#Not Found
+ErrorDocument 404 /home/not_found.php
+
+Options +FollowSymLinks
+RewriteEngine On
+RewriteBase /
+
+# EXPIRES CACHING
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresByType image/jpg "access 1 week"
+	ExpiresByType image/jpeg "access 1 week"
+	ExpiresByType image/gif "access 1 week"
+	ExpiresByType image/png "access 1 week"
+	ExpiresByType text/css "access 1 week"
+	ExpiresByType application/javascript "access 1 week"
+	ExpiresByType application/x-javascript "access 1 week"
+	ExpiresByType image/x-icon "access 1 week"
+    AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css text/javascript application/xml application/xhtml+xml application/rss+xml application/x-javascript application/javascript
+</IfModule>
+
+
+RewriteRule ^favicon.ico$ favicon.png [L]
+
+#account
+RewriteRule ^account$ /home/profile.php [L]
+RewriteRule ^account/([^/]*)$ /home/profile.php?action=$1 [L]
+RewriteRule ^account/([^/]*)/page-([0-9]*)$ /home/profile.php?action=$1&page=$2 [L]
+
+#Login
+RewriteRule ^login$ /home/login.php [L]
+RewriteRule ^logout$ /home/logout.php [L]
+
+#RewriteRule ^([^/]*)$ /home/index.php [L]
+
+#calender
+RewriteRule ^addcalender$ /home/addcalender.php [L]
+RewriteRule ^listcalender$ /home/listcalender.php [L]
+RewriteRule ^editcalender/([0-9]*)$ /home/editcalender.php?record_id=$1 [L]
+RewriteRule ^historycalender/([0-9]*)$ /home/historycalender.php?record_id=$1 [L]
