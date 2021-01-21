@@ -11,7 +11,7 @@
  Target Server Version : 100414
  File Encoding         : 65001
 
- Date: 20/01/2021 11:57:48
+ Date: 21/01/2021 10:00:10
 */
 
 SET NAMES utf8mb4;
@@ -938,6 +938,25 @@ CREATE TABLE `groups`  (
 -- ----------------------------
 INSERT INTO `groups` VALUES (1, 0, NULL, 'Habimec', NULL, 'ThienBD');
 INSERT INTO `groups` VALUES (2, 0, NULL, 'Nhom java', NULL, 'Quan Văn Trường');
+
+-- ----------------------------
+-- Table structure for languages
+-- ----------------------------
+DROP TABLE IF EXISTS `languages`;
+CREATE TABLE `languages`  (
+  `lang_id` int(11) NOT NULL DEFAULT 0,
+  `lang_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `lang_path` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '\'home\'',
+  `lang_image` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `lang_domain` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`lang_id`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of languages
+-- ----------------------------
+INSERT INTO `languages` VALUES (1, 'Tiếng việt', 'vn', NULL, NULL);
+INSERT INTO `languages` VALUES (2, 'English', 'en', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for member_checkin
@@ -10996,6 +11015,29 @@ INSERT INTO `members` VALUES (71, '2020-10-02 17:40:37', 1, 'Lê Thị Dung', NU
 INSERT INTO `members` VALUES (72, '2020-10-02 17:41:18', 1, 'Lò Văn Nghiệp', NULL, '/member-avatars/2b0e7499-a627-49d4-adbe-2ef234cf0b67.jpg', '0c2ea02d-7e26-429d-b554-3160eba3a5ec', 'Công nhân', b'1');
 INSERT INTO `members` VALUES (73, '2020-10-02 17:41:57', 1, 'Nguyễn Thị Châm', '2020-10-02 17:42:14', '/member-avatars/45f43988-5a96-4549-858a-4461b57bfe20.jpg', '6254a69e-25e4-4d54-ab4b-bd2a8a16e4fe', 'Công nhân', b'1');
 INSERT INTO `members` VALUES (74, '2020-10-02 17:44:12', 1, 'Lường Thị Hương', NULL, '/member-avatars/ffead280-6ecb-4f13-91f8-c9c1694ad257.jpg', 'e6df541c-d065-44cf-8cf2-a536315f16f4', 'Công nhân', b'1');
+
+-- ----------------------------
+-- Table structure for modules
+-- ----------------------------
+DROP TABLE IF EXISTS `modules`;
+CREATE TABLE `modules`  (
+  `mod_id` int(11) NOT NULL AUTO_INCREMENT,
+  `mod_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `mod_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `mod_listname` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `mod_listfile` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `mod_order` int(11) NULL DEFAULT 0,
+  `mod_help` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  PRIMARY KEY (`mod_id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of modules
+-- ----------------------------
+INSERT INTO `modules` VALUES (1, 'Quản lý Administrators', 'admin_user', 'Thêm mới|Danh sách', 'add.php|listing.php', 1, NULL);
+INSERT INTO `modules` VALUES (12, 'Checkin', 'TimeKeeping', 'Danh Sách', 'calculation.php', 0, NULL);
+INSERT INTO `modules` VALUES (3, 'Quản lý Kiểu khuôn mặt', 'questions', 'Thêm mới|Danh sách', 'add.php|listing.php', 1, NULL);
+INSERT INTO `modules` VALUES (8, 'Duyệt Ảnh', 'users_photos', 'Danh sách', 'listing.php', 0, NULL);
 
 -- ----------------------------
 -- Table structure for ref_session_member
