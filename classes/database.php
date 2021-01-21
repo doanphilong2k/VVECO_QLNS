@@ -157,7 +157,7 @@ class db_query
 		$this->use_slave    = $use_slave;
 		$dbinit             = new db_init();
 		$connect_successful = false;
-
+		//echo $query;
 		/**
 		 * Nếu use_slave
 		 */
@@ -188,9 +188,7 @@ class db_query
 		 * Kiểm tra connection với Master Database
 		 */
 		if (!$connect_successful) {
-			
 			if (!$this->links = @mysqli_connect($dbinit->server, $dbinit->username, $dbinit->password)){
-				
 				/**
 				 * Thông báo lỗi khi không connect được database
 				*/
@@ -227,7 +225,9 @@ class db_query
 		unset($dbinit);
 		
 		if (!$this->result) {
+			
 			$error = mysqli_error($this->links);
+			echo $error;
 			@mysqli_close($this->links);
 			
 			/**
@@ -245,7 +245,6 @@ class db_query
 			
 			die("Error in query string " . $error);
 		}
-		
 	}
 	
 	

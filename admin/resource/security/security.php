@@ -72,18 +72,18 @@ $load_header .= '<script language="javascript" src="../../resource/js/windowProm
 
 $fs_change_bg = 'onMouseOver="this.style.background=\'#f7f7f9\'" onMouseOut="this.style.background=\'#FFFFFF\'"';
 
-// Get config from database
-$db_con = new db_query("SELECT * from configuration");
-if ($row = mysqli_fetch_assoc($db_con->result)) {
-    foreach ($row as $data_field => $data_value) {
-        if (!is_int($data_field)) {
-            //tao ra cac bien config
-            $$data_field = $data_value;
-        }
-    }
-}
-$db_con->close();
-unset($db_con);
+// Get config from database -----> Not necessary in this project! Maybe this code get data config from configuration data table will be necessary on another project!
+//$db_con = new db_query("SELECT * from configuration");
+//if ($row = mysqli_fetch_assoc($db_con->result)) {
+//    foreach ($row as $data_field => $data_value) {
+//        if (!is_int($data_field)) {
+//            //tao ra cac bien config
+//            $$data_field = $data_value;
+//        }
+//    }
+//}
+//$db_con->close();
+//unset($db_con);
 
 $lang_id = getValue("lang_id", "int", "SESSION", 1);
 $userlogin = getValue("userlogin", "str", "SESSION", "", 1);
