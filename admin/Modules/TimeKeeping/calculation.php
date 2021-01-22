@@ -1,6 +1,6 @@
 <?php
-    echo"Hello";
     require_once("inc_security.php");
+    echo"Hello";
     $db_listing = new db_query("SELECT * FROM member_checkin WHERE checkin_time = '2020/07/06'");
     $list    = new fsDataGird($id_field, $name_field, translate_text("Danh Sách Checkin"));
     if(mysqli_num_rows($db_listing->result) < 0){
@@ -15,11 +15,7 @@
     unset($db_listing);
     
     $list->add("id", translate_text("ID"), "array", 0, 1);
-    $list->add($name_field, translate_text("Khoa"), "string", 0, 1);
-    $list->add("fac_active", translate_text("Kích hoạt"), "checkbox", 1, 0);
-    $list->add("fac_create_time", "Ngày tạo", "date", 1, 0);
-    $list->add("", translate_text("Sửa"), "edit");
-    $list->add("", translate_text("Xóa"), "delete");
+    $list->add($name_field, translate_text("Thời gian Checkin"), "string", 0, 1);
     
     $list->ajaxedit($fs_table);
     
