@@ -1,10 +1,10 @@
 <?php
     require_once("inc_security.php");
-    echo"Hello";
+    
     $db_listing = new db_query("SELECT * FROM member_checkin WHERE checkin_time = '2020/07/06'");
     $list    = new fsDataGird($id_field, $name_field, translate_text("Danh Sách Checkin"));
     if(mysqli_num_rows($db_listing->result) < 0){
-        echo"Data does't exist!";
+        echo"Data doesn't exist!";
     }
 
     while ($listing = mysqli_fetch_assoc($db_listing->result)) {
@@ -49,4 +49,3 @@
     <? /*---------Body------------*/ ?>
     </body>
     </html>
-?>

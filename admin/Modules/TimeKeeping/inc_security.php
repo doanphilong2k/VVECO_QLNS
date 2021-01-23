@@ -1,7 +1,7 @@
 <?php
     
     require_once("../../resource/security/security.php");
-    $module_id = 12;echo"Hell1";
+    $module_id = 12;
     //Check user login...
     checkLogged();
     //Check access module...
