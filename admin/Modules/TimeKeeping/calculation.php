@@ -1,6 +1,6 @@
 <?php
     require_once("inc_security.php");
-    echo"Hello";
+    
     $db_listing = new db_query("SELECT * FROM member_checkin WHERE checkin_time = '2020/07/06'");
     $list    = new fsDataGird($id_field, $name_field, translate_text("Danh Sách Checkin"));
 
@@ -46,4 +46,3 @@
     <? /*---------Body------------*/ ?>
     </body>
     </html>
-?>

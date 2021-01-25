@@ -137,7 +137,6 @@ $record_id = getValue("record_id");
             <?
             $db_question = new db_query("SELECT *
                                          FROM questions
-                                         LEFT JOIN users_photos ON(up_user_id = " . $record_id . " AND up_question_id = que_id)
                                          WHERE que_active = 1
                                          ORDER BY que_stt ASC");
             $stt = 0;
@@ -153,14 +152,14 @@ $record_id = getValue("record_id");
                         <div class="timeline-header">
                             <strong style="color: #007bff;">
                                 Kiểu ảnh <?=$stt?>
-                            </strong><? if ($rowQuestion["que_required"] == 1) { ?> (<span class="text-danger">*</span>)<? } ?>: <?= $rowQuestion["que_content"] ?>
+                            </strong>
                         </div>
 
                         <div class="timeline-body row">
                             <div class="col-md-6">
                                 <div class="demo_picture">
                                     <div class="image">
-                                        <img id="demo_<?= $rowQuestion["que_id"] ?>" src="<?= $pictureDemoURL ?>">
+                                        <img id="" src="<?= $pictureDemoURL ?>">
                                     </div>
                                 </div>
                                 <div class="name" style="padding: 10px; text-align: center">Ảnh mẫu</div>
@@ -168,14 +167,7 @@ $record_id = getValue("record_id");
                             <div class="col-md-6">
                                 <div class="user_picture">
                                     <div class="image">
-                                        <?
-                                        $pictureURL = "/images/photo.png";
-                                        if ($rowQuestion["up_picture"] != "") {
-                                            $uPath = str_pad(intval($rowQuestion["up_user_id"]), 2, '0', STR_PAD_LEFT);
-                                            $pictureURL = "/data/users/" . $uPath . "/" . $rowQuestion["up_picture"];
-                                        }
-                                        ?>
-                                        <img id="img_<?= $rowQuestion["que_id"] ?>" src="<?= $pictureURL ?>">
+                                        <img id="" src="<?= $pictureURL ?>">
                                     </div>
                                 </div>
                                 <div class="name" style="padding: 10px; text-align: center">Ảnh người dùng tải lên</div>
