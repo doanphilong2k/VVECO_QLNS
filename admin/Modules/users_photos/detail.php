@@ -125,6 +125,33 @@ $record_id = getValue("record_id");
             max-height: 100%;
         }
 
+        .upload_img {
+            width:200px;
+            height: auto;
+            position: relative;
+            overflow: hidden;
+            margin: 1px auto;
+        }
+
+        .upload_img input[type=file] {
+            width: 150%;
+            height: auto;
+            position: absolute;
+            cursor: pointer;
+            z-index: 1;
+            left: -100px;
+            opacity: 0;
+        }
+
+        .upload_img div {
+            z-index: 1000;
+            cursor: pointer;
+            width: 100%;
+            height: auto;
+            font-size:15px;
+        }
+
+
     </style>
 </head>
 <body topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
@@ -162,15 +189,27 @@ $record_id = getValue("record_id");
                                         <img id="" src="<?= $pictureDemoURL ?>">
                                     </div>
                                 </div>
-                                <div class="name" style="padding: 10px; text-align: center">Ảnh mẫu</div>
+                                <div class="name" style="padding: 10px; text-align: center; font-size:15px">Ảnh mẫu</div>
                             </div>
                             <div class="col-md-6">
                                 <div class="user_picture">
                                     <div class="image">
-                                        <img id="" src="<?= $pictureURL ?>">
+                                        <!-- <?
+                                            $pictureURL = "/images/photo.png";
+                                            if($rowQuestion["mem_avatar"] != ""){
+                                                $uPath = str_pad(intval($rowQuestion["mem_id"]), 2, '0', STR_PAD_LEFT);
+                                                $pictureURL = "/data/members/" . $uPath . "/" . $rowQuestion["mem_avatar"];
+                                            }
+                                        ?> -->
+                                        <img id="img_<?=$rowQuestion["que_id"]?>" src="<?=$pictureURL?>">
                                     </div>
+                                    <!-- <div class="upload" id="uploading_img_<?=$rowQuestion["que_id"]?>"><img src="/images/loading_process.gif" width="50" /></div> -->
                                 </div>
-                                <div class="name" style="padding: 10px; text-align: center">Ảnh người dùng tải lên</div>
+                                
+                                <div class="upload_img" style="padding: 10px; text-align: center">
+                                    <input title="Upload ảnh" class="file-upload" type="file" onchange="updatePicture('img_<?=$rowQuestion["que_id"]?>', this)" accept="image/*">
+                                    <div>Tải lên ảnh của bạn &nbsp; <i class="fa fa-upload"></i></div>
+                                </div>
                             </div>
                         </div>
                     </div>
