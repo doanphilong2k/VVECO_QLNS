@@ -188,22 +188,22 @@ $num_row = mysqli_num_rows($db_listing->result);
                         <!--"></td>-->
                         <td>
                             <?php
-                            if ($listing["mem_avatar"] != "") {
-                                echo "<img src='" . $listing["mem_avatar"] . "' alt='ảnh đại diện'>";
+                            if ($listing["avatar"] != "") {
+                                echo "<img src='" . $listing["avatar"] . "' alt='ảnh đại diện'>";
                             } else {
                                 echo " ";
                             }
                             ?>
                         </td>
-                        <td><?= $listing["mem_name"] ?></td>
-                        <td><?= $listing["mem_position"] ?></td>
+                        <td><?= $listing["name"] ?></td>
+                        <td><?= $listing["position"] ?></td>
                         <td>
-                            <?= $listing["mem_created_date"] ?>
+                            <?= $listing["created_date"] ?>
             </div>
             </td>
             <td style="vertical-align: middle; text-align: center">
                 <?
-                            if ($listing['mem_avatar'] != "") {
+                            if ($listing['avatar'] != "") {
                                 echo '<span class="label label-success">Đã duyệt</span>';
                             } else {
                                 echo '<span class="label label-warning">Chưa duyệt</span>';
@@ -211,7 +211,7 @@ $num_row = mysqli_num_rows($db_listing->result);
                             ?>
 
                 <?
-                            if ($listing['mem_avatar'] == "") {
+                            if ($listing['avatar'] == "") {
                                 ?>
                 <a href="detail.php?record_id=<?= $listing['id'] ?>" class="btn btn-xs btn-primary" style="margin-top: 10px">
                     <i class="fa fa-check" aria-hidden="true"></i> Duyệt ảnh
