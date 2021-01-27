@@ -4,34 +4,6 @@ require_once("Excel.php");
 
 $wor_id = getValue("wor_id", "int", "GET", 0);
 
-// Query danh sách Trường
-// $list_workshift = new db_query("SELECT * FROM workshift");
-// $arrTmp = convert_result_set_2_array($list_workshift->result, "wor_id");
-// $arrWorkshift = array(0 => "- Tất cả các Trường -");
-// foreach ($arrTmp as $workshift) {
-//     $arrWorkshift[$workshift["wor_id"]] = $workshift["wor_name"];
-// }
-
-// Query danh sách Khoa theo Trường được chọn
-// $sql_faculties = "";
-// if ($use_school_id > 0) $sql_faculties .= " AND fac_school_id = " . $use_school_id;
-// $list_faculties = new db_query("SELECT * FROM faculties WHERE fac_active = 1" . $sql_faculties);
-// $arrTmp = convert_result_set_2_array($list_faculties->result, "fac_id");
-// $arrFaculties = array(0 => "- Tất cả các Khoa -");
-// foreach ($arrTmp as $faculty) {
-//     $arrFaculties[$faculty["fac_id"]] = $faculty["fac_name"];
-// }
-
-// Query danh sách Lớp theo Khoa được chọn
-// $sql_classes = "";
-// if ($use_school_id > 0) $sql_classes .= " AND cls_school_id = " . $use_school_id;
-// if ($use_faculty_id > 0) $sql_classes .= " AND cls_faculty_id = " . $use_faculty_id;
-// $list_classes = new db_query("SELECT * FROM classes WHERE cls_active = 1" . $sql_classes);
-// $arrTmp = convert_result_set_2_array($list_classes->result, "cls_id");
-// $arrClasses = array(0 => "- Tất cả các Lớp -");
-// foreach ($arrTmp as $class) {
-//     $arrClasses[$class["cls_id"]] = $class["cls_name"];
-// }
 
 $list                        = new fsDataGird($id_field, $name_field, translate_text("Danh sách Ca làm việc"));
 $list->page_size = 50;
