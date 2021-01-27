@@ -11,7 +11,7 @@ $member_id = getValue("member_id", "str", "GET", "");
 $name = getValue("name", "str", "GET", "");
 $checkin_time = getValue("checkin_time", "str", "GET", ""); //Chưa hoàn thiện
 $checkout_time = getValue("checkout_time", "str", "GET", ""); //Chưa hoàn thiện
-$total_time = getValue("total_time", "str", "GET","");
+$total_time = getValue("total_time", "str", "GET", "");
 $sqlWhere = "";
 //Get page break params
 $page_size = 30;
@@ -31,7 +31,7 @@ $db_count = new db_query("SELECT COUNT(*) as count
                                 AND member_checkin.member_id = members.id
                                 AND members.active = 1 AND member_checkin.active = 1
                                  " . $sqlWhere . "GROUP BY DATE(member_checkin.checkin_time), member_id ");
-          
+
 
 //	LEFT JOIN users ON(uso_user_id = use_id)
 $listing_count = mysqli_fetch_assoc($db_count->result);
@@ -50,7 +50,7 @@ $db_listing = new db_query("SELECT member_checkin.id,member_id, members.name, me
                                     AND member_checkin.member_id = members.id
                                     AND members.active = 1 AND member_checkin.active = 1
                             GROUP BY DATE(member_checkin.checkin_time), member_id 
-                            LIMIT " . ($current_page - 1) * $page_size . "," . $page_size); 
+                            LIMIT " . ($current_page - 1) * $page_size . "," . $page_size);
 $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id, members.name, member_checkin.checkin_time as checkout_time 
                             FROM member_checkin, members
                             WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
@@ -62,8 +62,8 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
                                                                 AND YEAR(member_checkin.checkin_time) = 2020
                                                                 AND members.active = 1 AND member_checkin.active = 1	
                                                                 AND member_checkin.member_id = members.id
-                                                            GROUP BY DATE(checkin_time), member_id)");       
-                                                      
+                                                            GROUP BY DATE(checkin_time), member_id)");
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -85,7 +85,7 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
             <div class="search">
                 <form action="listing.php" methor="get" name="form_search" onsubmit="check_form_submit(this); return false">
                     <input type="hidden" name="search" id="search" value="1">
-                    <table cellpadding="0" cellspacing="0" border="0">
+                    <table cellpadding="0" cellspacing="0" border="0" style="width: 100%">
                         <tbody>
                             <tr>
                                 <td class="text">ID</td>
@@ -94,23 +94,38 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
                                 <td><input type="text" class="form-control" name="member_id" id="member_id" value="<?= $member_id ?>" placeholder="Mã nhân viên" style="width: 200px" /></td>
                                 <td class="text">Họ và tên</td>
                                 <td><input type="text" class="form-control" name="name" id="name" value="<?= $name ?>" placeholder="Họ và tên" style="width: 200px" /></td>
-                                <td class="text">Thời gian Checkin</td>
-                                <td><input type="text" class="form-control" name="checkin_time" id="checkin_time" value="<?= $checkin_time ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
-                                <td class="text">Thời gian Checkout</td>
-                                <td><input type="text" class="form-control" name="checkout_time" id="checkout_time" value="<?= $checkout_time ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
+                            </tr>
+                            <tr>
+                                <td class="text">Ngày bắt đầu</td>
+                                <td><input type="date" class="form-control" name="checkin_time" id="checkin_time" value="<?= $checkin_time ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
+                                <td class="text">Ngày kết thúc</td>
+                                <td><input type="date" class="form-control" name="checkout_time" id="checkout_time" value="<?= $checkout_time ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
                                 <td class="text">Tổng Thời Gian</td>
-                                <td><input type="text" class="form-control" name="total_time" id="total_time" value="<?= $total_time ?>" placeholder="Tổng thời gian" style="width: 200px" /></td>
+                                <td><input type="time" id="time-total" class="form-control" name="total_time" id="total_time" value="<?= $total_time ?>" placeholder="Tổng thời gian" style="width: 200px" /></td>
+                            </tr>
+                            <tr>
+                                <td class="text">Thời gian Checkin</td>
+                                <td><input type="time" class="form-control" name="checkin_time" id="checkin_time" value="<?= $checkin_time ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
+                                <td class="text">Thời gian Checkout</td>
+                                <td><input type="time" class="form-control" name="checkout_time" id="checkout_time" value="<?= $checkout_time ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
 
-                                <td>&nbsp;<input type="submit" class="btn btn-sm btn-info" value="Tìm kiếm"></td>
+                                <td colspan="2">&nbsp;<input type="submit" class="btn btn-sm btn-info" value="Tìm kiếm" style="float: right; margin-right: 44px"></td>
                             </tr>
                         </tbody>
                     </table>
                 </form>
+
                 <script type="text/javascript">
                     function check_form_submit(obj) {
                         document.form_search.submit();
                     };
                 </script>
+            </div>
+
+            <div style="padding: 0px 0px 5px 5px; margin-top: 6px; margin-bottom: -5px">
+                <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#form_export"><i class="fa fa-file-excel-o"></i> Xuất Excel Danh sách Checkin</button>
+                <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#form_import"><i class="fa fa-file-excel-o"></i> Nhập Danh sách Checkin từ Excel</button>
+                <a class="btn btn-xs btn-link" href="/data/excels/import_users_from_excel_example.xlsx"><i class="fa fa-download" aria-hidden="true"></i> Tải về file Excel mẫu</a>
             </div>
         </div>
 
@@ -143,16 +158,24 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
                     ?>
                     <tr id="tr_<?= $listing["id"] ?>">
                         <td width="40" style="text-align:center"><span style="color:#142E62; font-weight:bold"><?= $No ?></span></td>
-                        <td><? echo $listing["id"] ?></td>
-                        <td><? echo $listing["member_id"] ?></td>
-                        <td><? echo $listing["name"] ?></td>
                         <td>
-                            <img src="<? echo $listing["avatar"] ?>" alt="avatar">
+                            <? echo $listing["id"] ?>
                         </td>
                         <td>
-                            <img src="<? echo $listing["image"] ?>" alt="image">
+                            <? echo $listing["member_id"] ?>
                         </td>
-                        <td><? echo $listing["checkin_time"] ?></td>
+                        <td>
+                            <? echo $listing["name"] ?>
+                        </td>
+                        <td>
+                            <img src="<? echo $listing[" avatar"] ?>" alt="avatar">
+                        </td>
+                        <td>
+                            <img src="<? echo $listing[" image"] ?>" alt="image">
+                        </td>
+                        <td>
+                            <? echo $listing["checkin_time"] ?>
+                        </td>
                         <!-- <td><? echo $list_checkout["checkout_time"] ?></td>
                         <td><? echo $listing["total_time"]?></td> -->
                     </tr>
@@ -226,6 +249,13 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
             });
         }
     }
+
+    $(document).ready(function() {
+        var time = 1;
+        if (time == 1) {
+            $("#time-total").attr('type', 'time');
+        }
+    });
 </script>
 
 <style type="text/css">
@@ -239,5 +269,13 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
         padding: 2px;
         font-weight: bold;
         color: red;
+    }
+
+    /* input[type=time]::-webkit-datetime-edit-fields-wrapper {
+        display: flex;
+    } */
+
+    input[type=time]::-webkit-datetime-edit-text {
+        padding: 2px 5px;
     }
 </style>

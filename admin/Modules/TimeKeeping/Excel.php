@@ -4,35 +4,58 @@ require_once("../../../classes/PHPExcel/PHPExcel.php");
 
 $action = getValue("action", "str", "POST", "");
 
-$arrCheckin = array();
-$list_checkin = new db_query("SELECT * FROM member_checkin WHERE active = 1");
-while ($row = mysqli_fetch_assoc($list_checkin->result)) {
-    $arrCheckin[] = $row;
+$arrWorkshift = array();
+$list_workshift = new db_query("SELECT * FROM workshift");
+while ($row = mysqli_fetch_assoc($list_workshift->result)) {
+    $arrWorkshift[] = $row;
 }
-unset($list_checkin);
+unset($list_workshift);
+
+$workshift_id = getValue("workshift_id", "int", "POST", 0);
+
 
 if ($action == "export") {
+
+    if ($school_id <= 0 || $faculty_id <= 0 || $class_id <= 0) exit("Dữ liệu đầu vào không hợp lệ. Vui long lựa chọn đầy đủ Trường, Khoa, Lớp.");
 
     $excel = new PHPExcel();
     $excel->setActiveSheetIndex(0);
 
     $excel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
-    $excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+    $excel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+    $excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+    $excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+    // $excel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
 
-    $excel->getActiveSheet()->getStyle('A1:B1')->getFont()->setBold(true);
-    $excel->getActiveSheet()->getStyle('A1:B1')->getAlignment();
+    $excel->getActiveSheet()->getStyle('A1:D1')->getFont()->setBold(true);
+    $excel->getActiveSheet()->getStyle('A1:D1')->getAlignment();
 
     //Vị trí có dạng như sau:
-    $excel->getActiveSheet()->setCellValue('A1', 'ID');
-    $excel->getActiveSheet()->setCellValue('B1', 'Thời gian Checkin');
+    $excel->getActiveSheet()->setCellValue('A1', 'Mã ca');
+    $excel->getActiveSheet()->setCellValue('B1', 'Tên ca');
+    $excel->getActiveSheet()->setCellValue('C1', 'Thời gian bắt đầu');
+    $excel->getActiveSheet()->setCellValue('D1', 'Thời gian kết thúc');
 
+    $numRow = 2;
+    $db_workshift = new db_query("SELECT * FROM workshift WHERE wor_id = " . $workshift_id);
+    while ($row = mysqli_fetch_assoc($db_workshift->result)) {
+        $excel->getActiveSheet()->setCellValue('A' . $numRow, $row['wor_id']);
+        $excel->getActiveSheet()->setCellValue('B' . $numRow, $row['wor_name']);
+        $excel->getActiveSheet()->setCellValue('C' . $numRow, $row['wor_StartTime']);
+        $excel->getActiveSheet()->setCellValue('D' . $numRow, $row['wor_FinishTime']);
+        // $excel->getActiveSheet()->setCellValue('E' . $numRow, date("m/d/Y", $row['use_birthdays']));
+        $numRow++;
+    }
+    unset($db_workshift);
 
     // Khởi tạo đối tượng PHPExcel_IOFactory để thực hiện ghi file
-    header('Content-Disposition: attachment; filename="danh_sach_checkin_' . time() . '.xlsx"');
+    header('Content-Disposition: attachment; filename="danh_sach_sinh_vien_' . time() . '.xlsx"');
     PHPExcel_IOFactory::createWriter($excel, 'Excel2007')->save('php://output');
 }
 
 if ($action == "import") {
+
+    if ($wor_id <= 0 || !isset($_FILES['excel_file'])) exit("Dữ liệu đầu vào không hợp lệ. Vui lòng lựa chọn Mã và lựa chọn File Excel Danh sách Sinh viên trước.");
 
     //Đường dẫn file
     $file = $_FILES['excel_file']['tmp_name'];
@@ -134,9 +157,118 @@ if ($action == "import") {
         line-height: 30px;
     }
 </style>
+<!-- Modal export-->
+<div id="form_export" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <form action="listing.php" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-file-excel-o"></i> Xuất Excel Danh sách Sinh viên</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="sell">Chọn trường</label>
+                        <div>
+                            <select class="form-control" title="Chọn Trường" id="school_id" name="school_id" onchange="loadFaculties('export');">
+                                <option value="">- Chọn Trường -</option>
+                                <?
+                                foreach ($arrSchools as $row) {
+                                    ?>
+                                <option value="<?= $row['sch_id'] ?>"><?= $row['sch_name'] ?></option>
+                                <?
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sell">Chọn khoa</label>
+                        <div id="listFaculties">
+                            <select class="form-control" title="Chọn Khoa" id="faculty_id" name="faculty_id">
+                                <option value="">- Chọn Khoa -</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sell">Chọn lớp</label>
+                        <div id="listClasses">
+                            <select class="form-control" title="Chọn Lớp" id="class_id" name="class_id">
+                                <option value="">- Chọn Lớp -</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="action" name="action" value="export" />
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-file-excel-o"></i> Xuất Excel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
+<!-- Modal export-->
+<div id="form_import" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <form action="listing.php" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-file-excel-o"></i> Nhập Danh sách Sinh Viên từ Excel</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="sell">Chọn file Excel Danh sách Sinh viên</label>
+                        <input class="form-control" type="file" title="File Excel Danh sách Sinh viên" id="excel_file" name="excel_file">
+                    </div>
+                    <div class="form-group">
+                        <label for="sell">Chọn trường</label>
+                        <div>
+                            <select class="form-control" title="Chọn Trường" id="school_id" name="school_id" onchange="loadFaculties('import');">
+                                <option value="">- Chọn Trường -</option>
+                                <?
+                                reset($arrSchools);
+                                foreach ($arrSchools as $row) {
+                                    ?>
+                                <option value="<?= $row['sch_id'] ?>"><?= $row['sch_name'] ?></option>
+                                <?
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sell">Chọn khoa</label>
+                        <div id="listFaculties">
+                            <select class="form-control" title="Chọn Khoa" id="faculty_id" name="faculty_id">
+                                <option value="">- Chọn Khoa -</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sell">Chọn lớp</label>
+                        <div id="listClasses">
+                            <select class="form-control" title="Chọn Lớp" id="class_id" name="class_id">
+                                <option value="">- Chọn Lớp -</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="action" name="action" value="import" />
+                        <button type="submit" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Nhập Excel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
 <?php
-unset($list_checkin);
+unset($list_schools);
 ?>
 
 <script type="text/javascript">
