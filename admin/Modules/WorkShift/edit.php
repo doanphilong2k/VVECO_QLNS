@@ -41,15 +41,15 @@ if ($record_id > 0) {
 $wor_id = getValue("wor_id", "int", "POST", $wor_id, 3);
 $wor_name = getValue("wor_name", "str", "POST", $wor_name, 3);
 $wor_StartTime = getValue("wor_StartTime", "str", "POST", $wor_StartTime, 3);
-$wor_StartTime = strtotime(str_replace('/', '-', $wor_StartTime));
-if (empty($wor_StartTime)) {
-    $wor_StartTime = time();
-}
+// $wor_StartTime = strtotime(str_replace('/', '-', $wor_StartTime));
+// if (empty($wor_StartTime)) {
+//     $wor_StartTime = time();
+// }
 $wor_FinishTime = getValue("wor_FinishTime", "str", "POST", $wor_FinishTime, 3);
-$wor_FinishTime = strtotime(str_replace('/', '-', $wor_FinishTime));
-if (empty($wor_FinishTime)) {
-    $wor_FinishTime = time();
-}
+// $wor_FinishTime = strtotime(str_replace('/', '-', $wor_FinishTime));
+// if (empty($wor_FinishTime)) {
+//     $wor_FinishTime = time();
+// }
 
 //Call Class generate_form();
 $myform = new generate_form();
@@ -129,8 +129,8 @@ if ($action == "execute") {
 
 
         <?= $form->text("Tên ca làm việc", "wor_name", "wor_name", $wor_name, "Tên ca làm việc", 1, 250, "", 255, "", "", "") ?>
-        <!-- <?= $form->text("Thời gian bắt đầu", "wor_StartTime", "wor_StartTime", $wor_StartTime, "Thời gian bắt đầu", 1, 250, "", 50, "", "", "") ?> -->
-        <tr>
+        <?= $form->text("Thời gian bắt đầu", "wor_StartTime", "wor_StartTime", $wor_StartTime, "Thời gian bắt đầu", 1, 250, "", 50, "", "", "") ?>
+        <!-- <tr>
             <td class="form_name">Thời gian bắt đầu:</td>
             <td class="form_text">
                 <input type="text" class="form-control date" name="wor_StartTime" id="wor_StartTime"
@@ -140,9 +140,9 @@ if ($action == "execute") {
                     onblur="if(this.value=='') this.value='Enter Ngày tạo'"
                     value="<?= date('d/m/Y', $wor_StartTime) ?>">
             </td>
-        </tr>
-        <!-- <?= $form->text("Thời gian kết thúc", "wor_FinishTime", "wor_FinishTime", $wor_FinishTime, "Thời gian kết thúc", 1, 250, "", 50, "", "", "") ?> -->
-        <tr>
+        </tr> -->
+        <?= $form->text("Thời gian kết thúc", "wor_FinishTime", "wor_FinishTime", $wor_FinishTime, "Thời gian kết thúc", 1, 250, "", 50, "", "", "") ?>
+        <!-- <tr>
             <td class="form_name">Thời gian kết thúc:</td>
             <td class="form_text">
                 <input type="text" class="form-control date" name="wor_FinishTime" id="wor_FinishTime"
@@ -152,7 +152,7 @@ if ($action == "execute") {
                     onblur="if(this.value=='') this.value='Enter Ngày tạo'"
                     value="<?= date('d/m/Y', $wor_FinishTime) ?>">
             </td>
-        </tr>
+        </tr> -->
         <?= $form->text("Phân quyền", "rol_id", "rol_id", $rol_id, "Thời gian kết thúc", 1, 250, "", 50, "", "", "") ?>
       
         <?= $form->radio("Sau khi lưu dữ liệu", "add_new" . $form->ec . "return_listing", "after_save_data", $add . $form->ec . $listing, $after_save_data, "Thêm mới" . $form->ec . "Quay về danh sách", 0, $form->ec, ""); ?>
