@@ -25,17 +25,19 @@ $last = '<img align="absmiddle" border="0" src="../../resource/images/grid/last.
 $break_type = 1; //"1 => << < 1 2 [3] 4 5 > >>", "2 => < 1 2 [3] 4 5 >", "3 => 1 2 [3] 4 5", "4 => < >"
 $url = getURL(0, 0, 1, 1, "page");
 
-$db_count = new db_query("SELECT COUNT(*) as count
-                          FROM member_checkin, members
-                          WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
-                                AND member_checkin.member_id = members.id
-                                AND members.active = 1 AND member_checkin.active = 1
-                                 " . $sqlWhere . "GROUP BY DATE(member_checkin.checkin_time), member_id ");
-
+$db_count = new db_query("SELECT member_checkin.id,member_id, members.name, members.avatar, member_checkin.image, member_checkin.checkin_time
+                            FROM member_checkin, members
+                            WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
+                                    AND member_checkin.member_id = members.id
+                                    AND members.active = 1 AND member_checkin.active = 1
+                            GROUP BY DATE(member_checkin.checkin_time), member_id  ");
+          
 
 //	LEFT JOIN users ON(uso_user_id = use_id)
-$listing_count = mysqli_fetch_assoc($db_count->result);
-$total_record = $listing_count["count"];
+$total_record = 0;
+while($listing_count = mysqli_fetch_assoc($db_count->result)){
+    $total_record++;
+}
 $current_page = getValue("page", "int", "GET", 1);
 if ($total_record % $page_size == 0) $num_of_page = $total_record / $page_size;
 else $num_of_page = (int)($total_record / $page_size) + 1;
@@ -62,8 +64,9 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
                                                                 AND YEAR(member_checkin.checkin_time) = 2020
                                                                 AND members.active = 1 AND member_checkin.active = 1	
                                                                 AND member_checkin.member_id = members.id
-                                                            GROUP BY DATE(checkin_time), member_id)");
-
+                                                            GROUP BY DATE(checkin_time), member_id)
+                            LIMIT " . ($current_page - 1) * $page_size . "," . $page_size);       
+                                                      
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -152,8 +155,10 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
                     <?
                 //Đếm số thứ tự
                 $No = ($current_page - 1) * $page_size;
-
+                
+                
                 while ($listing = mysqli_fetch_assoc($db_listing->result)) {
+                    $list_checkout = mysqli_fetch_array($db_checkout->result);
                     $No++;
                     ?>
                     <tr id="tr_<?= $listing["id"] ?>">
@@ -176,8 +181,14 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
                         <td>
                             <? echo $listing["checkin_time"] ?>
                         </td>
-                        <!-- <td><? echo $list_checkout["checkout_time"] ?></td>
-                        <td><? echo $listing["total_time"]?></td> -->
+                        <td><? echo $listing["checkin_time"] ?></td>
+                        <td><? echo $list_checkout["checkout_time"] ?></td>
+                        <td><? 
+                            $startTime = new DateTime($listing["checkin_time"]);
+                            $finishTime = new DateTime($list_checkout["checkout_time"]);
+                            $diff = $finishTime->diff($startTime);
+                            print($diff->format("%H:%I:%S"));
+                        ?></td>
                     </tr>
                     <? } ?>
                 </table>
