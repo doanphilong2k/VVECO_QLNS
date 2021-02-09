@@ -7,12 +7,17 @@ $fs_redirect = "listing.php" . getURL(0, 0, 0, 1, "record_id");
 $fs_errorMsg = "";
 
 $id = getValue("id", "str", "GET", "");
-$member_id = getValue("member_id", "str", "GET", "");
+echo $id;
+$member_id = getValue("member_id", "int", "GET", "");
 $name = getValue("name", "str", "GET", "");
 $checkin_time = getValue("checkin_time", "str", "GET", ""); //Chưa hoàn thiện
 $checkout_time = getValue("checkout_time", "str", "GET", ""); //Chưa hoàn thiện
+$start_date = getValue("start_date", "str", "GET", "");
+$finish_date = getvalue("finish_date", "str", "GET", "");
 $total_time = getValue("total_time", "str", "GET", "");
-$sqlWhere = "";
+$NoData = "";
+
+
 //Get page break params
 $page_size = 30;
 $page_prefix = "Trang: ";
@@ -46,26 +51,103 @@ if ($current_page < 1) $current_page = 1;
 unset($db_count);
 //End get page break params
 
-$db_listing = new db_query("SELECT member_checkin.id,member_id, members.name, members.avatar, member_checkin.image, member_checkin.checkin_time
-                            FROM member_checkin, members
-                            WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
-                                    AND member_checkin.member_id = members.id
-                                    AND members.active = 1 AND member_checkin.active = 1
-                            GROUP BY DATE(member_checkin.checkin_time), member_id 
-                            LIMIT " . ($current_page - 1) * $page_size . "," . $page_size);
-$db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id, members.name, member_checkin.checkin_time as checkout_time 
-                            FROM member_checkin, members
-                            WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
+//checkin query
+$sqlWhere = "";
+$sqlQuery_checkin_select = " SELECT member_checkin.id,member_id, members.name, members.avatar, member_checkin.image, member_checkin.checkin_time
+                            FROM member_checkin, members ";
+$sqlQuery_checkin_where  = " WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
                                 AND member_checkin.member_id = members.id
-                                AND members.active = 1 AND member_checkin.active = 1	
+                                AND members.active = 1 AND member_checkin.active = 1 ";
+$sqlQuery_checkin_groupby=" GROUP BY DATE(member_checkin.checkin_time), member_id 
+                           LIMIT " . ($current_page - 1) * $page_size . "," . $page_size;
+
+//checkout query
+$sqlQuery_checkout_select = " SELECT member_checkin.id, member_checkin.member_id, members.name, member_checkin.checkin_time as checkout_time 
+                             FROM member_checkin, members ";
+$sqlQuery_checkout_where  = " WHERE member_checkin.member_id = members.id	
                                 AND member_checkin.id IN (SELECT MAX(member_checkin.id) 
                                                             FROM member_checkin, members
                                                             WHERE MONTH(member_checkin.checkin_time)= 7 
                                                                 AND YEAR(member_checkin.checkin_time) = 2020
                                                                 AND members.active = 1 AND member_checkin.active = 1	
                                                                 AND member_checkin.member_id = members.id
-                                                            GROUP BY DATE(checkin_time), member_id)
-                            LIMIT " . ($current_page - 1) * $page_size . "," . $page_size);       
+                                                            GROUP BY DATE(checkin_time), member_id) ";
+$sqlQuery_checkout_limit=" LIMIT " . ($current_page - 1) * $page_size . "," . $page_size;
+
+//Searching 
+if(isset($id) && is_numeric($id) && $member_id > 0){
+    $sqlWhere .= " AND id = ".$id;
+}
+if(isset($member_id) && is_numeric($member_id) && $member_id > 0){
+    $sqlWhere .= " AND member_id = " .$member_id;
+}
+if(isset($name) && $name=""){
+    $sqlWhere .= " AND members.name = ".$name;
+}
+$sqlQuery_checkin  = $sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere .$sqlQuery_checkin_groupby;
+$sqlQuery_checkout = $sqlQuery_checkout_select .$sqlQuery_checkout_where .$sqlWhere .$sqlQuery_checkout_limit;
+
+if(isset($checkin_time) && $checkin_time != "" && strpos($checkin_time, ":")){
+    $time = explode(":", $checkin_time);
+    $db_temp;
+    if($time[1] == 0){
+        $sqlQuery_checkin = "SELECT * FROM (".$sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere.
+                                "GROUP BY DATE(member_checkin.checkin_time), member_id ) 
+                                WHERE HOUR(checkin_time) = ".$time[0];
+        $db_temp = new db_query("SELECT member_id, Day(checkin_time) as day 
+                                FROM (".$sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere.
+                                " GROUP BY DATE(member_checkin.checkin_time), member_id)temp
+                                WHERE HOUR(checkin_time) = ".$time[0]);
+    }
+    else{
+        $sqlQuery_checkin = "SELECT * FROM (".$sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere.") 
+                            WHERE HOUR(checkin_time) = ".$time[0]. 
+                            " AND MINUTE(checkin_time) = ".$time[1];
+        $db_temp = new db_query("SELECT member_id, Day(checkin_time) as day 
+                                FROM (".$sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere.
+                                " GROUP BY DATE(member_checkin.checkin_time), member_id) temp
+                                WHERE HOUR(checkin_time) = ".$time[0]. " AND MINUTE(checkin_time) = ".$time[1]);
+    }
+    
+    $db_member_id = ""; 
+    $db_day = "";
+    $i = 0;
+    while($listing = mysqli_fetch_assoc($db_temp->result)){
+        if($db_member_id != "" && $db_day != ""){
+            $db_member_id .= ",".$listing[member_id];
+            $db_day .= ",".$listing[day];
+        }else{
+            $db_member_id .= $listing[member_id];
+            $db_day .= $listing[day];
+        }
+    }
+    
+    if($db_member_id == "" || $db_day = ""){
+        $sqlQuery_checkout = "";
+        $NoData = "Dữ liệu không tồn tại!";
+    }
+    else{
+        $sqlQuery_checkout = $sqlQuery_checkout_select 
+    ."WHERE members.id IN (".$db_member_id.")
+        AND member_checkin.id IN (SELECT MAX(member_checkin.id) 
+                                    FROM member_checkin, members
+                                    WHERE MONTH(member_checkin.checkin_time)= 7 
+                                        AND YEAR(member_checkin.checkin_time) = 2020
+                                        AND members.active = 1 AND member_checkin.active = 1
+                                        AND DAY(member_checkin.checkin_time) IN (".$db_day.")
+                                        AND member_checkin.member_id IN (".$db_member_id.")
+                                    GROUP BY DATE(checkin_time), member_id)" .$sqlQuery_checkout_limit;
+    }                             
+}
+// if(isset($checkout_time) && $checkout_time != "" && str_contain($checkout_time, ":")){
+//     $sqlQuery_checkout = $sqlQuery_checkout."AND HOUR(member_checkin.checkin_time) = ".$checkout_time;
+// } 
+echo $sqlQuery_checkout;
+if($NoData == ""){
+    $db_listing = new db_query($sqlQuery_checkin);
+    $db_checkout = new db_query($sqlQuery_checkout); 
+}
+      
                                                       
 ?>
 
@@ -86,7 +168,7 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
             <h3>Danh sách Checkin</h3>
 
             <div class="search">
-                <form action="listing.php" methor="get" name="form_search" onsubmit="check_form_submit(this); return false">
+                <form action="calculation.php" methor="get" name="form_search" onsubmit="check_form_submit(this); return false">
                     <input type="hidden" name="search" id="search" value="1">
                     <table cellpadding="0" cellspacing="0" border="0" style="width: 100%">
                         <tbody>
@@ -100,9 +182,9 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
                             </tr>
                             <tr>
                                 <td class="text">Ngày bắt đầu</td>
-                                <td><input type="date" class="form-control" name="checkin_time" id="checkin_time" value="<?= $checkin_time ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
+                                <td><input type="date" class="form-control" name="start_date" id="checkin_time" value="<?= $checkin_time ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
                                 <td class="text">Ngày kết thúc</td>
-                                <td><input type="date" class="form-control" name="checkout_time" id="checkout_time" value="<?= $checkout_time ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
+                                <td><input type="date" class="form-control" name="finish_date" id="checkout_time" value="<?= $checkout_time ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
                                 <td class="text">Tổng Thời Gian</td>
                                 <td><input type="time" id="time-total" class="form-control" name="total_time" id="total_time" value="<?= $total_time ?>" placeholder="Tổng thời gian" style="width: 200px" /></td>
                             </tr>
@@ -156,41 +238,50 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
                 //Đếm số thứ tự
                 $No = ($current_page - 1) * $page_size;
                 
-                
-                while ($listing = mysqli_fetch_assoc($db_listing->result)) {
-                    $list_checkout = mysqli_fetch_array($db_checkout->result);
-                    $No++;
+                if(isset($NoData) && $NoData != "" ){
                     ?>
-                    <tr id="tr_<?= $listing["id"] ?>">
-                        <td width="40" style="text-align:center"><span style="color:#142E62; font-weight:bold"><?= $No ?></span></td>
-                        <td>
-                            <? echo $listing["id"] ?>
-                        </td>
-                        <td>
-                            <? echo $listing["member_id"] ?>
-                        </td>
-                        <td>
-                            <? echo $listing["name"] ?>
-                        </td>
-                        <td>
-                            <img src="<? echo $listing[" avatar"] ?>" alt="avatar">
-                        </td>
-                        <td>
-                            <img src="<? echo $listing[" image"] ?>" alt="image">
-                        </td>
-                        <td>
-                            <? echo $listing["checkin_time"] ?>
-                        </td>
-                        <td><? echo $listing["checkin_time"] ?></td>
-                        <td><? echo $list_checkout["checkout_time"] ?></td>
-                        <td><? 
-                            $startTime = new DateTime($listing["checkin_time"]);
-                            $finishTime = new DateTime($list_checkout["checkout_time"]);
-                            $diff = $finishTime->diff($startTime);
-                            print($diff->format("%H:%I:%S"));
-                        ?></td>
+                    <tr>
+                        <td cols></td>
                     </tr>
-                    <? } ?>
+                    <?
+                }
+                else{
+                    while ($listing = mysqli_fetch_assoc($db_listing->result)) {
+                        $list_checkout = mysqli_fetch_array($db_checkout->result);
+                        $No++;
+                        ?>
+                        <tr id="tr_<?= $listing["id"] ?>">
+                            <td width="40" style="text-align:center"><span style="color:#142E62; font-weight:bold"><?= $No ?></span></td>
+                            <td>
+                                <? echo $listing["id"] ?>
+                            </td>
+                            <td>
+                                <? echo $listing["member_id"] ?>
+                            </td>
+                            <td>
+                                <? echo $listing["name"] ?>
+                            </td>
+                            <td>
+                                <img src="<? echo $listing[" avatar"] ?>" alt="avatar">
+                            </td>
+                            <td>
+                                <img src="<? echo $listing[" image"] ?>" alt="image">
+                            </td>
+                            <td>
+                                <? echo $listing["checkin_time"] ?>
+                            </td>
+                            <td><? echo $list_checkout["checkout_time"] ?></td>
+                            <td><? 
+                                $startTime = new DateTime($listing["checkin_time"]);
+                                $finishTime = new DateTime($list_checkout["checkout_time"]);
+                                $diff = $finishTime->diff($startTime);
+                                print($diff->format("%H:%I:%S"));
+                            ?></td>
+                        </tr>
+                        <? }
+                } ?>
+                
+                
                 </table>
             </div>
         </div>

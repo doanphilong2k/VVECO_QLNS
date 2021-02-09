@@ -17,6 +17,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP" />
   <component name="ProjectId" id="1nMcR5CSPkRve9zjC7YgJ87ZEqb" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -25,9 +26,15 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../php/php.exe" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -42,6 +49,7 @@
       <workItem from="1611325850537" duration="1869000" />
       <workItem from="1611338710835" duration="2670000" />
       <workItem from="1611476012821" duration="4033000" />
+      <workItem from="1612795209804" duration="1941000" />
     </task>
     <servers />
   </component>
@@ -49,9 +57,30 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="184" y="14" key="SettingsEditor" timestamp="1611209471250">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state x="540" y="179" key="#CLI_Interpreters" timestamp="1612800778316">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="540" y="179" key="#CLI_Interpreters/0.0.1920.1050@0.0.1920.1050" timestamp="1612800778316" />
+    <state x="667" y="167" key="#PHP" timestamp="1612800780477">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="667" y="167" key="#PHP/0.0.1920.1050@0.0.1920.1050" timestamp="1612800780477" />
+    <state x="757" y="314" key="#Web_Browsers" timestamp="1612800708299">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="757" y="314" key="#Web_Browsers/0.0.1920.1050@0.0.1920.1050" timestamp="1612800708299" />
+    <state x="414" y="179" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1612800090216">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="414" y="179" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1612800090216" />
+    <state x="740" y="279" key="FileChooserDialogImpl" timestamp="1612800774859">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="740" y="279" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1612800774859" />
+    <state x="259" y="20" key="SettingsEditor" timestamp="1612800142385">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="184" y="14" key="SettingsEditor/0.0.1366.738@0.0.1366.738" timestamp="1611209471250" />
+    <state x="259" y="20" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1612800142385" />
   </component>
 </project>
