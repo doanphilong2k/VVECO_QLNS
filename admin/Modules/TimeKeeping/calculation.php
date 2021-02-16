@@ -1,5 +1,6 @@
 <?php
 require_once("inc_security.php");
+require_once("Excel.php");
 
 $fs_title = "Checkin";
 $fs_action = "listing.php" . getURL(0, 0, 0, 1, "record_id");
@@ -7,12 +8,55 @@ $fs_redirect = "listing.php" . getURL(0, 0, 0, 1, "record_id");
 $fs_errorMsg = "";
 
 $id = getValue("id", "str", "GET", "");
-$member_id = getValue("member_id", "str", "GET", "");
+$member_id = getValue("member_id", "str", "GET", ""); 
 $name = getValue("name", "str", "GET", "");
 $checkin_time = getValue("checkin_time", "str", "GET", ""); //Chưa hoàn thiện
 $checkout_time = getValue("checkout_time", "str", "GET", ""); //Chưa hoàn thiện
+$start_date = getValue("start_date", "str", "GET", "");
+$finish_date = getValue("finish_date", "str", "GET", "");
 $total_time = getValue("total_time", "str", "GET", "");
+
 $sqlWhere = "";
+
+//Tìm theo id
+if ($id != "") {
+    $sqlWhere .= " AND id LIKE '%" . $id . "%'";
+}
+
+//Tìm theo member_id
+if ($member_id != "") {
+    $sqlWhere .= " AND member_id LIKE '%" . $member_id . "%'";
+}
+
+//Tìm theo name
+if ($name != "") {
+    $sqlWhere .= " AND name LIKE '%" . $name . "%'";
+}
+
+//Tìm theo checkin_time
+if ($checkin_time != "") {
+    $sqlWhere .= " AND checkin_time LIKE '%" . $checkin_time . "%'";
+}
+
+//Tìm theo checkout_time
+if ($checkout_time != "") {
+    $sqlWhere .= " AND checkout_time LIKE '%" . $checkout_time . "%'";
+}
+
+//Tìm theo start_time
+// if ($start_time != "") {
+//     $sqlWhere .= " AND start_time LIKE '%" . $start_time . "%'";
+// }
+
+//Tìm theo finish_time
+// if ($finish_time != "") {
+//     $sqlWhere .= " AND finish_time LIKE '%" . $finish_time . "%'";
+// }
+
+//Tìm theo total_time
+if ($total_time != "") {
+    $sqlWhere .= " AND total_time LIKE '%" . $total_time . "%'";
+}
 //Get page break params
 $page_size = 30;
 $page_prefix = "Trang: ";
@@ -86,7 +130,7 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
             <h3>Danh sách Checkin</h3>
 
             <div class="search">
-                <form action="listing.php" methor="get" name="form_search" onsubmit="check_form_submit(this); return false">
+                <form action="calculation.php" methor="get" name="form_search" onsubmit="check_form_submit(this); return false">
                     <input type="hidden" name="search" id="search" value="1">
                     <table cellpadding="0" cellspacing="0" border="0" style="width: 100%">
                         <tbody>
@@ -100,9 +144,9 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
                             </tr>
                             <tr>
                                 <td class="text">Ngày bắt đầu</td>
-                                <td><input type="date" class="form-control" name="checkin_time" id="checkin_time" value="<?= $checkin_time ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
+                                <td><input type="date" class="form-control" name="start_date" id="start_date" value="<?= $start_date ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
                                 <td class="text">Ngày kết thúc</td>
-                                <td><input type="date" class="form-control" name="checkout_time" id="checkout_time" value="<?= $checkout_time ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
+                                <td><input type="date" class="form-control" name="finish_date" id="finish_date" value="<?= $finish_date ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
                                 <td class="text">Tổng Thời Gian</td>
                                 <td><input type="time" id="time-total" class="form-control" name="total_time" id="total_time" value="<?= $total_time ?>" placeholder="Tổng thời gian" style="width: 200px" /></td>
                             </tr>
@@ -173,7 +217,10 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
                             <? echo $listing["name"] ?>
                         </td>
                         <td>
-                            <img src="<? echo $listing[" avatar"] ?>" alt="avatar">
+                            <div class="avatar-img">
+                                <img src="<? echo $listing["avatar"] ?>" alt="avatar">
+                            </div>
+                            <!-- <? echo $listing["avatar"] ?> -->
                         </td>
                         <td>
                             <img src="<? echo $listing[" image"] ?>" alt="image">
@@ -181,7 +228,6 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
                         <td>
                             <? echo $listing["checkin_time"] ?>
                         </td>
-                        <td><? echo $listing["checkin_time"] ?></td>
                         <td><? echo $list_checkout["checkout_time"] ?></td>
                         <td><? 
                             $startTime = new DateTime($listing["checkin_time"]);
@@ -288,5 +334,17 @@ $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id,
 
     input[type=time]::-webkit-datetime-edit-text {
         padding: 2px 5px;
+    }
+
+    .avatar-img {
+        width: 80px;
+        height: 80px;
+        overflow: hidden;
+        margin: 1px auto;
+    }
+
+    .avatar-img img {
+        width: 100%;
+        height: auto;
     }
 </style>
