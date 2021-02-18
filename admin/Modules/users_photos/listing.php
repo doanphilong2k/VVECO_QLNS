@@ -59,12 +59,12 @@ $sqlWhere = "";
 
 //Tìm theo keyword
 if ($keyword != "") {
-    $sqlWhere .= " AND mem_name LIKE '%" . $keyword . "%'";
+    $sqlWhere .= " AND name LIKE '%" . $keyword . "%'";
 }
 
 //Tìm theo keyword
 if ($position != "") {
-    $sqlWhere .= " AND mem_position LIKE '%" . $position . "%'";
+    $sqlWhere .= " AND position LIKE '%" . $position . "%'";
 }
 
 //Tìm theo keyword

@@ -1,5 +1,6 @@
 <?php
 require_once("inc_security.php");
+require_once("Excel.php");
 
 $fs_title    = "Checkin";
 $fs_action   = "listing.php" . getURL(0, 0, 0, 1, "record_id");
@@ -361,5 +362,17 @@ if($NoData == ""){
 
     input[type=time]::-webkit-datetime-edit-text {
         padding: 2px 5px;
+    }
+
+    .avatar-img {
+        width: 80px;
+        height: 80px;
+        overflow: hidden;
+        margin: 1px auto;
+    }
+
+    .avatar-img img {
+        width: 100%;
+        height: auto;
     }
 </style>

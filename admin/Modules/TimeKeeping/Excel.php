@@ -4,49 +4,128 @@ require_once("../../../classes/PHPExcel/PHPExcel.php");
 
 $action = getValue("action", "str", "POST", "");
 
-$arrWorkshift = array();
-$list_workshift = new db_query("SELECT * FROM workshift");
-while ($row = mysqli_fetch_assoc($list_workshift->result)) {
-    $arrWorkshift[] = $row;
-}
-unset($list_workshift);
+$arrCheck = array();
+$list_checkin = new db_query("SELECT member_checkin.id,member_id, members.name, members.avatar, member_checkin.image, member_checkin.checkin_time
+                            FROM member_checkin, members
+                            WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
+                                    AND member_checkin.member_id = members.id
+                                    AND members.active = 1 AND member_checkin.active = 1
+                            GROUP BY DATE(member_checkin.checkin_time), member_id ");
 
-$workshift_id = getValue("workshift_id", "int", "POST", 0);
+$list_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id, members.name, member_checkin.checkin_time as checkout_time FROM member_checkin, members
+                            WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
+                                AND member_checkin.member_id = members.id
+                                AND members.active = 1 AND member_checkin.active = 1	
+                                AND member_checkin.id IN (SELECT MAX(member_checkin.id) 
+                                                                                    FROM member_checkin, members
+                                                                                    WHERE MONTH(member_checkin.checkin_time)= 7 
+                                                                                        AND YEAR(member_checkin.checkin_time) = 2020
+                                                                                        AND members.active = 1 AND member_checkin.active = 1	
+                                                                                        AND member_checkin.member_id = members.id
+                                                                                    GROUP BY DATE(checkin_time), member_id)");
+while ($row = mysqli_fetch_assoc($list_checkin->result)) {
+    $row_checkout = mysqli_fetch_assoc($list_checkout->result);
+    $arrCheck[] = $row;
+    $arrCheckout[] = $row_checkout;
+}
+unset($list_checkin);
+unset($list_checkout);
+
+$check_id = getValue("check_id", "int", "POST", 0);
 
 
 if ($action == "export") {
 
-    if ($school_id <= 0 || $faculty_id <= 0 || $class_id <= 0) exit("Dữ liệu đầu vào không hợp lệ. Vui long lựa chọn đầy đủ Trường, Khoa, Lớp.");
+    // if ($school_id <= 0 || $faculty_id <= 0 || $class_id <= 0) exit("Dữ liệu đầu vào không hợp lệ. Vui long lựa chọn đầy đủ Trường, Khoa, Lớp.");
 
     $excel = new PHPExcel();
     $excel->setActiveSheetIndex(0);
 
-    $excel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
-    $excel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
-    $excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
-    $excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
-    // $excel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+    for($i = 'A'; $i <= 'Z'; $i++)
+    {
+        $excel->getActiveSheet()->getColumnDimension($i)->setWidth(30);
+        if($i == 'AM')
+        {
+            break;
+        }
+    }
 
-    $excel->getActiveSheet()->getStyle('A1:D1')->getFont()->setBold(true);
-    $excel->getActiveSheet()->getStyle('A1:D1')->getAlignment();
+    $excel->getActiveSheet()->getStyle('A1:AL1')->getFont()->setBold(true);
+    $excel->getActiveSheet()->getStyle('A1:AL1')->getAlignment();
 
     //Vị trí có dạng như sau:
-    $excel->getActiveSheet()->setCellValue('A1', 'Mã ca');
-    $excel->getActiveSheet()->setCellValue('B1', 'Tên ca');
-    $excel->getActiveSheet()->setCellValue('C1', 'Thời gian bắt đầu');
-    $excel->getActiveSheet()->setCellValue('D1', 'Thời gian kết thúc');
+    $excel->getActiveSheet()->setCellValue('A1', 'TT');
+    $excel->getActiveSheet()->setCellValue('B1', 'Họ và tên');
+    
+    for($o = 'C1'; $o < 'AH1'; $o++)
+    {
+        for($n = '1'; $n < '32'; $n++)
+        {
+            $excel->getActiveSheet()->setCellValue($o, $n);
+        }
+    }
+
+    $excel->getActiveSheet()->setCellValue('AH1', 'Công chính');
+    $excel->getActiveSheet()->setCellValue('AI1', 'Công làm thêm ngày thưởng * 150%');
+    $excel->getActiveSheet()->setCellValue('AJ1', 'Công làm thêm ngày nghỉ x 150%');
+    $excel->getActiveSheet()->setCellValue('AK1', 'Tổng công');
+    $excel->getActiveSheet()->setCellValue('AL1', 'Ký nhận');
 
     $numRow = 2;
-    $db_workshift = new db_query("SELECT * FROM workshift WHERE wor_id = " . $workshift_id);
-    while ($row = mysqli_fetch_assoc($db_workshift->result)) {
-        $excel->getActiveSheet()->setCellValue('A' . $numRow, $row['wor_id']);
-        $excel->getActiveSheet()->setCellValue('B' . $numRow, $row['wor_name']);
-        $excel->getActiveSheet()->setCellValue('C' . $numRow, $row['wor_StartTime']);
-        $excel->getActiveSheet()->setCellValue('D' . $numRow, $row['wor_FinishTime']);
-        // $excel->getActiveSheet()->setCellValue('E' . $numRow, date("m/d/Y", $row['use_birthdays']));
+    $db_checkin = new db_query("SELECT member_checkin.id,member_id, members.name, members.avatar, member_checkin.image, member_checkin.checkin_time
+                            FROM member_checkin, members
+                            WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
+                                    AND member_checkin.member_id = members.id
+                                    AND members.active = 1 AND member_checkin.active = 1
+                            GROUP BY DATE(member_checkin.checkin_time), member_id");
+
+    $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id, members.name, member_checkin.checkin_time as checkout_time FROM member_checkin, members
+                            WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
+                                AND member_checkin.member_id = members.id
+                                AND members.active = 1 AND member_checkin.active = 1	
+                                AND member_checkin.id IN (SELECT MAX(member_checkin.id) 
+                                                                                    FROM member_checkin, members
+                                                                                    WHERE MONTH(member_checkin.checkin_time)= 7 
+                                                                                        AND YEAR(member_checkin.checkin_time) = 2020
+                                                                                        AND members.active = 1 AND member_checkin.active = 1	
+                                                                                        AND member_checkin.member_id = members.id
+                                                                                    GROUP BY DATE(checkin_time), member_id)");
+    $num = 0;
+
+    while ($row = mysqli_fetch_assoc($db_checkin->result)) {
+        $row_checkout = mysqli_fetch_assoc($db_checkout->result);
+        $num++;
+
+        $start_time = new DateTime($row['checkin_time']);
+        $finish_time = new DateTime($row_checkout['checkout_time']);
+        if($start_time > '8:15:00' || $finish_time < '16:45:00')
+        {
+            $work = 0.5;
+        }
+        else if($start_time == null || $finish_time == null)
+        {
+            $work = "N";
+        }
+        else{
+            $work = 1.0;
+        }
+       
+
+        $excel->getActiveSheet()->setCellValue('A' . $numRow, $num);
+        $excel->getActiveSheet()->setCellValue('B' . $numRow, $row['name']);
+        for($u = 'C'; $u < 'AH'; $u++)
+        {
+            $excel->getActiveSheet()->setCellValue($u . $numRow, $work);
+        }
+        $excel->getActiveSheet()->setCellValue('AH' . $numRow, "");
+        $excel->getActiveSheet()->setCellValue('AI' . $numRow, "");
+        $excel->getActiveSheet()->setCellValue('AJ' . $numRow, "");
+        $excel->getActiveSheet()->setCellValue('AK' . $numRow, "");
+        $excel->getActiveSheet()->setCellValue('AL' . $numRow, "");
         $numRow++;
     }
-    unset($db_workshift);
+    unset($db_checkin);
+    unset($db_checkout);
 
     // Khởi tạo đối tượng PHPExcel_IOFactory để thực hiện ghi file
     header('Content-Disposition: attachment; filename="danh_sach_sinh_vien_' . time() . '.xlsx"');
@@ -162,12 +241,12 @@ if ($action == "import") {
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
-            <form action="listing.php" method="POST" enctype="multipart/form-data">
+            <form action="calculation.php" method="POST" enctype="multipart/form-data">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title"><i class="fa fa-file-excel-o"></i> Xuất Excel Danh sách Sinh viên</h4>
                 </div>
-                <div class="modal-body">
+                <!-- <div class="modal-body">
                     <div class="form-group">
                         <label for="sell">Chọn trường</label>
                         <div>
@@ -199,7 +278,7 @@ if ($action == "import") {
                             </select>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="modal-footer">
                     <input type="hidden" id="action" name="action" value="export" />
                     <button type="submit" class="btn btn-primary"><i class="fa fa-file-excel-o"></i> Xuất Excel</button>

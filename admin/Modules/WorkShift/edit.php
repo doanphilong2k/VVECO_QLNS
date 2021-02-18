@@ -50,13 +50,15 @@ $wor_FinishTime = getValue("wor_FinishTime", "str", "POST", $wor_FinishTime, 3);
 // if (empty($wor_FinishTime)) {
 //     $wor_FinishTime = time();
 // }
+$rol_id = getValue("rol_id", "int", "POST", $rol_id, 3);
+
 
 //Call Class generate_form();
 $myform = new generate_form();
-$myform->add("wor_name", "wor_name", 1, 1, 0, 1, "Tên ca làm việc không được để trống.", 0, "");
+$myform->add("wor_name", "wor_name", 0, 1, "", 1, "Tên ca làm việc không được để trống.", 0, "");
 $myform->add("wor_StartTime", "wor_StartTime", 0, 1, "", 1, "Bạn chưa chọn thời gian bắt đầu.", 0, "");
 $myform->add("wor_FinishTime", "wor_FinishTime", 0, 1, "", 1, "Bạn chưa chọn thời gian kết thúc.", 0, "");
-$myform->add("rol_id", "rol_id", 0, 1, "", 1, "Bạn chưa chọn phân quyền.", 0, "");
+$myform->add("rol_id", "rol_id", 0, 1, "", 1, "Bạn chưa chọn quyền hạn.", 0, "");
 $myform->addTable($fs_table);
 
 $action = getValue("action", "str", "POST", "");
@@ -66,21 +68,7 @@ if ($action == "execute") {
     //Check form data
     $fs_errorMsg .= $myform->checkdata();
 
-    //Get $filename and upload
-    $filename    = "";
     if ($fs_errorMsg == "") {
-        $upload            = new upload_image();
-        $upload->upload($fs_fieldupload, $fs_filepath, $fs_extension, $fs_filesize, 0);
-        $filename        = $upload->file_name;
-        $fs_errorMsg    .= $upload->warning_error;
-    }
-
-    if ($fs_errorMsg == "") {
-        if ($filename != "") {
-            $$fs_fieldupload = $filename;
-            $myform->add($fs_fieldupload, $fs_fieldupload, 0, 1, "", 0, "", 0, "");
-        } //End if($filename != "")
-
         if ($record_id > 0) {
             $db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
             unset($db_ex);
@@ -133,12 +121,7 @@ if ($action == "execute") {
         <!-- <tr>
             <td class="form_name">Thời gian bắt đầu:</td>
             <td class="form_text">
-                <input type="text" class="form-control date" name="wor_StartTime" id="wor_StartTime"
-                    onkeypress="displayDatePicker('wor_StartTime', this);"
-                    onclick="displayDatePicker('wor_StartTime', this);"
-                    onfocus="if(this.value=='Enter Ngày tạo') this.value=''"
-                    onblur="if(this.value=='') this.value='Enter Ngày tạo'"
-                    value="<?= date('d/m/Y', $wor_StartTime) ?>">
+                <input type="time" class="form-control" name="wor_StartTime" id="wor_StartTime" value="<?php echo $wor_StartTime ?> ">
             </td>
         </tr> -->
         <?= $form->text("Thời gian kết thúc", "wor_FinishTime", "wor_FinishTime", $wor_FinishTime, "Thời gian kết thúc", 1, 250, "", 50, "", "", "") ?>
@@ -153,7 +136,7 @@ if ($action == "execute") {
                     value="<?= date('d/m/Y', $wor_FinishTime) ?>">
             </td>
         </tr> -->
-        <?= $form->text("Phân quyền", "rol_id", "rol_id", $rol_id, "Thời gian kết thúc", 1, 250, "", 50, "", "", "") ?>
+        <?= $form->text("Quyền hạn", "rol_id", "rol_id", $rol_id, "Quyền hạn", 1, 250, "", 50, "", "", "") ?>
       
         <?= $form->radio("Sau khi lưu dữ liệu", "add_new" . $form->ec . "return_listing", "after_save_data", $add . $form->ec . $listing, $after_save_data, "Thêm mới" . $form->ec . "Quay về danh sách", 0, $form->ec, ""); ?>
         <?= $form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", '' . $form->ec . '', ""); ?>
