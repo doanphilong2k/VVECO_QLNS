@@ -8,7 +8,7 @@ $fs_redirect = "listing.php" . getURL(0, 0, 0, 1, "record_id");
 $fs_errorMsg = "";
 
 $id = getValue("id", "str", "GET", "");
-echo $id;
+// echo $id;
 $member_id = getValue("member_id", "int", "GET", "");
 $name = getValue("name", "str", "GET", "");
 $checkin_time = getValue("checkin_time", "str", "GET", ""); //Chưa hoàn thiện
@@ -115,11 +115,11 @@ if(isset($checkin_time) && $checkin_time != "" && strpos($checkin_time, ":")){
     $i = 0;
     while($listing = mysqli_fetch_assoc($db_temp->result)){
         if($db_member_id != "" && $db_day != ""){
-            $db_member_id .= ",".$listing[member_id];
-            $db_day .= ",".$listing[day];
+            $db_member_id .= ",".$listing["member_id"];
+            $db_day .= ",".$listing["day"];
         }else{
-            $db_member_id .= $listing[member_id];
-            $db_day .= $listing[day];
+            $db_member_id .= $listing["member_id"];
+            $db_day .= $listing["day"];
         }
     }
     
@@ -143,7 +143,7 @@ if(isset($checkin_time) && $checkin_time != "" && strpos($checkin_time, ":")){
 // if(isset($checkout_time) && $checkout_time != "" && str_contain($checkout_time, ":")){
 //     $sqlQuery_checkout = $sqlQuery_checkout."AND HOUR(member_checkin.checkin_time) = ".$checkout_time;
 // } 
-echo $sqlQuery_checkout;
+
 if($NoData == ""){
     $db_listing = new db_query($sqlQuery_checkin);
     $db_checkout = new db_query($sqlQuery_checkout); 

@@ -289,10 +289,10 @@ if ($action == "import") {
 </div>
 
 <!-- Modal export-->
-<div id="form_import" class="modal fade" role="dialog">
+<!-- <div id="form_import" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
-        <!-- Modal content-->
+        
         <div class="modal-content">
             <form action="listing.php" method="POST" enctype="multipart/form-data">
                 <div class="modal-header">
@@ -345,7 +345,7 @@ if ($action == "import") {
         </div>
 
     </div>
-</div>
+</div> -->
 <?php
 unset($list_schools);
 ?>
