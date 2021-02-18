@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d25cbd3b-9671-4b9d-8ee4-99e7fb3ba8bb" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/Modules/TimeKeeping/calculation.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/TimeKeeping/calculation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phinx/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/phinx/composer.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +19,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PhpServers">
+    <servers>
+      <server host="localhost" id="8df2535c-9350-404f-8717-5f78505930a3" name="Test" port="8088" />
+    </servers>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP" />
   <component name="ProjectId" id="1nMcR5CSPkRve9zjC7YgJ87ZEqb" />
@@ -34,8 +42,13 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="PhpWebAppRunConfigurationType" factoryName="PHP Web Application" server_name="Test" start_url="/admin">
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -50,6 +63,9 @@
       <workItem from="1611338710835" duration="2670000" />
       <workItem from="1611476012821" duration="4033000" />
       <workItem from="1612795209804" duration="1941000" />
+      <workItem from="1612919492610" duration="15940000" />
+      <workItem from="1613266839923" duration="6662000" />
+      <workItem from="1613280561960" duration="18028000" />
     </task>
     <servers />
   </component>
@@ -65,22 +81,27 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="667" y="167" key="#PHP/0.0.1920.1050@0.0.1920.1050" timestamp="1612800780477" />
+    <state x="400" y="47" key="#Servers" timestamp="1613004185584">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="400" y="47" key="#Servers/0.0.1366.738@0.0.1366.738" timestamp="1613004185584" />
     <state x="757" y="314" key="#Web_Browsers" timestamp="1612800708299">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="757" y="314" key="#Web_Browsers/0.0.1920.1050@0.0.1920.1050" timestamp="1612800708299" />
-    <state x="414" y="179" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1612800090216">
-      <screen x="0" y="0" width="1920" height="1050" />
+    <state x="274" y="47" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1613004215321">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
+    <state x="274" y="47" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.738@0.0.1366.738" timestamp="1613004215321" />
     <state x="414" y="179" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1612800090216" />
     <state x="740" y="279" key="FileChooserDialogImpl" timestamp="1612800774859">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="740" y="279" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1612800774859" />
-    <state x="259" y="20" key="SettingsEditor" timestamp="1612800142385">
-      <screen x="0" y="0" width="1920" height="1050" />
+    <state x="184" y="14" key="SettingsEditor" timestamp="1613272670934">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="184" y="14" key="SettingsEditor/0.0.1366.738@0.0.1366.738" timestamp="1611209471250" />
+    <state x="184" y="14" key="SettingsEditor/0.0.1366.738@0.0.1366.738" timestamp="1613272670934" />
     <state x="259" y="20" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1612800142385" />
   </component>
 </project>
