@@ -18,6 +18,8 @@ $start_date = getValue("start_date", "str", "GET", "");
 $finish_date = getvalue("finish_date", "str", "GET", "");
 $total_time = getValue("total_time", "str", "GET", "");
 $NoData = "";
+$idCheckin = "";
+$idCheckout = "";
 
 
 //Get page break params
@@ -34,6 +36,8 @@ $url = getURL(0, 0, 1, 1, "page");
 
 //checkin query
 $sqlWhere = "";
+$sqlWhereTotaltimeCheckin = "";
+$sqlWhereTotaltimeCheckout = "";
 $sqlQuery_checkin_select = " SELECT member_checkin.id,member_id, members.name, members.avatar, member_checkin.image, member_checkin.checkin_time
                             FROM member_checkin, members ";
 $sqlQuery_checkin_where  = " WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
@@ -71,7 +75,37 @@ if(isset($start_date) && isset($finish_date)){
     }
 }
 
-$db_count = new db_query($sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere .$sqlQuery_checkin_groupby );
+if(isset($total_time) && $total_time != 0){
+    $sqlQuery_checkin  = $sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere .$sqlQuery_checkin_groupby;
+    $sqlQuery_checkout = $sqlQuery_checkout_select .$sqlQuery_checkout_where .$sqlWhere;
+
+    $db_listing = new db_query($sqlQuery_checkin);
+    $db_checkout = new db_query($sqlQuery_checkout);
+
+    while ($list_checkin = mysqli_fetch_assoc($db_listing->result)) {
+        $list_checkout = mysqli_fetch_array($db_checkout->result);
+
+        $startTime = new DateTime($list_checkin["checkin_time"]);
+        $finishTime = new DateTime($list_checkout["checkout_time"]);
+        $diff = $finishTime->diff($startTime);
+
+        if(($diff->format("%s") + $diff->format("%i")*60 + $diff->format("%h")*60*60) >= ($total_time*60*60)
+            && ($diff->format("%s") + $diff->format("%i")*60 + $diff->format("%h")*60*60) <=(($total_time+1)*60*60)){
+            if($idCheckin == "" && $idCheckout == ""){
+                $idCheckin  .= $list_checkin["id"];
+                $idCheckout .= $list_checkout["id"];
+            }
+            else{
+                $idCheckin  .= "," . $list_checkin["id"];
+                $idCheckout .= "," . $list_checkout["id"];
+            }
+        }
+    }
+    $sqlWhereTotaltimeCheckin .= " AND member_checkin.id IN (".$idCheckin.")";
+    $sqlWhereTotaltimeCheckout .= " AND member_checkin.id IN (".$idCheckout.")";
+}
+
+$db_count = new db_query($sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere .$sqlWhereTotaltimeCheckin .$sqlQuery_checkin_groupby );
 
 
 //	LEFT JOIN users ON(uso_user_id = use_id)
@@ -92,8 +126,8 @@ $sqlQuery_checkin_limit=" LIMIT " . ($current_page - 1) * $page_size . "," . $pa
 
 $sqlQuery_checkout_limit=" LIMIT " . ($current_page - 1) * $page_size . "," . $page_size;
 
-$sqlQuery_checkin  = $sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere .$sqlQuery_checkin_groupby .$sqlQuery_checkin_limit;
-$sqlQuery_checkout = $sqlQuery_checkout_select .$sqlQuery_checkout_where .$sqlWhere .$sqlQuery_checkout_limit;
+$sqlQuery_checkin  = $sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere .$sqlWhereTotaltimeCheckin  .$sqlQuery_checkin_groupby .$sqlQuery_checkin_limit;
+$sqlQuery_checkout = $sqlQuery_checkout_select .$sqlQuery_checkout_where .$sqlWhere .$sqlWhereTotaltimeCheckout .$sqlQuery_checkout_limit;
 
 
 
@@ -172,7 +206,6 @@ if($NoData == ""){
                         <?//= $num_row ?>
                         <!--)">-->
                         <!--                    </td>-->
-                        <td class="h">ID</td>
                         <td class="h">Mã nhân viên</td>
                         <td class="h">Họ và Tên</td>
                         <td class="h">Avatar</td>
@@ -200,69 +233,31 @@ if($NoData == ""){
                         $finishTime = new DateTime($list_checkout["checkout_time"]);
                         $diff = $finishTime->diff($startTime);
 
-                        if($total_time != 0 && isset($total_time)){
-                            if(($diff->format("%s") + $diff->format("%i")*60 + $diff->format("%h")*60*60) >= ($total_time*60*60)
-                                && ($diff->format("%s") + $diff->format("%i")*60 + $diff->format("%h")*60*60) <=(($total_time+1)*60*60)){
-                                $No++;
-                                ?>
-                                <tr id="tr_<?= $listing["id"] ?>">
-                                    <td width="40" style="text-align:center"><span style="color:#142E62; font-weight:bold"><?= $No ?></span></td>
-                                    <td>
-                                        <? echo $listing["id"] ?>
-                                    </td>
-                                    <td>
-                                        <? echo $listing["member_id"] ?>
-                                    </td>
-                                    <td>
-                                        <? echo $listing["name"] ?>
-                                    </td>
-                                    <td>
-                                        <img src="<? echo $listing["avatar"] ?>" alt="avatar">
-                                    </td>
-                                    <td>
-                                        <img src="<? echo $listing["image"] ?>" alt="image">
-                                    </td>
-                                    <td>
-                                        <? echo $listing["checkin_time"] ?>
-                                    </td>
-                                    <td><? echo $list_checkout["checkout_time"] ?></td>
-                                    <td><?
-                                        print($diff->format("%H:%I:%S"));
-                                        ?></td>
-                                </tr>
-                                <?
-                            }
-                        }
-                        else{
-                            $No++;
-                            ?>
-                            <tr id="tr_<?= $listing["id"] ?>">
-                                <td width="40" style="text-align:center"><span style="color:#142E62; font-weight:bold"><?= $No ?></span></td>
-                                <td>
-                                    <? echo $listing["id"] ?>
-                                </td>
-                                <td>
-                                    <? echo $listing["member_id"] ?>
-                                </td>
-                                <td>
-                                    <? echo $listing["name"] ?>
-                                </td>
-                                <td>
-                                    <img src="<? echo $listing["avatar"] ?>" alt="avatar">
-                                </td>
-                                <td>
-                                    <img src="<? echo $listing["image"] ?>" alt="image">
-                                </td>
-                                <td>
-                                    <? echo $listing["checkin_time"] ?>
-                                </td>
-                                <td><? echo $list_checkout["checkout_time"] ?></td>
-                                <td><?
-                                    print($diff->format("%H:%I:%S"));
-                                    ?></td>
-                            </tr>
-                            <?
-                        }
+                        $No++;
+                        ?>
+                        <tr id="tr_<?= $listing["id"] ?>">
+                            <td width="40" style="text-align:center"><span style="color:#142E62; font-weight:bold"><?= $No ?></span></td>
+                            <td>
+                                <? echo $listing["member_id"] ?>
+                            </td>
+                            <td>
+                                <? echo $listing["name"] ?>
+                            </td>
+                            <td>
+                                <img src="<? echo $listing["avatar"] ?>" alt="avatar">
+                            </td>
+                            <td>
+                                <img src="<? echo $listing["image"] ?>" alt="image">
+                            </td>
+                            <td>
+                                <? echo $listing["checkin_time"] ?>
+                            </td>
+                            <td><? echo $list_checkout["checkout_time"] ?></td>
+                            <td><?
+                                print($diff->format("%H:%I:%S"));
+                                ?></td>
+                        </tr>
+                        <?
                      }
                 } ?>
                 
