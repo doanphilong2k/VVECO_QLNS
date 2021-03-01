@@ -121,6 +121,7 @@ $num_row = mysqli_num_rows($db_listing->result);
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <?= $load_header ?>
+    <link rel="stylesheet" href="../../resource/css/mycss.css">
     <script language="javascript" src="../../resource/js/grid.js"></script>
 </head>
 
@@ -131,7 +132,7 @@ $num_row = mysqli_num_rows($db_listing->result);
         <div class="header">
             <h3>Duyệt ảnh người dùng</h3>
 
-            <div class="search">
+            <div class="search" style="width: 99.5%">
                 <form action="listing.php" methor="get" name="form_search" onsubmit="check_form_submit(this); return false">
                     <input type="hidden" name="search" id="search" value="1">
                     <table cellpadding="0" cellspacing="0" border="0">
@@ -155,10 +156,10 @@ $num_row = mysqli_num_rows($db_listing->result);
         </div>
 
         <div class="content">
-            <div>
+            <div class="table-container" style="height: 427px">
                 <div style="clear: both;"></div>
-                <table cellpadding="5" cellspacing="0" class="table table-hover table-bordered" width="100%">
-                    <tr class="warning">
+                <table cellpadding="5" cellspacing="0" class="table table-hover table-bordered table-sticky" width="100%">
+                    <tr class="warning stick">
                         <td class="h" width="40" style="text-align: center">STT</td>
                         <!--                    <td width="50" class="h check">-->
                         <!--                        <input type="checkbox" id="check_all" onclick="checkall(-->

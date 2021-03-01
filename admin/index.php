@@ -34,6 +34,9 @@ $loginName	= isset($_SESSION["userlogin"]) ? $_SESSION["userlogin"] : "";
 	<title>Administrator Website</title>
 	<link rel="stylesheet" type="text/css" href="resource/css/bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="resource/css/layout.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 	<script type="text/javascript" src="resource/js/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="resource/js/slimScroll.min.js"></script>
 	<script type="text/javascript" src="resource/js/jquery.layout.js"></script>
@@ -92,7 +95,7 @@ $loginName	= isset($_SESSION["userlogin"]) ? $_SESSION["userlogin"] : "";
 	<!-- Tabs pane -->
 	<div id="tabs" class="jqgtabs">
 		<ul id="title_tabs">
-			<li class="active" id="tab_menu_homepage"><span class="glyphicon glyphicon-refresh" aria-hidden="true" onclick="reload_iframe('idframe_homepage');" title="Reload Tab"></span>&nbsp;<a ndata="homepage" href="javascript:;" onclick="selectTabReload('homepage');">Trang chủ</a></li>
+			<li class="active" id="tab_menu_homepage"><span class="glyphicon glyphicon-refresh" aria-hidden="true" onclick="reload_iframe('idframe_homepage');" title="Reload Tab"></span>&nbsp;<a ndata="homepage" href="javascript:;" onclick="selectTabReload('homepage');" style="font-family:'Roboto';">Trang chủ</a></li>
 		</ul>
 		<div id="content_tabs">
 			<div class="tab_frame" id="tab_homepage" style="font-size:12px; display: block;">
@@ -160,6 +163,40 @@ $loginName	= isset($_SESSION["userlogin"]) ? $_SESSION["userlogin"] : "";
 			selectTab(frame_id_open);
 		}
 	}
+
+	$(document).ready(function(){
+		var swap = 0;
+		$('.dropdown').click(function(){
+			if(swap == 0)
+			{
+				$('.sub-container').fadeIn('fast');
+				swap++;
+			}
+			else {
+				$('.sub-container').fadeOut('fast');
+				swap--;
+			}
+		});
+	});
+
+	var nav = 0;
+	function hideNav() {
+		var leftContainer = document.getElementById("LeftPane");
+		var rightContainer = document.getElementById("RightPane");
+		if (nav == 0)
+		{
+			leftContainer.setAttribute('style', 'left:-200px');
+			rightContainer.setAttribute('style', 'margin-left:6px');
+			nav++;
+		}
+		else {
+			leftContainer.setAttribute('style', 'left:0');
+			rightContainer.setAttribute('style', 'margin-left:205px');
+			nav--;
+		}
+	}
+
+
 </script>
 </body>
 

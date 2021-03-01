@@ -55,8 +55,9 @@ $sqlQuery_checkout_where  = " WHERE member_checkin.member_id = members.id
     " GROUP BY DATE(checkin_time), member_id) ";
 
 //Searching
-if (isset($member_id) && is_numeric($member_id) && $member_id > 0) {
-    $sqlWhere .= " AND member_id = " . $member_id;
+
+if (isset($member_id) && is_numeric($member_id) && $member_id > 0) {  
+    $sqlWhere .= " AND member_id =" . $member_id;
 }
 if (isset($name) && $name != "") {
     $sqlWhere .= " AND members.name LIKE '%" . $name . "%'";
@@ -169,6 +170,8 @@ if ($NoData == "") {
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <?= $load_header ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="stylesheet" href="../../resource/css/mycss.css">
     <script language="javascript" src="../../resource/js/grid.js"></script>
 </head>
 
@@ -186,7 +189,7 @@ if ($NoData == "") {
                         <tbody>
                             <tr>
                                 <td class="text">Mã nhân viên</td>
-                                <td><input type="text" class="form-control" name="member_id" id="member_id" value="<?= $member_id ?>" placeholder="Mã nhân viên" style="width: 200px" /></td>
+                                <td><input type="number" class="form-control" name="member_id" id="member_id" value="<?= $member_id ?>" placeholder="Mã nhân viên" style="width: 200px" /></td>
                                 <td class="text">Họ và tên</td>
                                 <td><input type="text" class="form-control" name="name" id="name" value="<?= $name ?>" placeholder="Họ và tên" style="width: 200px" /></td>
                                 <td class="text">Tổng Thời Gian</td>
@@ -197,7 +200,18 @@ if ($NoData == "") {
                                 <td><input type="date" class="form-control" name="start_date" id="checkin_time" value="<?= $start_date ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
                                 <td class="text">Ngày kết thúc</td>
                                 <td><input type="date" class="form-control" name="finish_date" id="checkout_time" value="<?= $finish_date ?>" placeholder="Thời gian checkout" style="width: 200px" /></td>
-                                <td colspan="2">&nbsp;<input type="submit" class="btn btn-sm btn-info" value="Tìm kiếm" style="float: left; margin-left:25px"></td>
+                                <td>
+                                    <button type="submit" id="search" class="btn btn-sm btn-info" style="float:right; width: 80px; outline:none"> 
+                                        <i class="fas fa-search"></i>
+                                        Tìm kiếm 
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-info" style="outline:none" onclick="searchBtn()"> 
+                                        <i class="fas fa-redo-alt"></i>
+                                        Làm mới 
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -212,8 +226,6 @@ if ($NoData == "") {
 
             <div style="padding: 0px 0px 5px 5px; margin-top: 6px; margin-bottom: -5px">
                 <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#form_export"><i class="fa fa-file-excel-o"></i> Xuất Excel Danh sách Checkin</button>
-                <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#form_import"><i class="fa fa-file-excel-o"></i> Nhập Danh sách Checkin từ Excel</button>
-                <a class="btn btn-xs btn-link" href="/data/excels/import_users_from_excel_example.xlsx"><i class="fa fa-download" aria-hidden="true"></i> Tải về file Excel mẫu</a>
             </div>
         </div>
 
@@ -266,7 +278,9 @@ if ($NoData == "") {
                                 <? echo $listing["name"] ?>
                             </td>
                             <td>
-                                <img src="<? echo $listing["avatar"] ?>" alt="avatar">
+                                <div class="avatar-img">
+                                    <img src="<? echo $listing["avatar"] ?>" alt="avatar">
+                                </div>
                             </td>
                             <td>
                                 <img src="<? echo $listing["image"] ?>" alt="image">
@@ -288,7 +302,7 @@ if ($NoData == "") {
             </div>
         </div>
 
-        <div class="footer">
+        <div class="footer" style="width: 99.5%">
             <table cellpadding="5" cellspacing="0" width="100%" class="page_break">
                 <tbody>
                     <tr>
@@ -304,15 +318,27 @@ if ($NoData == "") {
                         </td>
                         <td>
                             <?
-                    if ($total_record > $page_size) {
-                        echo generatePageBar($page_prefix, $current_page, $page_size, $total_record, $url, $normal_class, $selected_class, $previous, $next, $first, $last, $break_type, 0, 15);
-                    }
-                    ?>
+                                if ($total_record > $page_size) {
+                                    echo generatePageBar($page_prefix, $current_page, $page_size, $total_record, $url, $normal_class, $selected_class, $previous, $next, $first, $last, $break_type, 0, 15);
+                                }
+
+                            ?>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+        <? 
+            if ($total_record == 0)
+            {
+                echo "<div class='no-data'> 
+                        <img src='../../../images/no-data2.png' alt='data not found'>
+                        <p> Không tìm thấy dữ liệu</p>
+                     </div>";
+            }
+        ?>
+
     </div>
 
     <? /*---------Body------------*/ ?>
@@ -369,21 +395,37 @@ if ($NoData == "") {
         }
     });
 
-    // function alertRemove(){
-    //     var alert = document.getElementById("date-alert");
-    //     alert.style.display = "none";
-    // }
-
     const finish = document.getElementById("finish-alert");
     const finish_remove = document.getElementById("finish-remove");
-    const start = document.getElementById("start-alert");
-    const start_remove = document.getElementById("start-remove");
 
     finish_remove.addEventListener('click', () => finish.style.opacity = '0');
     finish.addEventListener('transitionend', () => finish.remove());
+
+    setTimeout(() => {
+        const finish_alert = document.getElementById("finish-alert");
+        finish_alert.style.opacity = '0';
+        finish_alert.addEventListener('transitionend', () => finish_alert.remove());
+    }, 3000);
+
+    const start = document.getElementById("start-alert");
+    const start_remove = document.getElementById("start-remove");
+
     start_remove.addEventListener('click', () => start.style.opacity = '0');
     start.addEventListener('transitionend', () => start.remove());
-
+    
+    setTimeout(() => {
+        const start_alert = document.getElementById("start-alert");
+        start_alert.style.opacity = '0';
+        start_alert.addEventListener('transitionend', start_alert.remove());
+    }, 3000);
+    
+    function searchBtn() {
+        document.getElementById("member_id").value = "0";
+        document.getElementById("name").value = "";
+        document.getElementById("time-total").value = "";
+        document.getElementById("checkin_time").value = "";
+        document.getElementById("checkout_time").value = "";
+    }
 </script>
 
 <style type="text/css">
@@ -406,81 +448,5 @@ if ($NoData == "") {
     input[type=time]::-webkit-datetime-edit-text {
         padding: 2px 5px;
     }
-
-    .avatar-img {
-        width: 80px;
-        height: 80px;
-        overflow: hidden;
-        margin: 1px auto;
-    }
-
-    .avatar-img img {
-        width: 100%;
-        height: auto;
-    }
-
-    .table-container {
-        width: 99.5%;
-        height: 373px;
-        overflow-y: auto;
-    }
-
-    .table-sticky {
-        position: relative;
-    }
-
-    table.table-sticky tr.stick td {
-        position: sticky;
-        top: -1px;
-    }
-
-    #finish-alert,
-    #start-alert {
-        border: 1px solid grey;
-        border-radius: 6px;
-        background-color: white;
-        padding: 13px 10px;
-        position: absolute;
-        box-shadow: 3px 3px 4px 0 rgba(0,0,0,0.3);
-        left: 480px;
-        margin-top: 102px;
-        z-index: 1000;
-        font-size: 13px;
-        transition: opacity 0.5s;
-    }
-
-    #start-alert {
-        left: 100px;
-    }
-
-    .arrow-up {
-        width: 0;
-        height: 0;
-        position: relative;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-bottom: 10px solid grey;
-        top: -40px;
-        left: -180px
-    }
-
-    .arrow-up::before {
-        content: "";
-        width: 0;
-        height: 0;
-        position: absolute;
-        border-left: 6px solid transparent;
-        border-right: 6px solid transparent;
-        border-bottom: 9px solid white;
-        top: 15px;
-        left: -6px;
-    }
-
-    #finish-remove,
-    #start-remove {
-        margin-left: -10px;
-        cursor: pointer;
-    }
-
 
 </style>

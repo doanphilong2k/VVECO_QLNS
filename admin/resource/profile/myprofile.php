@@ -86,6 +86,10 @@ else{
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="<?=$fs_stype_css?>" rel="stylesheet" type="text/css">
 <link href="<?=$fs_template_css?>" rel="stylesheet" type="text/css">
+<link href="../css/mycss.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="../css/bootstrap/css/bootstrap.css"> 
+<script type="text/javascript" src="../js/jquery-1.3.2.min.js"></script>
 <script language="javascript">
 function check_form_change_password(){
 	if (document.getElementById("adm_password_old").value==''){
@@ -116,19 +120,21 @@ $myform->checkjavascript();
 ?>
 </head>
 <body topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
-<?=template_top(translate_text("edit_the_information_management"))?>
-<table cellpadding="5" cellspacing="0" align="center" style="border-collapse:collapse; margin-top:30px;" border="1" bordercolor="<?=$fs_border?>">
+
+<!-- <?=template_top(translate_text("edit_the_information_management"))?> -->
+
+<table cellpadding="5" cellspacing="0" align="center" class="profile-change" style="border-collapse:collapse; margin-top:70px;" border="1" bordercolor="<?=$fs_border?>">
 	<tr bgcolor="<?=$fs_bgtitle?>">
 		<td class="bold">
-			<?=translate_text("Change_your_Email")?>
+			<?=translate_text("Đổi Email")?>
 		</td>
 		<td class="bold">
-			<?=translate_text("Change_your_password")?>
+			<?=translate_text("Đổi mật khẩu")?>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<table border="0" cellpadding="3" cellspacing="2" width="70%" align="center" height="120">
+			<table border="0" cellpadding="3" cellspacing="2" class="profile-form" width="100%" height="200" align="center">
 				<form ACTION="<?=$_SERVER['SCRIPT_NAME'] . "?" . @$_SERVER['QUERY_STRING'];?>" METHOD="POST" name="change_email" onsubmit="validateForm(); return false;">
 					 <tr>
 						  <td colspan="2" align="center" style="color:#FF0000">
@@ -136,18 +142,20 @@ $myform->checkjavascript();
 						  </td>
 					 </tr>
 					 <tr>
-						  <td class="textBold" nowrap="nowrap" align="right" width="20%"><?=translate_text("User login")?> :</td>
+						  <td class="textBold" nowrap="nowrap" align="right" width="20%" height="43"><?=translate_text("Tài khoản")?> :</td>
 						  <td><?=$row["adm_loginname"]?></td>
 					 </tr>
 					 <tr>
-						  <td class="textBold" nowrap="nowrap" align="right"><?=translate_text("Your Email")?> :</td>
-						  <td><input type="text" name="adm_email" id="adm_email" value="<?=$row["adm_email"]?>" class="form" size="50"></td>
+						  <td class="textBold" nowrap="nowrap" align="right"><?=translate_text("Email")?> :</td>
+						  <td><input type="text" name="adm_email" id="adm_email" value="<?=$row["adm_email"]?>" class="form"></td>
 					 </tr>
 					 <tr>
-						  <td></td>
-						  <td>
-								<input type="submit" class="form" value="<?=translate_text("Change email")?>" style="cursor:hand;">&nbsp;
-								<input type="reset" class="form" value="<?=translate_text("Reset all")?>" style="cursor:hand;">
+					 	  <td colspan="2" style="height: 43px"></td>
+					 </tr>
+					 <tr>
+						  <td colspan="2" align="center">
+								<input type="submit" class="form btn btn-sm btn-info" value="<?=translate_text("Đổi Email")?>" style="cursor:hand;">&nbsp;
+								<input type="reset" class="form btn btn-sm btn-info" value="<?=translate_text("Làm mới")?>" style="cursor:hand;">
 								<input type="hidden" name="action" value="update_email">
 						  </td>
 					 </tr>
@@ -155,29 +163,29 @@ $myform->checkjavascript();
 			</table>
 		</td>
 		<td>
-			<table border="0" cellpadding="3" cellspacing="2" width="70%" align="center">
+			<table border="0" cellpadding="3" cellspacing="2" class="profile-form" width="100%" height="200" align="center">
 			 <form ACTION="<?=$_SERVER['SCRIPT_NAME'] . "?" . @$_SERVER['QUERY_STRING'];?>" METHOD="POST" name="change_password">
 				  <tr>
-						<td colspan="2" align="center" style="color:#FF0000">
+						<td colspan="2" align="center" style="color:#FF0000; height: 20px">
 							 <?=$Errormessage;?>
 						</td>
 				  </tr>
 				  <tr>
-						<td class="textBold" nowrap="nowrap" align="right" width="20%"><?=translate_text("Old password")?> :</td>
+						<td class="textBold" nowrap="nowrap" align="right" width="20%"><?=translate_text("Mật khẩu cũ")?> :</td>
 						<td><input type="password" name="adm_password_old" id="adm_password_old" class="form" size="20"></td>
 				  </tr>
 				  <tr>
-						<td class="textBold" nowrap="nowrap" align="right"><?=translate_text("New password")?> :</td>
+						<td class="textBold" nowrap="nowrap" align="right"><?=translate_text("Mật khẩu mới")?> :</td>
 						<td><input type="password" name="adm_password" id="adm_password" class="form" size="20"></td>
 				  </tr>
 				  <tr>
-						<td class="textBold" nowrap="nowrap" align="right"><?=translate_text("Confirm new password")?> :</td>
+						<td class="textBold" nowrap="nowrap" align="right"><?=translate_text("Xác nhận mật khẩu")?> :</td>
 						<td><input type="password" name="adm_password_con" id="adm_password_con" class="form" size="20"></td>
 				  </tr>
 				  <tr>
 						<td colspan="2" align="center">
-							 <input type="button" class="form" value="<?=translate_text("Change password")?>" style="cursor:hand;" onClick="check_form_change_password();">&nbsp;
-							 <input type="reset" class="form" value="<?=translate_text("Reset all")?>" style="cursor:hand;">
+							 <input type="button" class="form btn btn-sm btn-info" value="<?=translate_text("Đổi mật khẩu")?>" style="cursor:hand;" onClick="check_form_change_password();">&nbsp;
+							 <input type="reset" class="form btn btn-sm btn-info" value="<?=translate_text("Làm mới")?>" style="cursor:hand;">
 							 <input type="hidden" name="action" value="update_password">
 						</td>
 				  </tr>

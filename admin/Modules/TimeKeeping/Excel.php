@@ -279,6 +279,17 @@ if ($action == "import") {
                         </div>
                     </div>
                 </div> -->
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="sell">Chọn tháng</label>
+                        <div id="listMonth">
+                            <select class="form-control" title="Chọn Tháng" id="month_id" name="month_id">
+                                <option value="">- Chọn Tháng -</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <input type="hidden" id="action" name="action" value="export" />
                     <button type="submit" class="btn btn-primary"><i class="fa fa-file-excel-o"></i> Xuất Excel</button>

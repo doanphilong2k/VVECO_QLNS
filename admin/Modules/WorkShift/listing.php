@@ -14,27 +14,15 @@ $list->page_size = 50;
 4: co sap xep hay khong, co thi de la 1, khong thi de la 0
 5: co tim kiem hay khong, co thi de la 1, khong thi de la 0
 */
-//$list->addSearch("Trường","use_school_id","array",$arrSchools, $use_school_id);
-//$list->addSearch("Khoa","use_faculty_id","array",$arrFaculties, $use_faculty_id);
-//$list->addSearch("Lớp","use_class_id","array",$arrClasses, $use_class_id);
+
 $list->add("wor_id", translate_text("ID"), "text", 0, 1, "");
 $list->add($name_field, "Tên ca", "string", 1, 1, "");
 $list->add("wor_StartTime", "Bắt đầu", "text", 0, 1, "");
 $list->add("wor_FinishTime", "Kết thúc", "text", 0, 1, "");
 $list->add("rol_id", "Quyền hạn", "text", 0, 1, "");
-// $list->add("use_active", "Duyệt", "checkbox", 1, 0);
 $list->add("", translate_text("Sửa"), "edit");
 $list->add("", translate_text("Xóa"), "delete");
 $list->ajaxedit($fs_table);
-
-
-$list->addHTML('
-    <div style="padding: 0px 0px 5px 5px">
-        <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#form_export"><i class="fa fa-file-excel-o"></i> Xuất Excel Danh sách Ca làm việc</button>
-        <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#form_import"><i class="fa fa-file-excel-o"></i> Nhập Danh sách Ca làm việc từ Excel</button>
-        <a class="btn btn-xs btn-link" href="/data/excels/import_users_from_excel_example.xlsx"><i class="fa fa-download" aria-hidden="true"></i> Tải về file Excel mẫu</a>
-    </div>
-');
 
 $total    = 0;
 $db_count = new db_query("SELECT count(*) AS count
@@ -62,7 +50,7 @@ $db_listing = new db_query("SELECT *
 
 <body topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
     <? /*---------Body------------*/ ?>
-    <div id="listing" class="listing">
+    <div id="listing" class="listing" style="padding-right: 6px">
         <?= $list->showTable($db_listing, $total) ?>
     </div>
     <? /*---------Body------------*/ ?>
