@@ -549,7 +549,7 @@ if ($action == "export") {
             <form action="calculation.php" method="POST" enctype="multipart/form-data">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><i class="fa fa-file-excel-o"></i> Xuất Excel Danh sách Checkin</h4>
+                    <h4 class="modal-title"><i class="fa fa-file-excel-o"></i> Xuất Excel Chấm Công Nhân Viên</h4>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" id="action" name="action" value="export" />

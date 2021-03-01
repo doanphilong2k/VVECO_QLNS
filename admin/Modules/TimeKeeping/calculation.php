@@ -77,27 +77,51 @@ $sqlQuery_checkout_select = " SELECT member_checkin.id, member_checkin.member_id
 $sqlQuery_checkout_where  = " WHERE member_checkin.member_id = members.id	
                                 AND member_checkin.id IN (SELECT MAX(member_checkin.id) 
                                                             FROM member_checkin, members"
-                                                            .$sqlQuery_checkin_where.
-                                                            " GROUP BY DATE(checkin_time), member_id) ";
+    . $sqlQuery_checkin_where .
+    " GROUP BY DATE(checkin_time), member_id) ";
 
 //Searching
-if(isset($member_id) && is_numeric($member_id) && $member_id > 0){
-    $sqlWhere .= " AND member_id = " .$member_id;
+if (isset($member_id) && is_numeric($member_id) && $member_id > 0) {
+    $sqlWhere .= " AND member_id = " . $member_id;
 }
-if(isset($name) && $name!=""){
-    $sqlWhere .= " AND members.name LIKE '%".$name."%'";
+if (isset($name) && $name != "") {
+    $sqlWhere .= " AND members.name LIKE '%" . $name . "%'";
 }
-if(isset($start_date) && isset($finish_date)){
-    if(strtotime($start_date) && strtotime($finish_date)){
-        $sqlQuery_checkin_where  = " WHERE member_checkin.checkin_time BETWEEN '".$start_date." 00:00:00' 
-                                        AND '".$finish_date." 23:59:59'
+if ($start_date != "" && $finish_date == "") {
+    ?>
+
+    <div id="finish-alert">
+        <span class="glyphicon glyphicon-exclamation-sign" style="color: rgb(255, 153, 0); margin-right: 3px; font-size:15px"></span>
+        Vui lòng nhập Ngày kết thúc.
+        <span class="arrow-up"></span>
+        <span id="finish-remove" class="glyphicon glyphicon-remove"></span>
+    </div>
+
+    <?
+}
+if ($start_date == "" && $finish_date != "") {
+    ?>
+
+    <div id="start-alert">
+        <span class="glyphicon glyphicon-exclamation-sign" style="color: rgb(255, 153, 0); margin-right: 3px; font-size:15px"></span>
+        Vui lòng nhập Ngày bắt đầu.
+        <span class="arrow-up"></span>
+        <span id="start-remove" class="glyphicon glyphicon-remove"></span>
+    </div>
+
+    <?
+}
+if (isset($start_date) && isset($finish_date)) {
+    if (strtotime($start_date) && strtotime($finish_date)) {
+        $sqlQuery_checkin_where  = " WHERE member_checkin.checkin_time BETWEEN '" . $start_date . " 00:00:00' 
+                                        AND '" . $finish_date . " 23:59:59'
                                         AND member_checkin.member_id = members.id
                                         AND members.active = 1 AND member_checkin.active = 1";
         $sqlQuery_checkout_where  = " WHERE member_checkin.member_id = members.id	
                                 AND member_checkin.id IN (SELECT MAX(member_checkin.id) 
                                                             FROM member_checkin, members"
-                                .$sqlQuery_checkin_where.
-                                " GROUP BY DATE(checkin_time), member_id) ";
+            . $sqlQuery_checkin_where .
+            " GROUP BY DATE(checkin_time), member_id) ";
     }
 }
 
@@ -134,7 +158,7 @@ if(isset($total_time) && $total_time != 0){
 $db_count = new db_query($sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere .$sqlWhereTotaltimeCheckin .$sqlQuery_checkin_groupby );
 
 $total_record = 0;
-while($listing_count = mysqli_fetch_assoc($db_count->result)){
+while ($listing_count = mysqli_fetch_assoc($db_count->result)) {
     $total_record++;
 }
 $current_page = getValue("page", "int", "GET", 1);
@@ -144,15 +168,23 @@ if ($current_page > $num_of_page) $current_page = $num_of_page;
 if ($current_page < 1) $current_page = 1;
 unset($db_count);
 
-$sqlQuery_checkin_limit=" LIMIT " . ($current_page - 1) * $page_size . "," . $page_size;
+$sqlQuery_checkin_limit = " LIMIT " . ($current_page - 1) * $page_size . "," . $page_size;
 
-$sqlQuery_checkout_limit=" LIMIT " . ($current_page - 1) * $page_size . "," . $page_size;
+$sqlQuery_checkout_limit = " LIMIT " . ($current_page - 1) * $page_size . "," . $page_size;
 
 $sqlQuery_checkin  = $sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere .$sqlWhereTotaltimeCheckin  .$sqlQuery_checkin_groupby .$sqlQuery_checkin_limit;
 $sqlQuery_checkout = $sqlQuery_checkout_select .$sqlQuery_checkout_where .$sqlWhere .$sqlWhereTotaltimeCheckout .$sqlQuery_checkout_limit;
 
 $db_listing = new db_query($sqlQuery_checkin);
 $db_checkout = new db_query($sqlQuery_checkout);
+
+
+if ($NoData == "") {
+    $db_listing = new db_query($sqlQuery_checkin);
+    $db_checkout = new db_query($sqlQuery_checkout);
+}
+
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -171,8 +203,8 @@ $db_checkout = new db_query($sqlQuery_checkout);
         <div class="header">
             <h3>Danh sách Checkin</h3>
 
-            <div class="search">
-                <form action="calculation.php" methor="get" name="form_search" onsubmit="check_form_submit(this); return false">
+            <div class="search" style="width: 99.5%">
+                <form action="calculation.php" method="get" name="form_search" onsubmit="check_form_submit(this); return false">
                     <input type="hidden" name="search" id="search" value="1">
                     <table cellpadding="0" cellspacing="0" border="0" style="width: 100%">
                         <tbody>
@@ -181,17 +213,15 @@ $db_checkout = new db_query($sqlQuery_checkout);
                                 <td><input type="text" class="form-control" name="member_id" id="member_id" value="<?= $member_id ?>" placeholder="Mã nhân viên" style="width: 200px" /></td>
                                 <td class="text">Họ và tên</td>
                                 <td><input type="text" class="form-control" name="name" id="name" value="<?= $name ?>" placeholder="Họ và tên" style="width: 200px" /></td>
+                                <td class="text">Tổng Thời Gian</td>
+                                <td><input type="number" id="time-total" class="form-control" name="total_time" value="<?= $total_time ?>" placeholder="Tổng thời gian" style="width: 200px" /></td>
                             </tr>
                             <tr>
                                 <td class="text">Ngày bắt đầu</td>
                                 <td><input type="date" class="form-control" name="start_date" id="checkin_time" value="<?= $start_date ?>" placeholder="Thời gian checkin" style="width: 200px" /></td>
                                 <td class="text">Ngày kết thúc</td>
                                 <td><input type="date" class="form-control" name="finish_date" id="checkout_time" value="<?= $finish_date ?>" placeholder="Thời gian checkout" style="width: 200px" /></td>
-                                <td class="text">Tổng Thời Gian</td>
-                                <td><input type="number" id="time-total" class="form-control" name="total_time" id="total_time" value="<?= $total_time ?>" placeholder="Tổng thời gian" style="width: 200px" /></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">&nbsp;<input type="submit" class="btn btn-sm btn-info" value="Tìm kiếm" style="float: right; margin-right: 44px"></td>
+                                <td colspan="2">&nbsp;<input type="submit" class="btn btn-sm btn-info" value="Tìm kiếm" style="float: left; margin-left:25px"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -212,10 +242,10 @@ $db_checkout = new db_query($sqlQuery_checkout);
         </div>
 
         <div class="content">
-            <div>
+            <div class="table-container">
                 <div style="clear: both;"></div>
-                <table cellpadding="5" cellspacing="0" class="table table-hover table-bordered" width="100%">
-                    <tr class="warning">
+                <table cellpadding="5" cellspacing="0" class="table table-hover table-bordered table-sticky" width="100%">
+                    <tr class="warning stick">
                         <td class="h" width="40" style="text-align: center">STT</td>
                         <!--                    <td width="50" class="h check">-->
                         <!--                        <input type="checkbox" id="check_all" onclick="checkall(-->
@@ -344,6 +374,30 @@ $db_checkout = new db_query($sqlQuery_checkout);
             $("#time-total").attr('type', 'time');
         }
     });
+
+    $(document).ready(function(){
+        var blank = "../../../images/blank-photo.png";
+        if ( $(".avatar-img img").attr('src') == '')
+        {
+            $(".avatar-img img").attr('src', blank );
+        }
+    });
+
+    // function alertRemove(){
+    //     var alert = document.getElementById("date-alert");
+    //     alert.style.display = "none";
+    // }
+
+    const finish = document.getElementById("finish-alert");
+    const finish_remove = document.getElementById("finish-remove");
+    const start = document.getElementById("start-alert");
+    const start_remove = document.getElementById("start-remove");
+
+    finish_remove.addEventListener('click', () => finish.style.opacity = '0');
+    finish.addEventListener('transitionend', () => finish.remove());
+    start_remove.addEventListener('click', () => start.style.opacity = '0');
+    start.addEventListener('transitionend', () => start.remove());
+
 </script>
 
 <style type="text/css">
@@ -374,4 +428,69 @@ $db_checkout = new db_query($sqlQuery_checkout);
         width: 100%;
         height: auto;
     }
+
+    .table-container {
+        width: 99.5%;
+        height: 373px;
+        overflow-y: auto;
+    }
+
+    .table-sticky {
+        position: relative;
+    }
+
+    table.table-sticky tr.stick td {
+        position: sticky;
+        top: -1px;
+    }
+
+    #finish-alert,
+    #start-alert {
+        border: 1px solid grey;
+        border-radius: 6px;
+        background-color: white;
+        padding: 13px 10px;
+        position: absolute;
+        box-shadow: 3px 3px 4px 0 rgba(0,0,0,0.3);
+        left: 480px;
+        margin-top: 102px;
+        z-index: 1000;
+        font-size: 13px;
+        transition: opacity 0.5s;
+    }
+
+    #start-alert {
+        left: 100px;
+    }
+
+    .arrow-up {
+        width: 0;
+        height: 0;
+        position: relative;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 10px solid grey;
+        top: -40px;
+        left: -180px
+    }
+
+    .arrow-up::before {
+        content: "";
+        width: 0;
+        height: 0;
+        position: absolute;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 9px solid white;
+        top: 15px;
+        left: -6px;
+    }
+
+    #finish-remove,
+    #start-remove {
+        margin-left: -10px;
+        cursor: pointer;
+    }
+
+
 </style>
