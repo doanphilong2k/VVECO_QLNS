@@ -4,229 +4,534 @@ require_once("../../../classes/PHPExcel/PHPExcel.php");
 
 $action = getValue("action", "str", "POST", "");
 
-$arrCheck = array();
-$list_checkin = new db_query("SELECT member_checkin.id,member_id, members.name, members.avatar, member_checkin.image, member_checkin.checkin_time
-                            FROM member_checkin, members
-                            WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
-                                    AND member_checkin.member_id = members.id
-                                    AND members.active = 1 AND member_checkin.active = 1
-                            GROUP BY DATE(member_checkin.checkin_time), member_id ");
-
-$list_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id, members.name, member_checkin.checkin_time as checkout_time FROM member_checkin, members
-                            WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
-                                AND member_checkin.member_id = members.id
-                                AND members.active = 1 AND member_checkin.active = 1	
-                                AND member_checkin.id IN (SELECT MAX(member_checkin.id) 
-                                                                                    FROM member_checkin, members
-                                                                                    WHERE MONTH(member_checkin.checkin_time)= 7 
-                                                                                        AND YEAR(member_checkin.checkin_time) = 2020
-                                                                                        AND members.active = 1 AND member_checkin.active = 1	
-                                                                                        AND member_checkin.member_id = members.id
-                                                                                    GROUP BY DATE(checkin_time), member_id)");
-while ($row = mysqli_fetch_assoc($list_checkin->result)) {
-    $row_checkout = mysqli_fetch_assoc($list_checkout->result);
-    $arrCheck[] = $row;
-    $arrCheckout[] = $row_checkout;
-}
-unset($list_checkin);
-unset($list_checkout);
-
-$check_id = getValue("check_id", "int", "POST", 0);
-
-
 if ($action == "export") {
+    $start = new DateTime('2000-01-16');
+    $finish = new DateTime('2000-01-16');
+    $latetimeStart = "";
+    $latetimeFinish = "";
+    $listWorkShift = new db_query("SELECT * FROM workshift WHERE idShift = 1");
+    $listlate = new db_query("SELECT * FROM late WHERE idShift = 1");
 
-    // if ($school_id <= 0 || $faculty_id <= 0 || $class_id <= 0) exit("Dữ liệu đầu vào không hợp lệ. Vui long lựa chọn đầy đủ Trường, Khoa, Lớp.");
+    $cf_salary_ontime = 1;
+    $cf_salary_ot = 1.5;
+    $cf_salary_late = 0.5;
+    $cf_salary_off = 'N';
+
+    while($workShift = mysqli_fetch_assoc($listWorkShift->result)){
+        $start = new DateTime($workShift["StartTime"]);
+        $finish = new DateTime($workShift["FinishTime"]);
+    }
+
+    while($late = mysqli_fetch_assoc($listlate->result)){
+        $latetimeStart = $late["lat_time_start"];
+        $latetimeFinish = $late["lat_time_finish"];
+
+        $m = $latetimeStart % 60;
+        $h = intval($latetimeStart/60);
+        $latetimeStart = "PT".$h."H".$m."M";
+
+        $m = $latetimeFinish % 60;
+        $h = intval($latetimeFinish/60);
+        $latetimeFinish = $h . ":" . $m;
+    }
+
+    $start = $start->add(new DateInterval($latetimeStart));
+    $finish = $finish->diff(new DateTime($latetimeFinish));
+
+    $start = new DateTime($start->format('H:i'));
+    $finish = new DateTime($finish->format('%H:%I'));
 
     $excel = new PHPExcel();
+    $activeSheet = $excel->getActiveSheet();
+
     $excel->setActiveSheetIndex(0);
+    $activeSheet->setTitle("Danh Sách Checkin ");
 
-    for($i = 'A'; $i <= 'Z'; $i++)
-    {
-        $excel->getActiveSheet()->getColumnDimension($i)->setWidth(30);
-        if($i == 'AM')
-        {
-            break;
+    $days = cal_days_in_month(CAL_GREGORIAN,7,2020);
+    $column = 1;
+    $row = 4;
+    $No = 1;
+
+    $memberID = new db_query("SELECT id, name FROM members WHERE members.active = 1");
+    while($listMember = mysqli_fetch_assoc($memberID->result)){
+        $activeSheet->setCellValue('A'.$row, strval($No));
+        $activeSheet->setCellValueByColumnAndRow($column, $row, $listMember["name"]);
+
+        $activeSheet->getStyle("A".$row)
+            ->getAlignment()
+            ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)
+            ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $activeSheet->getStyle("A".$row)
+            ->applyFromArray(
+            array(
+                'font'    => array(
+                    'name'      => 'Times New Roman',
+                    'bold'      => true,
+                    'size'      => 11
+                ),
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('rgb' => '000000')
+                    )
+                )
+            )
+        );
+
+        $activeSheet->getStyleByColumnAndRow($column,$row)
+            ->getAlignment()
+            ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $activeSheet->getStyleByColumnAndRow($column,$row)
+            ->applyFromArray(
+            array(
+                'font'    => array(
+                    'name'      => 'Times New Roman',
+                    'bold'      => false,
+                    'size'      => 11
+                ),
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('rgb' => '000000')
+                    )
+                )
+            )
+        );
+
+        $checkin = new db_query("SELECT member_checkin.id,member_id, member_checkin.checkin_time
+                                        FROM member_checkin, members
+                                        WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020 
+                                                AND member_checkin.member_id = ".$listMember["id"]."
+                                                AND members.active = 1 AND member_checkin.active = 1
+                                        GROUP BY DATE(member_checkin.checkin_time), member_id ");
+        $checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id, member_checkin.checkin_time as checkout_time 
+                                         FROM member_checkin, members 
+                                         WHERE member_checkin.member_id = members.id	
+                                            AND member_checkin.id IN (SELECT MAX(member_checkin.id) 
+                                                                    FROM member_checkin, members
+                                                                    WHERE MONTH(member_checkin.checkin_time)= 7 
+                                                                            AND YEAR(member_checkin.checkin_time) = 2020
+                                                                            AND members.active = 1 AND member_checkin.active = 1	
+                                                                            AND member_checkin.member_id = ".$listMember["id"]."
+                                                                    GROUP BY DATE(checkin_time), member_id) ");
+        $sum_sf_salary = 0;
+        $daywork = array();
+
+        while($listCheckin = mysqli_fetch_assoc($checkin->result)){
+            $listCheckout = mysqli_fetch_assoc($checkout->result);
+
+            $checkin_daytime = new DateTime($listCheckin["checkin_time"]);
+            $checkout_daytime = new DateTime($listCheckout["checkout_time"]);
+            array_push($daywork, $checkin_daytime->format("d"));
+
+            $checkin_time = new DateTime($checkin_daytime->format('H:I'));
+            $checkout_time = new DateTime($checkout_daytime->format('H:I'));
+
+
+            if($checkin_time->diff($start)->format('%R') == '-' || $checkout_time->diff($finish)->format('%R') == '+'){
+                $activeSheet->setCellValueByColumnAndRow(($column + intval($checkin_daytime->format("d"))), $row, strval(0.5));
+                $sum_sf_salary += 0.5;
+            }
+            else{
+                $activeSheet->setCellValueByColumnAndRow(($column + intval($checkin_daytime->format("d"))), $row, strval(1));
+                $sum_sf_salary += 1;
+            }
+
+            $activeSheet->getStyleByColumnAndRow($column + intval($checkin_daytime->format("d")), $row)
+                ->getAlignment()
+                ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+                ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+            $activeSheet->getStyleByColumnAndRow($column + intval($checkin_daytime->format("d")), $row)
+                ->applyFromArray(
+                        array(
+                            'borders' => array(
+                                'allborders' => array(
+                                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                                    'color' => array('rgb' => '000000')
+                                )
+                            )
+                        )
+                );
         }
+
+        $activeSheet->setCellValueByColumnAndRow(($days+2), $row, strval($sum_sf_salary));
+        $activeSheet->getStyleByColumnAndRow(($days+2), $row)
+            ->getAlignment()
+            ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+            ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $activeSheet->getStyleByColumnAndRow(($days+2), $row)
+            ->applyFromArray(
+                array(
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN,
+                            'color' => array('rgb' => '000000')
+                        )
+                    )
+                )
+            );
+
+        $j = 0;
+        for($i = 1; $i<=$days; $i++){
+            if( isset($daywork[$j]) && $i == intval($daywork[$j])){
+                $j++;
+            }
+            else{
+                $activeSheet->setCellValueByColumnAndRow(($column + intval($i)), $row, 'N');
+                $activeSheet->getStyleByColumnAndRow(($column + intval($i)), $row)
+                    ->getAlignment()
+                    ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+                    ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+                $activeSheet->getStyleByColumnAndRow(($column + intval($i)), $row)
+                    ->applyFromArray(
+                        array(
+                            'borders' => array(
+                                'allborders' => array(
+                                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                                    'color' => array('rgb' => '000000')
+                                )
+                            )
+                        )
+                    );
+            }
+        }
+
+        $No++;
+        $row++;
     }
 
-    $excel->getActiveSheet()->getStyle('A1:AL1')->getFont()->setBold(true);
-    $excel->getActiveSheet()->getStyle('A1:AL1')->getAlignment();
-
-    //Vị trí có dạng như sau:
-    $excel->getActiveSheet()->setCellValue('A1', 'TT');
-    $excel->getActiveSheet()->setCellValue('B1', 'Họ và tên');
-    
-    for($o = 'C1'; $o < 'AH1'; $o++)
-    {
-        for($n = '1'; $n < '32'; $n++)
-        {
-            $excel->getActiveSheet()->setCellValue($o, $n);
-        }
+    if($days == 30){
+        $activeSheet->getStyle('A1:AK1')->getFont()->setBold(true);
+        $activeSheet->getStyle('A1:AK1')->getAlignment()->setWrapText(true);
+        $activeSheet->mergeCells('A1:AK1');
+        $activeSheet->setCellValue('A1',"Bảng chấm công tháng 7/2020");
+        $activeSheet
+            ->getStyle('A1')
+            ->getAlignment()
+            ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+            ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $activeSheet->mergeCells('C2:AF2');
+        $activeSheet->getStyle("A1:AK1")->applyFromArray(
+            array(
+                'font'    => array(
+                    'name'      => 'Times New Roman',
+                    'bold'      => true,
+                    'size'      => 16
+                ),
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('rgb' => '000000')
+                    )
+                )
+            )
+        );
     }
 
-    $excel->getActiveSheet()->setCellValue('AH1', 'Công chính');
-    $excel->getActiveSheet()->setCellValue('AI1', 'Công làm thêm ngày thưởng * 150%');
-    $excel->getActiveSheet()->setCellValue('AJ1', 'Công làm thêm ngày nghỉ x 150%');
-    $excel->getActiveSheet()->setCellValue('AK1', 'Tổng công');
-    $excel->getActiveSheet()->setCellValue('AL1', 'Ký nhận');
-
-    $numRow = 2;
-    $db_checkin = new db_query("SELECT member_checkin.id,member_id, members.name, members.avatar, member_checkin.image, member_checkin.checkin_time
-                            FROM member_checkin, members
-                            WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
-                                    AND member_checkin.member_id = members.id
-                                    AND members.active = 1 AND member_checkin.active = 1
-                            GROUP BY DATE(member_checkin.checkin_time), member_id");
-
-    $db_checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id, members.name, member_checkin.checkin_time as checkout_time FROM member_checkin, members
-                            WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020
-                                AND member_checkin.member_id = members.id
-                                AND members.active = 1 AND member_checkin.active = 1	
-                                AND member_checkin.id IN (SELECT MAX(member_checkin.id) 
-                                                                                    FROM member_checkin, members
-                                                                                    WHERE MONTH(member_checkin.checkin_time)= 7 
-                                                                                        AND YEAR(member_checkin.checkin_time) = 2020
-                                                                                        AND members.active = 1 AND member_checkin.active = 1	
-                                                                                        AND member_checkin.member_id = members.id
-                                                                                    GROUP BY DATE(checkin_time), member_id)");
-    $num = 0;
-
-    while ($row = mysqli_fetch_assoc($db_checkin->result)) {
-        $row_checkout = mysqli_fetch_assoc($db_checkout->result);
-        $num++;
-
-        $start_time = new DateTime($row['checkin_time']);
-        $finish_time = new DateTime($row_checkout['checkout_time']);
-        if($start_time > '8:15:00' || $finish_time < '16:45:00')
-        {
-            $work = 0.5;
-        }
-        else if($start_time == null || $finish_time == null)
-        {
-            $work = "N";
-        }
-        else{
-            $work = 1.0;
-        }
-       
-
-        $excel->getActiveSheet()->setCellValue('A' . $numRow, $num);
-        $excel->getActiveSheet()->setCellValue('B' . $numRow, $row['name']);
-        for($u = 'C'; $u < 'AH'; $u++)
-        {
-            $excel->getActiveSheet()->setCellValue($u . $numRow, $work);
-        }
-        $excel->getActiveSheet()->setCellValue('AH' . $numRow, "");
-        $excel->getActiveSheet()->setCellValue('AI' . $numRow, "");
-        $excel->getActiveSheet()->setCellValue('AJ' . $numRow, "");
-        $excel->getActiveSheet()->setCellValue('AK' . $numRow, "");
-        $excel->getActiveSheet()->setCellValue('AL' . $numRow, "");
-        $numRow++;
+    if($days == 31){
+        $activeSheet->getStyle('A1:AL1')->getFont()->setBold(true);
+        $activeSheet->mergeCells('A1:AL1');
+        $activeSheet->setCellValue('A1',"Bảng chấm công tháng 7/2020");
+        $activeSheet
+            ->getStyle('A1')
+            ->getAlignment()
+            ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+            ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $activeSheet->mergeCells('C2:AG2');
+        $activeSheet->getStyle("A1:AL1")->applyFromArray(
+            array(
+                'font'    => array(
+                    'name'      => 'Times New Roman',
+                    'bold'      => true,
+                    'size'      => 16
+                ),
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('rgb' => '000000')
+                    )
+                )
+            )
+        );
     }
-    unset($db_checkin);
-    unset($db_checkout);
 
-    // Khởi tạo đối tượng PHPExcel_IOFactory để thực hiện ghi file
-    header('Content-Disposition: attachment; filename="danh_sach_sinh_vien_' . time() . '.xlsx"');
+    if($days == 28){
+        $activeSheet->getStyle('A1:AI1')->getFont()->setBold(true);
+        $activeSheet->mergeCells('A1:AI1');
+        $activeSheet->setCellValue('A1',"Bảng chấm công tháng 7/2020");
+        $activeSheet
+            ->getStyle('A1')
+            ->getAlignment()
+            ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+            ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $activeSheet->mergeCells('C2:AD2');
+        $activeSheet->getStyle("A1:AI1")->applyFromArray(
+            array(
+                'font'    => array(
+                    'name'      => 'Times New Roman',
+                    'bold'      => true,
+                    'size'      => 16
+                ),
+
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('rgb' => '000000')
+                    )
+                )
+            )
+        );
+    }
+
+    if($days == 29){
+        $activeSheet->getStyle('A1:AJ1')->getFont()->setBold(true);
+        $activeSheet->mergeCells('A1:AJ1');
+        $activeSheet->setCellValue('A1',"Bảng chấm công tháng 7/2020");
+        $activeSheet
+            ->getStyle('A1')
+            ->getAlignment()
+            ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+            ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $activeSheet->mergeCells('C2:AE2');
+        $activeSheet->getStyle("A1:AJ1")->applyFromArray(
+            array(
+                'font'    => array(
+                    'name'      => 'Times New Roman',
+                    'bold'      => true,
+                    'size'      => 16
+                ),
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('rgb' => '000000')
+                    )
+                )
+            )
+        );
+    }
+
+
+    $activeSheet->getColumnDimension('A')->setWidth(5);
+    $activeSheet->getColumnDimension('B')->setWidth(25);
+    $activeSheet->getRowDimension('3')->setRowHeight(60);
+
+    $col = 'C';
+    for($i = 1; $i<=$days;$i++){
+        $activeSheet->setCellValue($col.'3',strval($i));
+        $activeSheet
+            ->getStyle($col.'3')
+            ->getAlignment()
+            ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+            ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $activeSheet->getStyle($col.'3')->applyFromArray(
+            array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('rgb' => '000000')
+                    )
+                )
+            )
+        );
+        $activeSheet->getColumnDimension($col)->setWidth(5);
+        $col++;
+    }
+
+    $activeSheet->mergeCellsByColumnAndRow((2+$days), 2, (2+$days), 3);
+    $activeSheet->setCellValueByColumnAndRow((2+$days), 2, "Công Chính");
+    $activeSheet->getColumnDimensionByColumn((2+$days))->setWidth(15);
+    $activeSheet
+        ->getStyleByColumnAndRow((2+$days), 2)
+        ->getAlignment()
+        ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+        ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)->setWrapText(true);
+    $activeSheet->getStyleByColumnAndRow((2+$days), 2, (2+$days), 3)
+        ->applyFromArray(
+            array(
+                'font'    => array(
+                    'name'      => 'Times New Roman',
+                    'bold'      => false,
+                    'size'      => 11,
+                    'color'     => array(
+                        'rbg' => 'FF0000'
+                    )
+                ),
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('rgb' => '000000')
+                    )
+                )
+            )
+        );
+
+    $activeSheet->mergeCellsByColumnAndRow((3+$days), 2, (3+$days), 3);
+    $activeSheet->setCellValueByColumnAndRow((3+$days), 2, "công làm thêm ngày thường * 150%");
+    $activeSheet->getColumnDimensionByColumn((3+$days))->setWidth(15);
+    $activeSheet
+        ->getStyleByColumnAndRow((3+$days), 2, (3+$days), 3)
+        ->getAlignment()
+        ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+        ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)->setWrapText(true);
+    $activeSheet->getStyleByColumnAndRow((3+$days), 2, (3+$days), 3)
+        ->applyFromArray(
+            array(
+                'font'    => array(
+                    'name'      => 'Times New Roman',
+                    'bold'      => false,
+                    'size'      => 11,
+                    'color'     => array(
+                        'rbg' => 'FF0000'
+                    )
+                ),
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('rgb' => '000000')
+                    )
+                )
+            )
+        );
+
+    $activeSheet->mergeCellsByColumnAndRow((4+$days), 2, (4+$days), 3);
+    $activeSheet->setCellValueByColumnAndRow((4+$days), 2, "công Làm thêm ngày nghỉ x 200% ");
+    $activeSheet->getColumnDimensionByColumn((4+$days))->setWidth(15);
+    $activeSheet
+        ->getStyleByColumnAndRow((4+$days), 2, (4+$days), 3)
+        ->getAlignment()
+        ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+        ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)->setWrapText(true);
+    $activeSheet->getStyleByColumnAndRow((4+$days), 2, (4+$days), 3)
+        ->applyFromArray(
+            array(
+                'font'    => array(
+                    'name'      => 'Times New Roman',
+                    'bold'      => false,
+                    'size'      => 11,
+                    'color'     => array(
+                        'rbg' => 'FF0000'
+                    )
+                ),
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('rgb' => '000000')
+                    )
+                )
+            )
+        );
+
+    $activeSheet->mergeCellsByColumnAndRow((5+$days), 2, (5+$days), 3);
+    $activeSheet->setCellValueByColumnAndRow((5+$days), 2, "Tổng công");
+    $activeSheet->getColumnDimensionByColumn((5+$days))->setWidth(15);
+    $activeSheet
+        ->getStyleByColumnAndRow((5+$days), 2, (5+$days), 3)
+        ->getAlignment()
+        ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+        ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)->setWrapText(true);
+    $activeSheet->getStyleByColumnAndRow((5+$days), 2, (5+$days), 3)
+        ->applyFromArray(
+            array(
+                'font'    => array(
+                    'name'      => 'Times New Roman',
+                    'bold'      => false,
+                    'size'      => 11,
+                    'color'     => array('rbg' => 'FF0000')
+                ),
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('rgb' => '000000')
+                    )
+                )
+            )
+        );
+
+    $activeSheet->mergeCellsByColumnAndRow((6+$days), 2, (6+$days), 3);
+    $activeSheet->setCellValueByColumnAndRow((6+$days), 2, "Ký nhận");
+    $activeSheet->getColumnDimensionByColumn((6+$days))->setWidth(15);
+    $activeSheet
+        ->getStyleByColumnAndRow((6+$days), 2, (6+$days), 3)
+        ->getAlignment()
+        ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+        ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)->setWrapText(true);
+    $activeSheet->getStyleByColumnAndRow((6+$days), 2, (6+$days), 3)
+        ->applyFromArray(
+            array(
+                'font'    => array(
+                    'name'      => 'Times New Roman',
+                    'bold'      => false,
+                    'size'      => 11,
+                    'color'     => array(
+                        'rbg' => 'FF0000'
+                    )
+                ),
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('rgb' => '000000')
+                    )
+                )
+            )
+        );
+
+    $activeSheet->mergeCells('A2:A3');
+    $activeSheet->setCellValue('A2',"STT");
+    $activeSheet
+        ->getStyle('A2:A3')
+        ->getAlignment()
+        ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+        ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+    $activeSheet->getStyle("A2:A3")->applyFromArray(
+        array(
+            'font'    => array(
+                'name'      => 'Times New Roman',
+                'bold'      => false,
+                'size'      => 11
+            ),
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array('rgb' => '000000')
+                )
+            )
+        )
+    );
+
+
+    $activeSheet->mergeCells('B2:B3');
+    $activeSheet->setCellValue('B2',"Họ và tên");
+    $activeSheet
+        ->getStyle('B2:B3')
+        ->getAlignment()
+        ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+        ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+    $activeSheet->getStyle("B2:B3")->applyFromArray(
+        array(
+            'font'    => array(
+                'name'      => 'Times New Roman',
+                'bold'      => true,
+                'size'      => 11,
+                'color'     => array(
+                        'rbg' => 'FF0000'
+                )
+            ),
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array('rgb' => '000000')
+                )
+            )
+        )
+    );
+
+
+    // Create PHPExcel_IOFactory object to write into file
+    header('Content-Disposition: attachment; filename="Checkin_' . time() . '.xlsx"');
+    ob_end_clean();
     PHPExcel_IOFactory::createWriter($excel, 'Excel2007')->save('php://output');
 }
 
-if ($action == "import") {
-
-    if ($wor_id <= 0 || !isset($_FILES['excel_file'])) exit("Dữ liệu đầu vào không hợp lệ. Vui lòng lựa chọn Mã và lựa chọn File Excel Danh sách Sinh viên trước.");
-
-    //Đường dẫn file
-    $file = $_FILES['excel_file']['tmp_name'];
-    $objFile = PHPExcel_IOFactory::identify($file);
-    $objData = PHPExcel_IOFactory::createReader($objFile);
-
-
-    //Chỉ đọc dữ liệu
-    $objData->setReadDataOnly(true);
-
-    // Load dữ liệu sang dạng đối tượng
-    $objPHPExcel = $objData->load($file);
-    $sheet = $objPHPExcel->setActiveSheetIndex(0);
-
-    //Lấy ra số dòng cuối cùng
-    $Totalrow = $sheet->getHighestRow();
-
-    //Lấy ra tên cột cuối cùng
-    $LastColumn = $sheet->getHighestColumn();
-
-    //Chuyển đổi tên cột đó về vị trí thứ, VD: C là 3,D là 4
-    $TotalCol = PHPExcel_Cell::columnIndexFromString($LastColumn);
-
-    //Tạo mảng chứa dữ liệu
-    $data = array();
-
-    //Tiến hành lặp qua từng ô dữ liệu
-    //----Lặp dòng, Vì dòng đầu là tiêu đề cột nên chúng ta sẽ lặp giá trị từ dòng 2
-    for ($i = 2; $i <= $Totalrow; $i++) {
-        //----Lặp cột
-        for ($j = 0; $j < $TotalCol; $j++) {
-            // Tiến hành lấy giá trị của từng ô đổ vào mảng
-            $data[$i - 2][$j] = $sheet->getCellByColumnAndRow($j, $i)->getValue();;
-        }
-    }
-    if (isset($data)) {
-        foreach ($data as $key => $value) {
-
-            $use_name = @$value[1];
-            $use_code = @$value[0];
-            $use_code_md5 = md5($use_code);
-            $use_idnumber = @$value[2];
-            $use_idnumber_md5 = md5($use_idnumber);
-            $use_active = 0;
-            $gender = @$value[3];
-            if (trim($gender) == "Nữ") $use_gender   = 2;
-            else $use_gender = 1;
-            var_dump($use_gender);
-            $use_birthdays = @$value[4];
-            $use_birthdays = strtotime(str_replace('/', '-', $use_birthdays));
-            if (empty($use_birthdays)) {
-                $use_birthdays = time();
-            }
-            $use_created_time    = time();
-            $use_updated_time    = time();
-
-            //Call Class generate_form();
-            $myform = new generate_form();
-            $myform->add("use_school_id", "school_id", 1, 1, 0, 1, "Bạn chưa chọn Trường.", 0, "");
-            $myform->add("use_faculty_id", "faculty_id", 1, 1, 0, 1, "Bạn chưa chọn Khoa.", 0, "");
-            $myform->add("use_class_id", "class_id", 1, 1, 0, 1, "Bạn chưa chọn Lớp.", 0, "");
-            $myform->add("use_name", "use_name", 0, 1, "", 1, translate("Họ và Tên không được để trống."), 0, "");
-            $myform->add("use_birthdays", "use_birthdays", 1, 1, "", 1, translate("Bạn chưa nhập Ngày sinh"));
-            $myform->add("use_gender", "use_gender", 1, 1, "");
-
-            $use_salt = md5(rand(100000, 999999));
-            $use_password = md5('123456' . $use_salt);
-            $myform->add("use_password", "use_password", 0, 1, '', 0, "", 0, "");
-            $myform->add("use_salt", "use_salt", 0, 1, '', 0, "", 0, "");
-            $myform->add("use_code", "use_code", 0, 1, "", 1, translate("Mã Sinh Viên không được để trống"), 0, "0");
-            $myform->add("use_code_md5", "use_code_md5", 0, 1, "", 0, translate("Mã Sinh Viên không được để trống"), 1, "Mã Sinh Viên đã tồn tại trong hệ thống.");
-            $myform->add("use_idnumber", "use_idnumber", 0, 1, "", 1, translate("Số CMND/Hộ chiếu không được để trống."), 0, "0");
-            $myform->add("use_idnumber_md5", "use_idnumber_md5", 0, 1, "", 0, translate("Số CMND/Hộ chiếu không được để trống."), 1, "Số CMND/Hộ chiếu đã tồn tại trong hệ thống.");
-            $myform->add("use_type", "use_type", 1, 1, 1, 0, "", 0, "");
-            $myform->add("use_active", "use_active", 1, 1, 1, 0, "", 0, "");
-            $myform->add("use_created_time", "use_created_time", 1, 1, 1, 0, "", 0, "");
-            $myform->add("use_updated_time", "use_updated_time", 1, 1, 1, 0, "", 0, "");
-            $myform->add("admin_id", "admin_id", 1, 1, 1, 0, "", 0, "");
-            $myform->addTable("users");
-
-            //Check form data
-            $fs_errorMsg = $myform->checkdata();
-
-            if ($fs_errorMsg == "") {
-                //Insert to database
-                $myform->removeHTML(1);
-                $db_insert = new db_execute($myform->generate_insert_SQL());
-                unset($db_insert);
-            }
-        }
-    }
-}
 ?>
 <style type="text/css">
     #form_export .form-control,
@@ -244,41 +549,8 @@ if ($action == "import") {
             <form action="calculation.php" method="POST" enctype="multipart/form-data">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><i class="fa fa-file-excel-o"></i> Xuất Excel Danh sách Sinh viên</h4>
+                    <h4 class="modal-title"><i class="fa fa-file-excel-o"></i> Xuất Excel Danh sách Checkin</h4>
                 </div>
-                <!-- <div class="modal-body">
-                    <div class="form-group">
-                        <label for="sell">Chọn trường</label>
-                        <div>
-                            <select class="form-control" title="Chọn Trường" id="school_id" name="school_id" onchange="loadFaculties('export');">
-                                <option value="">- Chọn Trường -</option>
-                                <?
-                                foreach ($arrSchools as $row) {
-                                    ?>
-                                <option value="<?= $row['sch_id'] ?>"><?= $row['sch_name'] ?></option>
-                                <?
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="sell">Chọn khoa</label>
-                        <div id="listFaculties">
-                            <select class="form-control" title="Chọn Khoa" id="faculty_id" name="faculty_id">
-                                <option value="">- Chọn Khoa -</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="sell">Chọn lớp</label>
-                        <div id="listClasses">
-                            <select class="form-control" title="Chọn Lớp" id="class_id" name="class_id">
-                                <option value="">- Chọn Lớp -</option>
-                            </select>
-                        </div>
-                    </div>
-                </div> -->
                 <div class="modal-footer">
                     <input type="hidden" id="action" name="action" value="export" />
                     <button type="submit" class="btn btn-primary"><i class="fa fa-file-excel-o"></i> Xuất Excel</button>
@@ -287,97 +559,3 @@ if ($action == "import") {
         </div>
     </div>
 </div>
-
-<!-- Modal export-->
-<!-- <div id="form_import" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        
-        <div class="modal-content">
-            <form action="listing.php" method="POST" enctype="multipart/form-data">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><i class="fa fa-file-excel-o"></i> Nhập Danh sách Sinh Viên từ Excel</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="sell">Chọn file Excel Danh sách Sinh viên</label>
-                        <input class="form-control" type="file" title="File Excel Danh sách Sinh viên" id="excel_file" name="excel_file">
-                    </div>
-                    <div class="form-group">
-                        <label for="sell">Chọn trường</label>
-                        <div>
-                            <select class="form-control" title="Chọn Trường" id="school_id" name="school_id" onchange="loadFaculties('import');">
-                                <option value="">- Chọn Trường -</option>
-                                <?
-                                reset($arrSchools);
-                                foreach ($arrSchools as $row) {
-                                    ?>
-                                <option value="<?= $row['sch_id'] ?>"><?= $row['sch_name'] ?></option>
-                                <?
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="sell">Chọn khoa</label>
-                        <div id="listFaculties">
-                            <select class="form-control" title="Chọn Khoa" id="faculty_id" name="faculty_id">
-                                <option value="">- Chọn Khoa -</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="sell">Chọn lớp</label>
-                        <div id="listClasses">
-                            <select class="form-control" title="Chọn Lớp" id="class_id" name="class_id">
-                                <option value="">- Chọn Lớp -</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" id="action" name="action" value="import" />
-                        <button type="submit" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Nhập Excel</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-    </div>
-</div> -->
-<?php
-unset($list_schools);
-?>
-
-<script type="text/javascript">
-    /**
-     * ajax load danh sách Khoa
-     */
-    function loadFaculties(frmID) {
-        var $_frm = $("#form_" + frmID);
-        var schoolID = $_frm.find("#school_id").val();
-        $_frm.find("#listFaculties").html("<img src='/images/loading_process.gif' height='34px' />");
-
-        setTimeout(function() {
-            $_frm.find("#listFaculties").load("/ajax/load_faculties.php?schoolID=" + schoolID + "&frmID=" + frmID);
-        }, 500);
-
-
-    }
-
-    /**
-     * ajax load danh sách Lớp
-     */
-    function loadClasses(frmID) {
-        var $_frm = $("#form_" + frmID);
-        var facultyID = $_frm.find("#faculty_id").val();
-        $_frm.find("#listClasses").html("<img src='/images/loading_process.gif' height='34px' />");
-
-        setTimeout(function() {
-            $_frm.find("#listClasses").load("/ajax/load_classes.php?facultyID=" + facultyID);
-        }, 500);
-
-
-    }
-</script>
