@@ -21,6 +21,32 @@ $NoData = "";
 $idCheckin = "";
 $idCheckout = "";
 
+$listlate = new db_query("SELECT * FROM late WHERE idShift = 1");
+$listWorkShift = new db_query("SELECT * FROM workshift WHERE idShift = 1");
+while($workShift = mysqli_fetch_assoc($listWorkShift->result)){
+    $start = new DateTime($workShift["StartTime"]);
+    $finish = new DateTime($workShift["FinishTime"]);
+}
+while($late = mysqli_fetch_assoc($listlate->result)){
+    $latetimeStart = $late["lat_time_start"];
+    $latetimeFinish = $late["lat_time_finish"];
+
+    $m = $latetimeStart % 60;
+    $h = intval($latetimeStart/60);
+    $latetimeStart = "PT".$h."H".$m."M";
+
+    $m = $latetimeFinish % 60;
+    $h = intval($latetimeFinish/60);
+    $latetimeFinish = $h . ":" . $m;
+}
+
+$start = $start->add(new DateInterval($latetimeStart));
+$finish = $finish->diff(new DateTime($latetimeFinish));
+
+echo $finish->format('%H:%i');
+
+
+
 
 //Get page break params
 $page_size = 30;
@@ -132,8 +158,6 @@ if(isset($total_time) && $total_time != 0){
 
 $db_count = new db_query($sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere .$sqlWhereTotaltimeCheckin .$sqlQuery_checkin_groupby );
 
-
-//	LEFT JOIN users ON(uso_user_id = use_id)
 $total_record = 0;
 while ($listing_count = mysqli_fetch_assoc($db_count->result)) {
     $total_record++;
@@ -144,8 +168,6 @@ else $num_of_page = (int)($total_record / $page_size) + 1;
 if ($current_page > $num_of_page) $current_page = $num_of_page;
 if ($current_page < 1) $current_page = 1;
 unset($db_count);
-//End get page break params
-
 
 $sqlQuery_checkin_limit = " LIMIT " . ($current_page - 1) * $page_size . "," . $page_size;
 
@@ -154,6 +176,8 @@ $sqlQuery_checkout_limit = " LIMIT " . ($current_page - 1) * $page_size . "," . 
 $sqlQuery_checkin  = $sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere .$sqlWhereTotaltimeCheckin  .$sqlQuery_checkin_groupby .$sqlQuery_checkin_limit;
 $sqlQuery_checkout = $sqlQuery_checkout_select .$sqlQuery_checkout_where .$sqlWhere .$sqlWhereTotaltimeCheckout .$sqlQuery_checkout_limit;
 
+$db_listing = new db_query($sqlQuery_checkin);
+$db_checkout = new db_query($sqlQuery_checkout);
 
 
 if ($NoData == "") {
@@ -296,8 +320,6 @@ if ($NoData == "") {
                         <?
                      }
                 } ?>
-
-
                 </table>
             </div>
         </div>
@@ -306,14 +328,6 @@ if ($NoData == "") {
             <table cellpadding="5" cellspacing="0" width="100%" class="page_break">
                 <tbody>
                     <tr>
-                        <!--                <td width="150">-->
-                        <!--                    <button class="btn btn-sm btn-primary"-->
-                        <!--                            onclick="if (confirm('Bạn có chắc chắn muốn duyệt ảnh cho những người dùng đã chọn ?')){ approveAll(-->
-                        <?//= $total_record ?>
-                        <!--); }">-->
-                        <!--                        <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt tất cả-->
-                        <!--                    </button>-->
-                        <!--                </td>-->
                         <td width="150">Tổng số bản ghi : <span id="total_footer"><?= formatCurrency($total_record) ?></span>
                         </td>
                         <td>
@@ -440,10 +454,6 @@ if ($NoData == "") {
         font-weight: bold;
         color: red;
     }
-
-    /* input[type=time]::-webkit-datetime-edit-fields-wrapper {
-        display: flex;
-    } */
 
     input[type=time]::-webkit-datetime-edit-text {
         padding: 2px 5px;
