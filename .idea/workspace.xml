@@ -28,7 +28,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d25cbd3b-9671-4b9d-8ee4-99e7fb3ba8bb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/Modules/TimeKeeping/Excel.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/TimeKeeping/Excel.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/Modules/TimeKeeping/calculation.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/TimeKeeping/calculation.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
