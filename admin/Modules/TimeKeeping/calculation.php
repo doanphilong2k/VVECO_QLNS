@@ -21,33 +21,6 @@ $NoData = "";
 $idCheckin = "";
 $idCheckout = "";
 
-$listlate = new db_query("SELECT * FROM late WHERE idShift = 1");
-$listWorkShift = new db_query("SELECT * FROM workshift WHERE idShift = 1");
-while($workShift = mysqli_fetch_assoc($listWorkShift->result)){
-    $start = new DateTime($workShift["StartTime"]);
-    $finish = new DateTime($workShift["FinishTime"]);
-}
-while($late = mysqli_fetch_assoc($listlate->result)){
-    $latetimeStart = $late["lat_time_start"];
-    $latetimeFinish = $late["lat_time_finish"];
-
-    $m = $latetimeStart % 60;
-    $h = intval($latetimeStart/60);
-    $latetimeStart = "PT".$h."H".$m."M";
-
-    $m = $latetimeFinish % 60;
-    $h = intval($latetimeFinish/60);
-    $latetimeFinish = $h . ":" . $m;
-}
-
-$start = $start->add(new DateInterval($latetimeStart));
-$finish = $finish->diff(new DateTime($latetimeFinish));
-
-echo $finish->format('%H:%i');
-
-
-
-
 //Get page break params
 $page_size = 30;
 $page_prefix = "Trang: ";

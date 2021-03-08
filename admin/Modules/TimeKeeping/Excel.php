@@ -5,12 +5,13 @@ require_once("../../../classes/PHPExcel/PHPExcel.php");
 $action = getValue("action", "str", "POST", "");
 
 if ($action == "export") {
+    $month = 7; $year = 2020;
     $start = new DateTime('2000-01-16');
     $finish = new DateTime('2000-01-16');
     $latetimeStart = "";
     $latetimeFinish = "";
-    $listWorkShift = new db_query("SELECT * FROM workshift WHERE idShift = 1");
-    $listlate = new db_query("SELECT * FROM late WHERE idShift = 1");
+    $listWorkShift = new db_query("SELECT * FROM workshift WHERE wor_idShift = 1");
+    $listlate = new db_query("SELECT * FROM late WHERE lat_idShift = 1");
 
     $cf_salary_ontime = 1;
     $cf_salary_ot = 1.5;
