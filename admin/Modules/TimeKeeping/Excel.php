@@ -540,44 +540,4 @@ if ($action == "export") {
     }
 </style>
 <!-- Modal export-->
-<div id="form_export" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <form action="calculation.php" method="POST" enctype="multipart/form-data">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><i class="fa fa-file-excel-o"></i> Xuất Excel Chấm Công Nhân Viên</h4>
-                </div>
 
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="sell">Chọn tháng</label>
-                        <div id="listMonth">
-                            <select class="form-control" title="Chọn Tháng" id="month_id" name="month_id">
-                                <option value="">- Chọn Tháng -</option>
-                                <option value="1"> Tháng 1 </option>
-                                <option value="2"> Tháng 2 </option>
-                                <option value="3"> Tháng 3 </option>
-                                <option value="4"> Tháng 4 </option>
-                                <option value="5"> Tháng 5 </option>
-                                <option value="6"> Tháng 6 </option>
-                                <option value="7"> Tháng 7 </option>
-                                <option value="8"> Tháng 8 </option>
-                                <option value="9"> Tháng 9 </option>
-                                <option value="10"> Tháng 10 </option>
-                                <option value="11"> Tháng 11 </option>
-                                <option value="12"> Tháng 12 </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <input type="hidden" id="action" name="action" value="export" />
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-file-excel-o"></i> Xuất Excel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>

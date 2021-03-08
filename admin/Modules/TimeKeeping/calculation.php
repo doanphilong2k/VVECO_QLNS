@@ -254,7 +254,7 @@ if ($NoData == "") {
         </div>
 
         <div class="content">
-            <div class="table-container">
+            <div class="table-container2">
                 <div style="clear: both;"></div>
                 <table cellpadding="5" cellspacing="0" class="table table-hover table-bordered table-sticky" width="100%">
                     <tr class="warning stick">
@@ -356,6 +356,57 @@ if ($NoData == "") {
     </div>
 
     <? /*---------Body------------*/ ?>
+
+    <div id="form_export" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form action="calculation.php" method="POST" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><i class="fa fa-file-excel-o"></i> Xuất Excel Chấm Công Nhân Viên</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="sell">Chọn năm</label>
+                            <div id="listFaculties">
+                                <select class="form-control" title="Chọn Năm" id="year_id" name="year_id">
+                                    <option value="">- Chọn Năm -</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sell">Chọn tháng</label>
+                            <div id="listMonth">
+                                <select class="form-control" title="Chọn Tháng" id="month_id" name="month_id" required onchange="month()">
+                                    <option value="">- Chọn Tháng -</option>
+                                    <option value="1"> Tháng 1 </option>
+                                    <option value="2"> Tháng 2 </option>
+                                    <option value="3"> Tháng 3 </option>
+                                    <option value="4"> Tháng 4 </option>
+                                    <option value="5"> Tháng 5 </option>
+                                    <option value="6"> Tháng 6 </option>
+                                    <option value="7"> Tháng 7 </option>
+                                    <option value="8"> Tháng 8 </option>
+                                    <option value="9"> Tháng 9 </option>
+                                    <option value="10"> Tháng 10 </option>
+                                    <option value="11"> Tháng 11 </option>
+                                    <option value="12"> Tháng 12 </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <input type="hidden" id="action" name="action" value="export" />
+                        <button id="export_excel" type="submit" class="btn btn-primary" disabled><i class="fa fa-file-excel-o"></i> Xuất Excel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
@@ -395,6 +446,19 @@ if ($NoData == "") {
     }
 
     $(document).ready(function() {
+        var start = 1900;
+        var end = new Date().getFullYear();
+        var options = "";
+
+        for (var year = start; year <= end; year++) {
+            options += "<option value='" + year + "'>" + year + "</option>";
+        }
+        document.getElementById("year_id").innerHTML = options;
+
+        (function() {
+            var default_select = (document.getElementById("year_id").value = end);
+        })();
+
         var time = 1;
         if (time == 1) {
             $("#time-total").attr('type', 'time');
@@ -412,27 +476,27 @@ if ($NoData == "") {
     const finish = document.getElementById("finish-alert");
     const finish_remove = document.getElementById("finish-remove");
 
-    finish_remove.addEventListener('click', () => finish.style.opacity = '0');
-    finish.addEventListener('transitionend', () => finish.remove());
+    finish_remove.addEventListener("click", () => (finish.style.opacity = "0"));
+    finish.addEventListener("transitionend", () => finish.remove());
 
     setTimeout(() => {
         const finish_alert = document.getElementById("finish-alert");
-        finish_alert.style.opacity = '0';
-        finish_alert.addEventListener('transitionend', () => finish_alert.remove());
+        finish_alert.style.opacity = "0";
+        finish_alert.addEventListener("transitionend", () => finish_alert.remove());
     }, 3000);
 
     const start = document.getElementById("start-alert");
     const start_remove = document.getElementById("start-remove");
-
-    start_remove.addEventListener('click', () => start.style.opacity = '0');
-    start.addEventListener('transitionend', () => start.remove());
     
+    start_remove.addEventListener("click", () => (start.style.opacity = "0"));
+    start.addEventListener("transitionend", () => start.remove());
+
     setTimeout(() => {
         const start_alert = document.getElementById("start-alert");
-        start_alert.style.opacity = '0';
-        start_alert.addEventListener('transitionend', start_alert.remove());
+        start_alert.style.opacity = "0";
+        start_alert.addEventListener("transitionend", start_alert.remove());
     }, 3000);
-    
+
     function searchBtn() {
         document.getElementById("member_id").value = "0";
         document.getElementById("name").value = "";
@@ -440,6 +504,14 @@ if ($NoData == "") {
         document.getElementById("checkin_time").value = "";
         document.getElementById("checkout_time").value = "";
     }
+
+    function month() {
+        var month_select = document.getElementById("month_id");
+        var button_select = document.getElementById("export_excel");
+
+        button_select.disabled = !month_select.value;
+    }
+    
 </script>
 
 <style type="text/css">
@@ -459,4 +531,10 @@ if ($NoData == "") {
         padding: 2px 5px;
     }
 
+    #form_export .form-control,
+    #form_import .form-control {
+        width: 100% !important;
+        height: 30px;
+        line-height: 30px;
+    }
 </style>
