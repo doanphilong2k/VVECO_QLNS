@@ -21,11 +21,11 @@ $NoData = "";
 $idCheckin = "";
 $idCheckout = "";
 
-$listlate = new db_query("SELECT * FROM late WHERE idShift = 1");
-$listWorkShift = new db_query("SELECT * FROM workshift WHERE idShift = 1");
+$listlate = new db_query("SELECT * FROM late WHERE lat_idShift = 1");
+$listWorkShift = new db_query("SELECT * FROM workshift WHERE wor_idShift = 1");
 while($workShift = mysqli_fetch_assoc($listWorkShift->result)){
-    $start = new DateTime($workShift["StartTime"]);
-    $finish = new DateTime($workShift["FinishTime"]);
+    $start = new DateTime($workShift["wor_StartTime"]);
+    $finish = new DateTime($workShift["wor_FinishTime"]);
 }
 while($late = mysqli_fetch_assoc($listlate->result)){
     $latetimeStart = $late["lat_time_start"];
@@ -43,7 +43,7 @@ while($late = mysqli_fetch_assoc($listlate->result)){
 $start = $start->add(new DateInterval($latetimeStart));
 $finish = $finish->diff(new DateTime($latetimeFinish));
 
-echo $finish->format('%H:%i');
+// echo $finish->format('%H:%i');
 
 
 

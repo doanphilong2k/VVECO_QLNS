@@ -8,7 +8,7 @@ checkLogged();
 if (checkAccessModule($module_id) != 1) redirect($fs_denypath);
 //Declare prameter when insert data
 $fs_table = "workshift";
-$id_field = "wor_id";
-$name_field = "wor_name";
+$id_field = "wor_idShift";
+$name_field = "wor_Name";
 ?>
 

@@ -29,13 +29,13 @@ $db_admin_listing = new db_query ("SELECT *
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
 </head>
-<body topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
+<body class="bg" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 
 <div class="listing" id="listing">
 	<?=template_top(translate_text("Quản lý danh sách Administrators"))?>
 	<div class="header">
-		<div class="search">
+		<div class="search" style="width: 99.4%">
 			<form onsubmit="check_form_submit(this); return false" name="form_search" method="get" action="">
 				<input type="hidden" value="1" id="search" name="search" />
 				<table>
@@ -56,7 +56,7 @@ $db_admin_listing = new db_query ("SELECT *
 	</div>
 
 	<? /*---------Body------------*/ ?>
-	<div class="content">
+	<div class="content" style="width: 99.4%">
 		<table class="table table-bordered table-striped">
 			<tr class="warning">
 				<td width="20" class="h"><?=translate_text("STT")?></td>
@@ -76,7 +76,7 @@ $db_admin_listing = new db_query ("SELECT *
 			while ($row = mysqli_fetch_assoc($db_admin_listing->result)){
 			  $countno++;
 			?>
-			  <tr>
+			  <tr class="table-color">
 				<td align="center" class="bold"><?=$countno;?></td>
 				<td class="bold"><?=$row["adm_loginname"];?></td>
 				<td class="bold"><?=$row["adm_name"];?></td>
@@ -114,3 +114,13 @@ $db_admin_listing = new db_query ("SELECT *
 </body>
 </html>
 <? unset($db_admin_listing);?>
+
+<style type="text/css">
+	.bg {
+		background-color: #F7F7F9;
+	}
+
+	.table-color td {
+        background-color: white;
+	}
+</style>

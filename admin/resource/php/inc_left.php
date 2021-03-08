@@ -61,7 +61,7 @@ unset($db_order);
 			$i++;
 			?>
 			<li id="listItem_<?=$row["mod_id"]?>">
-				<div class="abcde">
+				<div id="submenu_<?=$i?>" class="abcde">
                     <i class="fas fa-cog" style="cursor:pointer; font-size: 14px; color: #FFFFFF; top:2px" id="image_<?=$i?>" onclick="showhidden(<?=$i?>);" title="<?=translate_text("Show list menu")?>" ></i>&nbsp;
                     <span style="cursor:pointer; font-family: 'Roboto'; font-size:14px;" onclick="showhidden(<?=$i?>);"><?=$row["mod_name"]?></span>
 					<a class="handle glyphicon glyphicon-move" style="float:right;font-size: 14px; color: #FFFFFF; cursor:pointer; text-decoration: none; top:2px" title="<?=translate_text("Move")?>"></a>
@@ -75,8 +75,7 @@ unset($db_order);
 						$url	= isset($arrayUrl[$key]) ? $arrayUrl[$key] : '#';
 						$iTab	= $row["mod_path"] . "_" . str_replace(".php", "", $url);
 						?>
-						<tr style="border-bottom: 1px solid rgb(240,240,240); height: 50px">
-							<td width="6" align="center"></td>
+						<tr style="height: 50px">
 							<td colspan="2"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>&nbsp;<a class="tab" id="<?=$iTab?>" rel="<?=$row["mod_name"]?><span class='raquo'>&raquo;</span><?=$value?>" onclick="return false;" target="_blank" href="modules/<?=$row["mod_path"]?>/<?=$url?>" style="font-family: 'Roboto'; font-size: 14px;"><?=trim($value)?></a></td>
 						</tr>
 					<?
@@ -94,12 +93,15 @@ unset($db_order);
 	function showhidden(divid){
 		var object		= document.getElementById("showmneu_"+divid);
 		var objectimg	= document.getElementById("image_"+divid);
+		var submenu     = document.getElementById("submenu_"+divid);
 		if(object.style.display == 'none'){
 			object.style.display = '';
-			objectimg.className = 'glyphicon glyphicon-cog';
+			submenu.style.borderRadius = "4px 4px 0 0";
+			objectimg.className = 'fas fa-cog';
 		}else{
 			object.style.display = 'none';
-			objectimg.className = 'glyphicon glyphicon-cog';
+			submenu.style.borderRadius = "4px";
+			objectimg.className = 'fas fa-cog';
 		}
 	}
 </script>

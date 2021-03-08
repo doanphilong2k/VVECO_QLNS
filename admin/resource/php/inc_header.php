@@ -1,4 +1,4 @@
-<div class="header" style="background-color: rgb(77, 148, 255)">
+<div class="header" style="background: linear-gradient( 90deg ,rgb(46, 122, 242),rgba(0,65,179,1));">
 	<table cellpadding="0" cellspacing="0" width="100%">
 		<tr>
 			<!-- <td style="width: 200px">

@@ -1,3 +1,7 @@
+.bg {
+    background-color: #F7F7F9;
+}
+
 .avatar-img {
     width: 80px;
     height: 80px;
@@ -115,4 +119,26 @@ table.table-sticky tr.stick td {
 
 .form {
     outline: none;
+}
+
+.table-container {
+    width: 99.4%;
+    /* height: 427px; */
+    height: 74.5%;
+    position: absolute;
+    overflow-y: auto;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 99.4%;
+}
+
+.table-color1 td {
+    background-color: white;
+}
+
+.table-color2 tr:nth-child(1n+2) td {
+    background-color: white;
 }

@@ -121,18 +121,18 @@ $num_row = mysqli_num_rows($db_listing->result);
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <?= $load_header ?>
-    <link rel="stylesheet" href="../../resource/css/mycss.css">
+    <link rel="stylesheet" href="../../resource/css/mycss.css" type="text/css">
     <script language="javascript" src="../../resource/js/grid.js"></script>
 </head>
 
-<body style="font-size: 11px !important;" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
+<body class="bg" style="font-size: 11px !important;" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
     <div id="show"></div>
     <? /*---------Body------------*/ ?>
     <div class="listing">
         <div class="header">
             <h3>Duyệt ảnh người dùng</h3>
 
-            <div class="search" style="width: 99.5%">
+            <div class="search" style="width: 99.4%">
                 <form action="listing.php" methor="get" name="form_search" onsubmit="check_form_submit(this); return false">
                     <input type="hidden" name="search" id="search" value="1">
                     <table cellpadding="0" cellspacing="0" border="0">
@@ -156,7 +156,7 @@ $num_row = mysqli_num_rows($db_listing->result);
         </div>
 
         <div class="content">
-            <div class="table-container" style="height: 427px">
+            <div class="table-container">
                 <div style="clear: both;"></div>
                 <table cellpadding="5" cellspacing="0" class="table table-hover table-bordered table-sticky" width="100%">
                     <tr class="warning stick">
@@ -178,7 +178,7 @@ $num_row = mysqli_num_rows($db_listing->result);
                 while ($listing = mysqli_fetch_assoc($db_listing->result)) {
                     $No++;
                     ?>
-                    <tr id="tr_<?= $listing["id"] ?>">
+                    <tr id="tr_<?= $listing["id"] ?>" class="table-color1">
                         <td width="40" style="text-align:center"><span style="color:#142E62; font-weight:bold"><?= $No ?></span></td>
                         <!--                        <td class="check" style="text-align: center;"><input type="checkbox" class="check"-->
                         <!--                                                                             name="record_id[]" id="record_-->
@@ -200,32 +200,33 @@ $num_row = mysqli_num_rows($db_listing->result);
                         <td><?= $listing["position"] ?></td>
                         <td>
                             <?= $listing["created_date"] ?>
+                        </td>
             </div>
-            </td>
+
             <td style="vertical-align: middle; text-align: center">
                 <?
-                            if ($listing['avatar'] != "") {
-                                echo '<span class="label label-success">Đã duyệt</span>';
-                            } else {
-                                echo '<span class="label label-warning">Chưa duyệt</span>';
-                            }
-                            ?>
+                    if ($listing['avatar'] != "") {
+                        echo '<span class="label label-success">Đã duyệt</span>';
+                    } else {
+                        echo '<span class="label label-warning">Chưa duyệt</span>';
+                    }
+                ?>
 
                 <?
-                            if ($listing['avatar'] == "") {
-                                ?>
+                    if ($listing['avatar'] == "") {
+                ?>
                 <a href="detail.php?record_id=<?= $listing['id'] ?>" class="btn btn-xs btn-primary" style="margin-top: 10px">
                     <i class="fa fa-check" aria-hidden="true"></i> Duyệt ảnh
                 </a>
                 <?
-                            }else{
-                            ?>
+                    }else{
+                ?>
                 <a href="detail.php?record_id=<?= $listing['id'] ?>" class="btn btn-xs btn-primary" style="margin-top: 10px">
                     <i class="fa fa-eye" aria-hidden="true"></i> Xem ảnh
                 </a>
                 <?
-                            }
-                            ?>
+                    }
+                ?>
             </td>
             </tr>
             <? } ?>
