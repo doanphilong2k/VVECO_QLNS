@@ -172,14 +172,14 @@ if ($NoData == "") {
     <script language="javascript" src="../../resource/js/grid.js"></script>
 </head>
 
-<body style="font-size: 11px !important;" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
+<body class="bg" style="font-size: 11px !important;" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
     <div id="show"></div>
     <? /*---------Body------------*/ ?>
     <div class="listing">
         <div class="header">
             <h3>Danh sách Checkin</h3>
 
-            <div class="search" style="width: 99.5%">
+            <div class="search" style="width: 99.4%">
                 <form action="calculation.php" method="get" name="form_search" onsubmit="check_form_submit(this); return false">
                     <input type="hidden" name="search" id="search" value="1">
                     <table cellpadding="0" cellspacing="0" border="0" style="width: 100%">
@@ -229,7 +229,7 @@ if ($NoData == "") {
         <div class="content">
             <div class="table-container2">
                 <div style="clear: both;"></div>
-                <table cellpadding="5" cellspacing="0" class="table table-hover table-bordered table-sticky" width="100%">
+                <table cellpadding="5" cellspacing="0" class="table table-hover table-bordered table-sticky table-color2" width="100%">
                     <tr class="warning stick">
                         <td class="h" width="40" style="text-align: center">STT</td>
                         <!--                    <td width="50" class="h check">-->
@@ -297,7 +297,7 @@ if ($NoData == "") {
             </div>
         </div>
 
-        <div class="footer" style="width: 99.5%">
+        <div class="footer" style="width: 99.4%">
             <table cellpadding="5" cellspacing="0" width="100%" class="page_break">
                 <tbody>
                     <tr>
