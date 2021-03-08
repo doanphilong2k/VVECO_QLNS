@@ -1,11 +1,10 @@
 <?php
 require_once("inc_security.php");
-require_once("Excel.php");
 
-$wor_id = getValue("wor_id", "int", "GET", 0);
+$wor_id = getValue("wor_idShift", "int", "GET", 0);
 
 
-$list                        = new fsDataGird($id_field, $name_field, translate_text("Danh sách Ca làm việc"));
+$list = new fsDataGird($id_field, $name_field, translate_text("Danh sách Ca làm việc"));
 $list->page_size = 50;
 /*
 1: Ten truong trong bang
@@ -15,11 +14,10 @@ $list->page_size = 50;
 5: co tim kiem hay khong, co thi de la 1, khong thi de la 0
 */
 
-$list->add("wor_id", translate_text("ID"), "text", 0, 1, "");
+$list->add("wor_idShift", translate_text("ID"), "text", 0, 1, "");
 $list->add($name_field, "Tên ca", "string", 1, 1, "");
 $list->add("wor_StartTime", "Bắt đầu", "text", 0, 1, "");
 $list->add("wor_FinishTime", "Kết thúc", "text", 0, 1, "");
-$list->add("rol_id", "Quyền hạn", "text", 0, 1, "");
 $list->add("", translate_text("Sửa"), "edit");
 $list->add("", translate_text("Xóa"), "delete");
 $list->ajaxedit($fs_table);
@@ -44,16 +42,18 @@ $db_listing = new db_query("SELECT *
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../resource/css/mycss.css">
     <?= $load_header ?>
     <?= $list->headerScript() ?>
 </head>
 
-<body topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
+<body class="bg" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
     <? /*---------Body------------*/ ?>
-    <div id="listing" class="listing" style="padding-right: 6px">
+    <div id="listing" class="listing table-color2" style="padding-right: 7px">
         <?= $list->showTable($db_listing, $total) ?>
     </div>
     <? /*---------Body------------*/ ?>
 </body>
 
 </html>
+

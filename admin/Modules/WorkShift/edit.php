@@ -50,15 +50,16 @@ $wor_FinishTime = getValue("wor_FinishTime", "str", "POST", $wor_FinishTime, 3);
 // if (empty($wor_FinishTime)) {
 //     $wor_FinishTime = time();
 // }
-$rol_id = getValue("rol_id", "int", "POST", $rol_id, 3);
+// $rol_id = getValue("rol_id", "int", "POST", $rol_id, 3);
+
+// $db_select = new db_query("SELECT * FROM workshift WHERE ")
 
 
 //Call Class generate_form();
 $myform = new generate_form();
-$myform->add("wor_name", "wor_name", 0, 1, "", 1, "Tên ca làm việc không được để trống.", 0, "");
+$myform->add("wor_Name", "wor_name", 0, 1, "", 1, "Tên ca làm việc không được để trống.", 0, "");
 $myform->add("wor_StartTime", "wor_StartTime", 0, 1, "", 1, "Bạn chưa chọn thời gian bắt đầu.", 0, "");
 $myform->add("wor_FinishTime", "wor_FinishTime", 0, 1, "", 1, "Bạn chưa chọn thời gian kết thúc.", 0, "");
-$myform->add("rol_id", "rol_id", 0, 1, "", 1, "Bạn chưa chọn quyền hạn.", 0, "");
 $myform->addTable($fs_table);
 
 $action = getValue("action", "str", "POST", "");
@@ -136,7 +137,7 @@ if ($action == "execute") {
                     value="<?= date('d/m/Y', $wor_FinishTime) ?>">
             </td>
         </tr> -->
-        <?= $form->text("Quyền hạn", "rol_id", "rol_id", $rol_id, "Quyền hạn", 1, 250, "", 50, "", "", "") ?>
+        <!-- <?= $form->select_db("Quyền hạn", "rol_id", "rol_id", $rol_id, "Quyền hạn", 1, 250, "", 50, "", "", "") ?> -->
       
         <?= $form->radio("Sau khi lưu dữ liệu", "add_new" . $form->ec . "return_listing", "after_save_data", $add . $form->ec . $listing, $after_save_data, "Thêm mới" . $form->ec . "Quay về danh sách", 0, $form->ec, ""); ?>
         <?= $form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", '' . $form->ec . '', ""); ?>

@@ -18,21 +18,21 @@ if ($action == "export") {
     $cf_salary_late = 0.5;
     $cf_salary_off = 'N';
 
-    while($workShift = mysqli_fetch_assoc($listWorkShift->result)){
+    while ($workShift = mysqli_fetch_assoc($listWorkShift->result)) {
         $start = new DateTime($workShift["StartTime"]);
         $finish = new DateTime($workShift["FinishTime"]);
     }
 
-    while($late = mysqli_fetch_assoc($listlate->result)){
+    while ($late = mysqli_fetch_assoc($listlate->result)) {
         $latetimeStart = $late["lat_time_start"];
         $latetimeFinish = $late["lat_time_finish"];
 
         $m = $latetimeStart % 60;
-        $h = intval($latetimeStart/60);
-        $latetimeStart = "PT".$h."H".$m."M";
+        $h = intval($latetimeStart / 60);
+        $latetimeStart = "PT" . $h . "H" . $m . "M";
 
         $m = $latetimeFinish % 60;
-        $h = intval($latetimeFinish/60);
+        $h = intval($latetimeFinish / 60);
         $latetimeFinish = $h . ":" . $m;
     }
 
@@ -48,61 +48,61 @@ if ($action == "export") {
     $excel->setActiveSheetIndex(0);
     $activeSheet->setTitle("Danh Sách Checkin ");
 
-    $days = cal_days_in_month(CAL_GREGORIAN,7,2020);
+    $days = cal_days_in_month(CAL_GREGORIAN, 7, 2020);
     $column = 1;
     $row = 4;
     $No = 1;
 
     $memberID = new db_query("SELECT id, name FROM members WHERE members.active = 1");
-    while($listMember = mysqli_fetch_assoc($memberID->result)){
-        $activeSheet->setCellValue('A'.$row, strval($No));
+    while ($listMember = mysqli_fetch_assoc($memberID->result)) {
+        $activeSheet->setCellValue('A' . $row, strval($No));
         $activeSheet->setCellValueByColumnAndRow($column, $row, $listMember["name"]);
 
-        $activeSheet->getStyle("A".$row)
+        $activeSheet->getStyle("A" . $row)
             ->getAlignment()
             ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)
             ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $activeSheet->getStyle("A".$row)
+        $activeSheet->getStyle("A" . $row)
             ->applyFromArray(
-            array(
-                'font'    => array(
-                    'name'      => 'Times New Roman',
-                    'bold'      => true,
-                    'size'      => 11
-                ),
-                'borders' => array(
-                    'allborders' => array(
-                        'style' => PHPExcel_Style_Border::BORDER_THIN,
-                        'color' => array('rgb' => '000000')
+                array(
+                    'font'    => array(
+                        'name'      => 'Times New Roman',
+                        'bold'      => true,
+                        'size'      => 11
+                    ),
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN,
+                            'color' => array('rgb' => '000000')
+                        )
                     )
                 )
-            )
-        );
+            );
 
-        $activeSheet->getStyleByColumnAndRow($column,$row)
+        $activeSheet->getStyleByColumnAndRow($column, $row)
             ->getAlignment()
             ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $activeSheet->getStyleByColumnAndRow($column,$row)
+        $activeSheet->getStyleByColumnAndRow($column, $row)
             ->applyFromArray(
-            array(
-                'font'    => array(
-                    'name'      => 'Times New Roman',
-                    'bold'      => false,
-                    'size'      => 11
-                ),
-                'borders' => array(
-                    'allborders' => array(
-                        'style' => PHPExcel_Style_Border::BORDER_THIN,
-                        'color' => array('rgb' => '000000')
+                array(
+                    'font'    => array(
+                        'name'      => 'Times New Roman',
+                        'bold'      => false,
+                        'size'      => 11
+                    ),
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN,
+                            'color' => array('rgb' => '000000')
+                        )
                     )
                 )
-            )
-        );
+            );
 
         $checkin = new db_query("SELECT member_checkin.id,member_id, member_checkin.checkin_time
                                         FROM member_checkin, members
                                         WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020 
-                                                AND member_checkin.member_id = ".$listMember["id"]."
+                                                AND member_checkin.member_id = " . $listMember["id"] . "
                                                 AND members.active = 1 AND member_checkin.active = 1
                                         GROUP BY DATE(member_checkin.checkin_time), member_id ");
         $checkout = new db_query("SELECT member_checkin.id, member_checkin.member_id, member_checkin.checkin_time as checkout_time 
@@ -113,12 +113,12 @@ if ($action == "export") {
                                                                     WHERE MONTH(member_checkin.checkin_time)= 7 
                                                                             AND YEAR(member_checkin.checkin_time) = 2020
                                                                             AND members.active = 1 AND member_checkin.active = 1	
-                                                                            AND member_checkin.member_id = ".$listMember["id"]."
+                                                                            AND member_checkin.member_id = " . $listMember["id"] . "
                                                                     GROUP BY DATE(checkin_time), member_id) ");
         $sum_sf_salary = 0;
         $daywork = array();
 
-        while($listCheckin = mysqli_fetch_assoc($checkin->result)){
+        while ($listCheckin = mysqli_fetch_assoc($checkin->result)) {
             $listCheckout = mysqli_fetch_assoc($checkout->result);
 
             $checkin_daytime = new DateTime($listCheckin["checkin_time"]);
@@ -129,11 +129,10 @@ if ($action == "export") {
             $checkout_time = new DateTime($checkout_daytime->format('H:I'));
 
 
-            if($checkin_time->diff($start)->format('%R') == '-' || $checkout_time->diff($finish)->format('%R') == '+'){
+            if ($checkin_time->diff($start)->format('%R') == '-' || $checkout_time->diff($finish)->format('%R') == '+') {
                 $activeSheet->setCellValueByColumnAndRow(($column + intval($checkin_daytime->format("d"))), $row, strval(0.5));
                 $sum_sf_salary += 0.5;
-            }
-            else{
+            } else {
                 $activeSheet->setCellValueByColumnAndRow(($column + intval($checkin_daytime->format("d"))), $row, strval(1));
                 $sum_sf_salary += 1;
             }
@@ -144,23 +143,23 @@ if ($action == "export") {
                 ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
             $activeSheet->getStyleByColumnAndRow($column + intval($checkin_daytime->format("d")), $row)
                 ->applyFromArray(
-                        array(
-                            'borders' => array(
-                                'allborders' => array(
-                                    'style' => PHPExcel_Style_Border::BORDER_THIN,
-                                    'color' => array('rgb' => '000000')
-                                )
+                    array(
+                        'borders' => array(
+                            'allborders' => array(
+                                'style' => PHPExcel_Style_Border::BORDER_THIN,
+                                'color' => array('rgb' => '000000')
                             )
                         )
+                    )
                 );
         }
 
-        $activeSheet->setCellValueByColumnAndRow(($days+2), $row, strval($sum_sf_salary));
-        $activeSheet->getStyleByColumnAndRow(($days+2), $row)
+        $activeSheet->setCellValueByColumnAndRow(($days + 2), $row, strval($sum_sf_salary));
+        $activeSheet->getStyleByColumnAndRow(($days + 2), $row)
             ->getAlignment()
             ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
             ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $activeSheet->getStyleByColumnAndRow(($days+2), $row)
+        $activeSheet->getStyleByColumnAndRow(($days + 2), $row)
             ->applyFromArray(
                 array(
                     'borders' => array(
@@ -173,11 +172,10 @@ if ($action == "export") {
             );
 
         $j = 0;
-        for($i = 1; $i<=$days; $i++){
-            if( isset($daywork[$j]) && $i == intval($daywork[$j])){
+        for ($i = 1; $i <= $days; $i++) {
+            if (isset($daywork[$j]) && $i == intval($daywork[$j])) {
                 $j++;
-            }
-            else{
+            } else {
                 $activeSheet->setCellValueByColumnAndRow(($column + intval($i)), $row, 'N');
                 $activeSheet->getStyleByColumnAndRow(($column + intval($i)), $row)
                     ->getAlignment()
@@ -201,11 +199,11 @@ if ($action == "export") {
         $row++;
     }
 
-    if($days == 30){
+    if ($days == 30) {
         $activeSheet->getStyle('A1:AK1')->getFont()->setBold(true);
         $activeSheet->getStyle('A1:AK1')->getAlignment()->setWrapText(true);
         $activeSheet->mergeCells('A1:AK1');
-        $activeSheet->setCellValue('A1',"Bảng chấm công tháng 7/2020");
+        $activeSheet->setCellValue('A1', "Bảng chấm công tháng 7/2020");
         $activeSheet
             ->getStyle('A1')
             ->getAlignment()
@@ -229,10 +227,10 @@ if ($action == "export") {
         );
     }
 
-    if($days == 31){
+    if ($days == 31) {
         $activeSheet->getStyle('A1:AL1')->getFont()->setBold(true);
         $activeSheet->mergeCells('A1:AL1');
-        $activeSheet->setCellValue('A1',"Bảng chấm công tháng 7/2020");
+        $activeSheet->setCellValue('A1', "Bảng chấm công tháng 7/2020");
         $activeSheet
             ->getStyle('A1')
             ->getAlignment()
@@ -256,10 +254,10 @@ if ($action == "export") {
         );
     }
 
-    if($days == 28){
+    if ($days == 28) {
         $activeSheet->getStyle('A1:AI1')->getFont()->setBold(true);
         $activeSheet->mergeCells('A1:AI1');
-        $activeSheet->setCellValue('A1',"Bảng chấm công tháng 7/2020");
+        $activeSheet->setCellValue('A1', "Bảng chấm công tháng 7/2020");
         $activeSheet
             ->getStyle('A1')
             ->getAlignment()
@@ -284,10 +282,10 @@ if ($action == "export") {
         );
     }
 
-    if($days == 29){
+    if ($days == 29) {
         $activeSheet->getStyle('A1:AJ1')->getFont()->setBold(true);
         $activeSheet->mergeCells('A1:AJ1');
-        $activeSheet->setCellValue('A1',"Bảng chấm công tháng 7/2020");
+        $activeSheet->setCellValue('A1', "Bảng chấm công tháng 7/2020");
         $activeSheet
             ->getStyle('A1')
             ->getAlignment()
@@ -317,14 +315,14 @@ if ($action == "export") {
     $activeSheet->getRowDimension('3')->setRowHeight(60);
 
     $col = 'C';
-    for($i = 1; $i<=$days;$i++){
-        $activeSheet->setCellValue($col.'3',strval($i));
+    for ($i = 1; $i <= $days; $i++) {
+        $activeSheet->setCellValue($col . '3', strval($i));
         $activeSheet
-            ->getStyle($col.'3')
+            ->getStyle($col . '3')
             ->getAlignment()
             ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
             ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $activeSheet->getStyle($col.'3')->applyFromArray(
+        $activeSheet->getStyle($col . '3')->applyFromArray(
             array(
                 'borders' => array(
                     'allborders' => array(
@@ -338,15 +336,15 @@ if ($action == "export") {
         $col++;
     }
 
-    $activeSheet->mergeCellsByColumnAndRow((2+$days), 2, (2+$days), 3);
-    $activeSheet->setCellValueByColumnAndRow((2+$days), 2, "Công Chính");
-    $activeSheet->getColumnDimensionByColumn((2+$days))->setWidth(15);
+    $activeSheet->mergeCellsByColumnAndRow((2 + $days), 2, (2 + $days), 3);
+    $activeSheet->setCellValueByColumnAndRow((2 + $days), 2, "Công Chính");
+    $activeSheet->getColumnDimensionByColumn((2 + $days))->setWidth(15);
     $activeSheet
-        ->getStyleByColumnAndRow((2+$days), 2)
+        ->getStyleByColumnAndRow((2 + $days), 2)
         ->getAlignment()
         ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
         ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)->setWrapText(true);
-    $activeSheet->getStyleByColumnAndRow((2+$days), 2, (2+$days), 3)
+    $activeSheet->getStyleByColumnAndRow((2 + $days), 2, (2 + $days), 3)
         ->applyFromArray(
             array(
                 'font'    => array(
@@ -366,15 +364,15 @@ if ($action == "export") {
             )
         );
 
-    $activeSheet->mergeCellsByColumnAndRow((3+$days), 2, (3+$days), 3);
-    $activeSheet->setCellValueByColumnAndRow((3+$days), 2, "công làm thêm ngày thường * 150%");
-    $activeSheet->getColumnDimensionByColumn((3+$days))->setWidth(15);
+    $activeSheet->mergeCellsByColumnAndRow((3 + $days), 2, (3 + $days), 3);
+    $activeSheet->setCellValueByColumnAndRow((3 + $days), 2, "công làm thêm ngày thường * 150%");
+    $activeSheet->getColumnDimensionByColumn((3 + $days))->setWidth(15);
     $activeSheet
-        ->getStyleByColumnAndRow((3+$days), 2, (3+$days), 3)
+        ->getStyleByColumnAndRow((3 + $days), 2, (3 + $days), 3)
         ->getAlignment()
         ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
         ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)->setWrapText(true);
-    $activeSheet->getStyleByColumnAndRow((3+$days), 2, (3+$days), 3)
+    $activeSheet->getStyleByColumnAndRow((3 + $days), 2, (3 + $days), 3)
         ->applyFromArray(
             array(
                 'font'    => array(
@@ -394,15 +392,15 @@ if ($action == "export") {
             )
         );
 
-    $activeSheet->mergeCellsByColumnAndRow((4+$days), 2, (4+$days), 3);
-    $activeSheet->setCellValueByColumnAndRow((4+$days), 2, "công Làm thêm ngày nghỉ x 200% ");
-    $activeSheet->getColumnDimensionByColumn((4+$days))->setWidth(15);
+    $activeSheet->mergeCellsByColumnAndRow((4 + $days), 2, (4 + $days), 3);
+    $activeSheet->setCellValueByColumnAndRow((4 + $days), 2, "công Làm thêm ngày nghỉ x 200% ");
+    $activeSheet->getColumnDimensionByColumn((4 + $days))->setWidth(15);
     $activeSheet
-        ->getStyleByColumnAndRow((4+$days), 2, (4+$days), 3)
+        ->getStyleByColumnAndRow((4 + $days), 2, (4 + $days), 3)
         ->getAlignment()
         ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
         ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)->setWrapText(true);
-    $activeSheet->getStyleByColumnAndRow((4+$days), 2, (4+$days), 3)
+    $activeSheet->getStyleByColumnAndRow((4 + $days), 2, (4 + $days), 3)
         ->applyFromArray(
             array(
                 'font'    => array(
@@ -422,15 +420,15 @@ if ($action == "export") {
             )
         );
 
-    $activeSheet->mergeCellsByColumnAndRow((5+$days), 2, (5+$days), 3);
-    $activeSheet->setCellValueByColumnAndRow((5+$days), 2, "Tổng công");
-    $activeSheet->getColumnDimensionByColumn((5+$days))->setWidth(15);
+    $activeSheet->mergeCellsByColumnAndRow((5 + $days), 2, (5 + $days), 3);
+    $activeSheet->setCellValueByColumnAndRow((5 + $days), 2, "Tổng công");
+    $activeSheet->getColumnDimensionByColumn((5 + $days))->setWidth(15);
     $activeSheet
-        ->getStyleByColumnAndRow((5+$days), 2, (5+$days), 3)
+        ->getStyleByColumnAndRow((5 + $days), 2, (5 + $days), 3)
         ->getAlignment()
         ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
         ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)->setWrapText(true);
-    $activeSheet->getStyleByColumnAndRow((5+$days), 2, (5+$days), 3)
+    $activeSheet->getStyleByColumnAndRow((5 + $days), 2, (5 + $days), 3)
         ->applyFromArray(
             array(
                 'font'    => array(
@@ -448,15 +446,15 @@ if ($action == "export") {
             )
         );
 
-    $activeSheet->mergeCellsByColumnAndRow((6+$days), 2, (6+$days), 3);
-    $activeSheet->setCellValueByColumnAndRow((6+$days), 2, "Ký nhận");
-    $activeSheet->getColumnDimensionByColumn((6+$days))->setWidth(15);
+    $activeSheet->mergeCellsByColumnAndRow((6 + $days), 2, (6 + $days), 3);
+    $activeSheet->setCellValueByColumnAndRow((6 + $days), 2, "Ký nhận");
+    $activeSheet->getColumnDimensionByColumn((6 + $days))->setWidth(15);
     $activeSheet
-        ->getStyleByColumnAndRow((6+$days), 2, (6+$days), 3)
+        ->getStyleByColumnAndRow((6 + $days), 2, (6 + $days), 3)
         ->getAlignment()
         ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
         ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)->setWrapText(true);
-    $activeSheet->getStyleByColumnAndRow((6+$days), 2, (6+$days), 3)
+    $activeSheet->getStyleByColumnAndRow((6 + $days), 2, (6 + $days), 3)
         ->applyFromArray(
             array(
                 'font'    => array(
@@ -477,7 +475,7 @@ if ($action == "export") {
         );
 
     $activeSheet->mergeCells('A2:A3');
-    $activeSheet->setCellValue('A2',"STT");
+    $activeSheet->setCellValue('A2', "STT");
     $activeSheet
         ->getStyle('A2:A3')
         ->getAlignment()
@@ -501,7 +499,7 @@ if ($action == "export") {
 
 
     $activeSheet->mergeCells('B2:B3');
-    $activeSheet->setCellValue('B2',"Họ và tên");
+    $activeSheet->setCellValue('B2', "Họ và tên");
     $activeSheet
         ->getStyle('B2:B3')
         ->getAlignment()
@@ -514,7 +512,7 @@ if ($action == "export") {
                 'bold'      => true,
                 'size'      => 11,
                 'color'     => array(
-                        'rbg' => 'FF0000'
+                    'rbg' => 'FF0000'
                 )
             ),
             'borders' => array(
@@ -559,11 +557,23 @@ if ($action == "export") {
                         <div id="listMonth">
                             <select class="form-control" title="Chọn Tháng" id="month_id" name="month_id">
                                 <option value="">- Chọn Tháng -</option>
+                                <option value="1"> Tháng 1 </option>
+                                <option value="2"> Tháng 2 </option>
+                                <option value="3"> Tháng 3 </option>
+                                <option value="4"> Tháng 4 </option>
+                                <option value="5"> Tháng 5 </option>
+                                <option value="6"> Tháng 6 </option>
+                                <option value="7"> Tháng 7 </option>
+                                <option value="8"> Tháng 8 </option>
+                                <option value="9"> Tháng 9 </option>
+                                <option value="10"> Tháng 10 </option>
+                                <option value="11"> Tháng 11 </option>
+                                <option value="12"> Tháng 12 </option>
                             </select>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="modal-footer">
                     <input type="hidden" id="action" name="action" value="export" />
                     <button type="submit" class="btn btn-primary"><i class="fa fa-file-excel-o"></i> Xuất Excel</button>
