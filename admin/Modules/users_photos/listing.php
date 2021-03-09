@@ -6,58 +6,12 @@ $fs_action = "listing.php" . getURL(0, 0, 0, 1, "record_id");
 $fs_redirect = "listing.php" . getURL(0, 0, 0, 1, "record_id");
 $fs_errorMsg = "";
 
-$use_school_id = getValue("use_school_id", "int", "GET", 0);
-$use_faculty_id = getValue("use_faculty_id", "int", "GET", 0);
-$use_class_id = getValue("use_class_id", "int", "GET", 0);
 $keyword = getValue("keyword", "str", "GET", "");
-// $code = getValue("code", "str", "GET", "");
 $position = getValue("position", "str", "GET", "");
-$id_number = getValue("id_number", "str", "GET", "");
 
-
-// Query danh sách Trường
-// $list_schools = new db_query("SELECT * FROM schools WHERE sch_active = 1");
-// $arrTmp = convert_result_set_2_array($list_schools->result, "sch_id");
-// $arrSchools = array(0 => "- Tất cả các Trường -");
-// foreach ($arrTmp as $school) {
-//     $arrSchools[$school["sch_id"]] = $school["sch_name"];
-// }
-
-// Query danh sách Khoa theo Trường được chọn
-// $sql_faculties = "";
-// if ($use_school_id > 0) $sql_faculties .= " AND fac_school_id = " . $use_school_id;
-// $list_faculties = new db_query("SELECT * FROM faculties WHERE fac_active = 1" . $sql_faculties);
-// $arrTmp = convert_result_set_2_array($list_faculties->result, "fac_id");
-// $arrFaculties = array(0 => "- Tất cả các Khoa -");
-// foreach ($arrTmp as $faculty) {
-//     $arrFaculties[$faculty["fac_id"]] = $faculty["fac_name"];
-// }
-
-// Query danh sách Lớp theo Khoa được chọn
-// $sql_classes = "";
-// if ($use_school_id > 0) $sql_classes .= " AND cls_school_id = " . $use_school_id;
-// if ($use_faculty_id > 0) $sql_classes .= " AND cls_faculty_id = " . $use_faculty_id;
-// $list_classes = new db_query("SELECT * FROM classes WHERE cls_active = 1" . $sql_classes);
-// $arrTmp = convert_result_set_2_array($list_classes->result, "cls_id");
-// $arrClasses = array(0 => "- Tất cả các Lớp -");
-// foreach ($arrTmp as $class) {
-//     $arrClasses[$class["cls_id"]] = $class["cls_name"];
-// }
 
 $sqlWhere = "";
 
-//Tìm theo ID
-// if ($use_school_id > 0) {
-//     $sqlWhere .= " AND use_school_id = " . $use_school_id;
-// }
-// if ($use_faculty_id > 0) {
-//     $sqlWhere .= " AND use_faculty_id = " . $use_faculty_id;
-// }
-// if ($use_class_id > 0) {
-//     $sqlWhere .= " AND use_class_id = " . $use_class_id;
-// }
-
-//Tìm theo keyword
 if ($keyword != "") {
     $sqlWhere .= " AND name LIKE '%" . $keyword . "%'";
 }
@@ -66,11 +20,6 @@ if ($keyword != "") {
 if ($position != "") {
     $sqlWhere .= " AND position LIKE '%" . $position . "%'";
 }
-
-//Tìm theo keyword
-// if ($id_number != "") {
-//     $sqlWhere .= " AND use_idnumber_md5 = '" . md5($id_number) . "'";
-// }
 
 //Sort data
 $sort = getValue("sort");

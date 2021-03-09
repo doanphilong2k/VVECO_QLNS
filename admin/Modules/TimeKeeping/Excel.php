@@ -5,7 +5,8 @@ require_once("../../../classes/PHPExcel/PHPExcel.php");
 $action = getValue("action", "str", "POST", "");
 
 if ($action == "export") {
-    $month = 7; $year = 2020;
+    $month = getValue("month_id", "int", "POST", "");
+    $year = 2020;
     $start = new DateTime('2000-01-16');
     $finish = new DateTime('2000-01-16');
     $latetimeStart = "";
@@ -48,7 +49,7 @@ if ($action == "export") {
     $excel->setActiveSheetIndex(0);
     $activeSheet->setTitle("Danh Sách Checkin ");
 
-    $days = cal_days_in_month(CAL_GREGORIAN, 7, 2020);
+    $days = cal_days_in_month(CAL_GREGORIAN, $month, 2020);
     $column = 1;
     $row = 4;
     $No = 1;
@@ -101,7 +102,7 @@ if ($action == "export") {
 
         $checkin = new db_query("SELECT member_checkin.id,member_id, member_checkin.checkin_time
                                         FROM member_checkin, members
-                                        WHERE MONTH(member_checkin.checkin_time)= 7 AND YEAR(member_checkin.checkin_time) = 2020 
+                                        WHERE MONTH(member_checkin.checkin_time)= ".$month." AND YEAR(member_checkin.checkin_time) = 2020 
                                                 AND member_checkin.member_id = " . $listMember["id"] . "
                                                 AND members.active = 1 AND member_checkin.active = 1
                                         GROUP BY DATE(member_checkin.checkin_time), member_id ");
@@ -110,7 +111,7 @@ if ($action == "export") {
                                          WHERE member_checkin.member_id = members.id	
                                             AND member_checkin.id IN (SELECT MAX(member_checkin.id) 
                                                                     FROM member_checkin, members
-                                                                    WHERE MONTH(member_checkin.checkin_time)= 7 
+                                                                    WHERE MONTH(member_checkin.checkin_time)= ".$month." 
                                                                             AND YEAR(member_checkin.checkin_time) = 2020
                                                                             AND members.active = 1 AND member_checkin.active = 1	
                                                                             AND member_checkin.member_id = " . $listMember["id"] . "
@@ -203,7 +204,7 @@ if ($action == "export") {
         $activeSheet->getStyle('A1:AK1')->getFont()->setBold(true);
         $activeSheet->getStyle('A1:AK1')->getAlignment()->setWrapText(true);
         $activeSheet->mergeCells('A1:AK1');
-        $activeSheet->setCellValue('A1', "Bảng chấm công tháng 7/2020");
+        $activeSheet->setCellValue('A1', "Bảng chấm công tháng ".$month."/2020");
         $activeSheet
             ->getStyle('A1')
             ->getAlignment()
@@ -230,7 +231,7 @@ if ($action == "export") {
     if ($days == 31) {
         $activeSheet->getStyle('A1:AL1')->getFont()->setBold(true);
         $activeSheet->mergeCells('A1:AL1');
-        $activeSheet->setCellValue('A1', "Bảng chấm công tháng 7/2020");
+        $activeSheet->setCellValue('A1', "Bảng chấm công tháng $month/2020");
         $activeSheet
             ->getStyle('A1')
             ->getAlignment()
@@ -257,7 +258,7 @@ if ($action == "export") {
     if ($days == 28) {
         $activeSheet->getStyle('A1:AI1')->getFont()->setBold(true);
         $activeSheet->mergeCells('A1:AI1');
-        $activeSheet->setCellValue('A1', "Bảng chấm công tháng 7/2020");
+        $activeSheet->setCellValue('A1', "Bảng chấm công tháng ".$month."/2020");
         $activeSheet
             ->getStyle('A1')
             ->getAlignment()
@@ -285,7 +286,7 @@ if ($action == "export") {
     if ($days == 29) {
         $activeSheet->getStyle('A1:AJ1')->getFont()->setBold(true);
         $activeSheet->mergeCells('A1:AJ1');
-        $activeSheet->setCellValue('A1', "Bảng chấm công tháng 7/2020");
+        $activeSheet->setCellValue('A1', "Bảng chấm công tháng ".$month."/2020");
         $activeSheet
             ->getStyle('A1')
             ->getAlignment()
@@ -555,7 +556,7 @@ if ($action == "export") {
                     <div class="form-group">
                         <label for="sell">Chọn tháng</label>
                         <div id="listMonth">
-                            <select class="form-control" title="Chọn Tháng" id="month_id" name="month_id">
+                            <select class="form-control" title="Chọn Tháng" id="month_id" name="month_id" def>
                                 <option value="">- Chọn Tháng -</option>
                                 <option value="1"> Tháng 1 </option>
                                 <option value="2"> Tháng 2 </option>

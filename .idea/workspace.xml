@@ -29,7 +29,8 @@
     <list default="true" id="d25cbd3b-9671-4b9d-8ee4-99e7fb3ba8bb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/Modules/TimeKeeping/Excel.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/TimeKeeping/Excel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/Modules/TimeKeeping/calculation.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/TimeKeeping/calculation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/Modules/users_photos/detail.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/users_photos/detail.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/Modules/users_photos/listing.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/users_photos/listing.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +43,10 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/dist/js/fullcalendar.min.js" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/dist/js/toastr.min.js" root0="SKIP_INSPECTION" />
   </component>
   <component name="PhpServers">
     <servers>
@@ -98,7 +103,8 @@
       <workItem from="1614828289896" duration="1247000" />
       <workItem from="1614874724294" duration="2728000" />
       <workItem from="1614916045529" duration="6469000" />
-      <workItem from="1615169404338" duration="1978000" />
+      <workItem from="1615169404338" duration="14148000" />
+      <workItem from="1615256795610" duration="926000" />
     </task>
     <servers />
   </component>
@@ -164,5 +170,16 @@
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="346" y="59" width="672" height="678" key="search.everywhere.popup/0.0.1366.738@0.0.1366.738" timestamp="1614072702617" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/dist/js/fullcalendar.min.js</url>
+          <line>7</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

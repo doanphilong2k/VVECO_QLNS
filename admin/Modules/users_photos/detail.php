@@ -8,6 +8,8 @@ $record_id = getValue("record_id");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src = "../../../dist/js/toastr.min.js"/>
     <?= $load_header ?>
     <style type="text/css">
         .timeline {
@@ -166,9 +168,8 @@ $record_id = getValue("record_id");
                                          FROM questions
                                          WHERE que_active = 1
                                          ORDER BY que_stt ASC");
-            $stt = 0;
+
             while ($rowQuestion = mysqli_fetch_assoc($db_question->result)) {
-                $stt++;
                 $pictureDemoURL = "/data/questions/" . $rowQuestion["que_img_example"];
                 ?>
                 <!-- timeline item -->
@@ -178,7 +179,7 @@ $record_id = getValue("record_id");
                     <div class="timeline-item">
                         <div class="timeline-header">
                             <strong style="color: #007bff;">
-                                Kiểu ảnh <?=$stt?>
+                                <?=$rowQuestion["que_content"]?>
                             </strong>
                         </div>
 
@@ -231,3 +232,81 @@ $record_id = getValue("record_id");
 </div>
 </body>
 </html>
+<script type="text/javascript">
+    /**
+     * updatePicture
+     * @param id
+     * @param obj
+     */
+    function updatePicture(id, obj) {
+        var userImage = document.querySelector('img[id=' + id + ']');
+        var userImageUploading = $('#uploading_' + id);
+        var oldSrc = userImage.src;
+        var file = obj.files[0];
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            userImage.src = reader.result;
+            userImageUploading.fadeIn();
+
+            var $data = {'name': id, 'file': reader.result};
+            $.ajax({
+                type: 'POST',
+                url: '/ajax/update_user_picture.php',
+                data: $data,
+                dataType: "json",
+                success: function (response) {
+                    if (response.code === 0) {
+                        showAndDismissAlert("danger", response.msg);
+                        userImage.src = oldSrc;
+                    }else{
+                        userImageUploading.hide();
+                        showAndDismissAlert("info", "Bạn đã tải ảnh lên thành công!");
+                    }
+                },
+                error: function (response) {
+                    userImage.src = oldSrc;
+                    showAndDismissAlert("danger", "Có lỗi xảy ra khi thực hiện. Vui lòng thử lại.");
+                }
+
+            });
+
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function showAndDismissAlert(type, message) {
+        switch (type)
+        {
+            case "danger" : {
+                toastr.error(message);
+                break;
+            }
+            case "success" : {
+                toastr.success(message);
+                break;
+            }
+            case "warning" : {
+                toastr.warning(message);
+                break;
+            }
+            default : {
+                toastr.info(message);
+                break;
+            }
+        }
+        return false;
+
+        var htmlAlert = '<div class="alert alert-' + type + ' alert-dismissible fade show disabled">'+ message +'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+        /**
+         * Prepend so that alert is on top, could also append if we want new alerts to show below instead of on top.
+         */
+        $(".alert-messages").prepend(htmlAlert);
+
+        /**
+         * Since we are prepending, take the first alert and tell it to fade in and then fade out.
+         * Note: if we were appending, then should use last() instead of first()
+         */
+        $(".alert-messages .alert").first().hide().fadeIn(200).delay(2000).fadeOut(1000, function () { $(this).remove(); });
+    }
+</script>
