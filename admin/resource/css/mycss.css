@@ -16,7 +16,16 @@
 
 .table-container {
     width: 99.5%;
-    height: 373px;
+    /* height: 427px; */
+    height: 74.5%;
+    position: absolute;
+    overflow-y: auto;
+}
+
+.table-container2 {
+    width: 99.4%;
+    height: 64.5%;
+    position: absolute;
     overflow-y: auto;
 }
 
@@ -119,14 +128,6 @@ table.table-sticky tr.stick td {
 
 .form {
     outline: none;
-}
-
-.table-container {
-    width: 99.4%;
-    /* height: 427px; */
-    height: 74.5%;
-    position: absolute;
-    overflow-y: auto;
 }
 
 .footer {
