@@ -1,15 +1,16 @@
 <?php
 require_once("../../resource/security/security.php");
 $module_id = 3;
-$module_name = "Quản lý Tài khoản";
+$module_name = "Danh Sách Nhân Viên";
 //Check user login...
 checkLogged();
 //Check access module...
 if (checkAccessModule($module_id) != 1) redirect($fs_denypath);
 //Declare prameter when insert data
-$fs_table = "users";
-$id_field = "use_id";
-$name_field = "use_name";
+$fs_table_members = "members";
+$fs_table_users_login = "users_login";
+$id_field = "id";
+$name_field = "name";
 $break_page = "{---break---}";
 
 $fs_fieldupload = "use_picture";
@@ -22,7 +23,6 @@ $gender_list = array(
     2 => 'Nữ'
 );
 $userType_list = array(
-    1 => 'Giảng Viên/Cán Bộ',
-    2 => 'Sinh Viên'
+    1 => 'Nhân Viên',
 );
-$use_type = 2; // Sinh viên
+$use_type = 1;

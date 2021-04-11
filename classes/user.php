@@ -39,8 +39,8 @@ class user
         $sql_where = " AND (use_code_md5 = '" . md5($login_name) . "' OR use_idnumber_md5='" . md5($login_name) . "')";
 
         $db_user = new db_query("SELECT *
-                                FROM users
-                                WHERE use_active = 1 " . $sql_where);
+                                FROM users_login, members
+                                WHERE use_active = 1 AND users_login.use_memid = members.id " . $sql_where);
 
         if ($row = mysqli_fetch_assoc($db_user->result)) {
             if ($checkcookie == 0) $password = md5($password . $row["use_salt"]);
@@ -48,11 +48,12 @@ class user
                 $this->logged = 1;
                 $this->u_id = intval($row["use_id"]);
                 $this->password = $password;
-                $this->use_name = $row["use_name"];
+                $this->use_name = $row["name"];
                 $this->use_code = $row["use_code"];
                 $this->use_gender = $row["use_gender"];
                 $this->use_idnumber = $row["use_idnumber"];
                 $this->use_type = $row["use_type"];
+                $this->use_avatar = $row["avatar"];
                 $this->array_info_user = $row; // Array chứa toàn bộ thông tin user
             }
         }

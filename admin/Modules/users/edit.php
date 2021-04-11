@@ -114,15 +114,6 @@ if ($action == "execute") {
     //End if($fs_errorMsg == "")
 }//End if($action == "insert")
 
-
-// Query danh sách Trường
-$list_schools = new db_query("SELECT * FROM schools WHERE sch_active = 1");
-
-// Query danh sách Khoa theo Trường được chọn
-$list_faculties = new db_query("SELECT * FROM faculties WHERE fac_active = 1 AND fac_school_id=" . $school_id);
-
-// Query danh sách Lớp theo Khoa được chọn
-$list_classes = new db_query("SELECT * FROM classes WHERE cls_active = 1 AND cls_faculty_id=" . $faculty_id);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -152,40 +143,6 @@ $list_classes = new db_query("SELECT * FROM classes WHERE cls_active = 1 AND cls
     <?= $form->text_note('Những ô có dấu sao (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.') ?>
     <?= $form->errorMsg($fs_errorMsg) ?>
     <?= $form->select_db("Chọn Trường", "school_id", "school_id", $list_schools, "sch_id", "sch_name", $school_id, "Chọn Trường", 1, "250", 1, 0, 'onchange="loadFaculties();"', "") ?>
-    <tr>
-        <td class="form_name"><font class="form_asterisk">* </font>Chọn Khoa :</td>
-        <td class="form_text" id="listFaculties">
-            <select class="form-control" title="Chọn Khoa" id="faculty_id" name="faculty_id" style="width:250px" size="1" onchange="loadClasses();">
-                <option value="">- Chọn Khoa -</option>
-                <?
-                $arrFaculties = convert_result_set_2_array($list_faculties->result, "fac_id");
-                foreach($arrFaculties as $key => $value){
-                    $selected = ($value["fac_id"] == $faculty_id ? " selected" : "");
-                    ?>
-                    <option value="<?=$value["fac_id"]?>"<?=$selected?>><?=$value["fac_name"]?></option>
-                <?
-                }
-                ?>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td class="form_name"><font class="form_asterisk">* </font>Chọn Lớp :</td>
-        <td class="form_text" id="listClasses">
-            <select class="form-control" title="Chọn Lớp" id="class_id" name="class_id" style="width:250px" size="1">
-                <option value="">- Chọn Lớp -</option>
-                <?
-                $arrClasses = convert_result_set_2_array($list_classes->result, "cls_id");
-                foreach($arrClasses as $key => $value){
-                    $selected = ($value["cls_id"] == $class_id ? " selected" : "");
-                    ?>
-                    <option value="<?=$value["cls_id"]?>"<?=$selected?>><?=$value["cls_name"]?></option>
-                <?
-                }
-                ?>
-            </select>
-        </td>
-    </tr>
     <?= $form->text("Họ và Tên", "use_name", "use_name", $use_name, "Họ và Tên", 1, 250, "", 255, "", "", "") ?>
     <?= $form->text("Mã Sinh Viên", "use_code", "use_code", $use_code, "Mã Sinh Viên", 1, 250, "", 50, "", "", "") ?>
     <tr>
@@ -230,35 +187,6 @@ $list_classes = new db_query("SELECT * FROM classes WHERE cls_active = 1 AND cls
     $form->close_form();
     unset($form);
     ?>
-    <script type="text/javascript">
-        /**
-         * ajax load danh sách Khoa
-         */
-        function loadFaculties(){
-            var schoolID = $("#school_id").val();
-            $( "#listFaculties" ).html("<img src='/images/loading_process.gif' height='34px' />");
-
-            setTimeout(function(){
-                $( "#listFaculties" ).load("/ajax/load_faculties.php?schoolID=" + schoolID);
-            }, 500);
-
-
-        }
-
-        /**
-         * ajax load danh sách Lớp
-         */
-        function loadClasses(){
-            var facultyID = $("#faculty_id").val();
-            $( "#listClasses" ).html("<img src='/images/loading_process.gif' height='34px' />");
-
-            setTimeout(function(){
-                $( "#listClasses" ).load("/ajax/load_classes.php?facultyID=" + facultyID);
-            }, 500);
-
-
-        }
-    </script>
 </p>
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 <?= template_bottom() ?>

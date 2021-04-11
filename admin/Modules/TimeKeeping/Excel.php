@@ -6,7 +6,7 @@ $action = getValue("action", "str", "POST", "");
 
 if ($action == "export") {
     $month = getValue("month_id", "int", "POST", "");
-    $year = 2020;
+    $year = getValue("year_id", "int", "POST", "");
     $start = new DateTime('2000-01-16');
     $finish = new DateTime('2000-01-16');
     $latetimeStart = "";

@@ -27,10 +27,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d25cbd3b-9671-4b9d-8ee4-99e7fb3ba8bb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/ajax/load_role_employee.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ajax/load_workshift.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/Modules/TimeKeeping/Excel.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/TimeKeeping/Excel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/Modules/users_photos/detail.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/users_photos/detail.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/Modules/users_photos/listing.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/users_photos/listing.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/Modules/TimeKeeping/inc_security.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/TimeKeeping/inc_security.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/Modules/users/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/users/add.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/Modules/users/edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/users/edit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/Modules/users/inc_security.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/users/inc_security.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/Modules/users/listing.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/Modules/users/listing.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/user.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/hsnv/lkp1610528793.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/hsnv/rrp1610528842.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions/functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/inc_left_menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/inc_left_menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/inc_login.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/inc_login.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,9 +71,10 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../php/php.exe" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -104,7 +116,16 @@
       <workItem from="1614874724294" duration="2728000" />
       <workItem from="1614916045529" duration="6469000" />
       <workItem from="1615169404338" duration="14148000" />
-      <workItem from="1615256795610" duration="926000" />
+      <workItem from="1615256795610" duration="7537000" />
+      <workItem from="1615346556993" duration="11788000" />
+      <workItem from="1615429868232" duration="883000" />
+      <workItem from="1615432458039" duration="9516000" />
+      <workItem from="1615515501111" duration="13105000" />
+      <workItem from="1615950912564" duration="4461000" />
+      <workItem from="1617589522712" duration="15402000" />
+      <workItem from="1617677584468" duration="33308000" />
+      <workItem from="1618144129669" duration="595000" />
+      <workItem from="1618150562116" duration="1142000" />
     </task>
     <servers />
   </component>
@@ -140,6 +161,10 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="540" y="179" key="#CLI_Interpreters/0.0.1920.1050@0.0.1920.1050" timestamp="1612800778316" />
+    <state x="434" y="192" key="#Notifications" timestamp="1617764367430">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="434" y="192" key="#Notifications/0.0.1366.738@0.0.1366.738" timestamp="1617764367430" />
     <state x="667" y="167" key="#PHP" timestamp="1612800780477">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
@@ -157,19 +182,28 @@
     </state>
     <state x="274" y="47" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.738@0.0.1366.738" timestamp="1613004215321" />
     <state x="414" y="179" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1612800090216" />
-    <state x="740" y="279" key="FileChooserDialogImpl" timestamp="1612800774859">
-      <screen x="0" y="0" width="1920" height="1050" />
+    <state x="526" y="196" key="FileChooserDialogImpl" timestamp="1617770229246">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
+    <state x="526" y="196" key="FileChooserDialogImpl/0.0.1366.738@0.0.1366.738" timestamp="1617770229246" />
     <state x="740" y="279" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1612800774859" />
-    <state x="184" y="14" key="SettingsEditor" timestamp="1613272670934">
+    <state x="517" y="292" key="NewPhpFileDialog" timestamp="1615536594350">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="184" y="14" key="SettingsEditor/0.0.1366.738@0.0.1366.738" timestamp="1613272670934" />
+    <state x="517" y="292" key="NewPhpFileDialog/0.0.1366.738@0.0.1366.738" timestamp="1615536594350" />
+    <state x="184" y="14" key="SettingsEditor" timestamp="1617684162491">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="184" y="14" key="SettingsEditor/0.0.1366.738@0.0.1366.738" timestamp="1617684162491" />
     <state x="259" y="20" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1612800142385" />
-    <state x="346" y="59" width="672" height="678" key="search.everywhere.popup" timestamp="1614072702617">
+    <state x="339" y="165" key="run.anything.popup" timestamp="1615361308269">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="346" y="59" width="672" height="678" key="search.everywhere.popup/0.0.1366.738@0.0.1366.738" timestamp="1614072702617" />
+    <state x="339" y="165" key="run.anything.popup/0.0.1366.738@0.0.1366.738" timestamp="1615361308269" />
+    <state x="346" y="59" width="672" height="678" key="search.everywhere.popup" timestamp="1615543301336">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="346" y="59" width="672" height="678" key="search.everywhere.popup/0.0.1366.738@0.0.1366.738" timestamp="1615543301336" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
