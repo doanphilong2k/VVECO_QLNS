@@ -670,7 +670,8 @@ function convert_result_set_2_array($result_set, $id_field = "")
 	
 	//Sau khi loop move first lại từ đầu
 	if (mysqli_num_rows($result_set) > 0) mysqli_data_seek($result_set, 0);
-	
+
+	echo $array_return;
 	return $array_return;
 }
 

@@ -16,7 +16,7 @@ if($action == "login"){
 ?>
 <div class="login-box">
     <div class="login-logo">
-        <a href="/"><b>Face EPU</b> system</a>
+        <a href="/"><b>VVECO Personal Manager</b> system</a>
     </div>
     <!-- /.login-logo -->
     <div class="card">
