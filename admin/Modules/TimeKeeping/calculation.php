@@ -157,8 +157,7 @@ if ($NoData == "") {
     $db_listing = new db_query($sqlQuery_checkin);
     $db_checkout = new db_query($sqlQuery_checkout);
 }
-
-
+ 
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -373,8 +372,14 @@ if ($NoData == "") {
                     </div>
 
                     <div class="modal-footer">
-                        <input type="hidden" id="action" name="action" value="export" />
-                        <button id="export_excel" type="submit" class="btn btn-primary" disabled><i class="fa fa-file-excel-o"></i> Xuất Excel</button>
+                        <div id="loading">
+                            <div class="loader"></div>
+                        </div>
+                        <input type="hidden" id="action" name="action" value="export"/>
+                        <div id="excel-button">
+                            <button id="export_excel" type="submit" name="export_btn" class="btn btn-primary" style="outline: none" disabled onclick="loadBtn()"><i class="fa fa-file-excel-o"></i> Xuất Excel</button>
+                            <div id="blur"></div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -419,11 +424,11 @@ if ($NoData == "") {
     }
 
     $(document).ready(function() {
-        var start = 1900;
+        var start_year = 1900;
         var end = new Date().getFullYear();
         var options = "";
 
-        for (var year = start; year <= end; year++) {
+        for (var year = start_year; year <= end; year++) {
             options += "<option value='" + year + "'>" + year + "</option>";
         }
         document.getElementById("year_id").innerHTML = options;
@@ -436,9 +441,7 @@ if ($NoData == "") {
         if (time == 1) {
             $("#time-total").attr('type', 'time');
         }
-    });
 
-    $(document).ready(function(){
         var blank = "../../../images/blank-photo.png";
         if ( $(".avatar-img img").attr('src') == '')
         {
@@ -483,6 +486,21 @@ if ($NoData == "") {
         var button_select = document.getElementById("export_excel");
 
         button_select.disabled = !month_select.value;
+    }
+
+    function loadBtn() {
+        var loading = document.getElementById("loading");
+        var block = document.getElementById("blur");
+        var export_button = document.getElementById("export_excel");
+        loading.style.display = "block"; 
+        block.style.display = "block";
+        // export_button.disabled = true;
+
+        setTimeout(function(){
+            loading.style.display = "none";
+            block.style.display = "none";
+            // export_button.disabled = false;
+        }, 5000);
     }
     
 </script>

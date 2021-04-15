@@ -19,7 +19,6 @@ $list->add($name_field, "Tên ca", "string", 1, 1, "");
 $list->add("wor_StartTime", "Bắt đầu", "text", 0, 1, "");
 $list->add("wor_FinishTime", "Kết thúc", "text", 0, 1, "");
 $list->add("", translate_text("Sửa"), "edit");
-$list->add("", translate_text("Xóa"), "delete");
 $list->ajaxedit($fs_table);
 
 $total    = 0;
@@ -32,9 +31,19 @@ if ($row_count = mysqli_fetch_assoc($db_count->result)) {
 unset($db_count);
 $db_listing = new db_query("SELECT *
                              FROM " . $fs_table . "
-                             WHERE 1 " . $list->sqlSearch() . "
+                             WHERE 1 " . $list->sqlSearch() . " AND wor_delete_flag = 0
                              ORDER BY " . $list->sqlSort() . $id_field . " DESC
                              " . $list->limit($total));
+
+$db_detail = "SELECT lat_id, lat_idShift, lat_time_start, lat_time_finish, lat_idpunish, lat_punisher 
+        	  FROM late, workshift
+              WHERE wor_idShift = lat_idShift";
+
+$db_delete = "UPDATE workshift SET wor_delete_flag = 1 WHERE wor_idShift";
+
+$f_key = "wor_idShift";
+
+$link_css = "../../resource/css/grid-css.css";
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -50,10 +59,13 @@ $db_listing = new db_query("SELECT *
 <body class="bg" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
     <? /*---------Body------------*/ ?>
     <div id="listing" class="listing table-color2" style="padding-right: 7px">
-        <?= $list->showTable($db_listing, $total) ?>
+        <?= $list->showTableDetail($db_listing, $db_detail, $db_delete, $f_key, $total) ?>
     </div>
+
     <? /*---------Body------------*/ ?>
+
 </body>
 
 </html>
+
 

@@ -1,4 +1,4 @@
-﻿/*
+/*
  Navicat Premium Data Transfer
 
  Source Server         : localhost
@@ -11,7 +11,7 @@
  Target Server Version : 100414
  File Encoding         : 65001
 
- Date: 07/03/2021 22:46:23
+ Date: 09/03/2021 13:35:23
 */
 
 SET NAMES utf8mb4;
@@ -951,6 +951,57 @@ INSERT INTO `categories_multi` VALUES (43, 'Tin tức', 'tin-tuc', 1, NULL, NULL
 INSERT INTO `categories_multi` VALUES (82, 'Chương trình', 'chuong-trinh', 2, NULL, NULL, NULL, NULL, NULL, '', '', '', '', 1, 1, 0, 0, '82', 'static', 0, 1, 0, 0, 1534746486, 1534746486);
 INSERT INTO `categories_multi` VALUES (86, 'Kỹ năng đặc định', 'visa-dac-dinh', 3, 'gke1577932518.jpg', NULL, NULL, NULL, NULL, '<div>\r\n	<div>\r\n		<strong><span style=\"font-size:16px;\"><span style=\"font-family:comic sans ms,cursive;\">Visa đặc định là gì?</span></span></strong></div>\r\n	<div>\r\n		&nbsp;</div>\r\n	<div>\r\n		<span style=\"font-size:14px;\"><span style=\"font-family:comic sans ms,cursive;\">Ngày 29/10/2019, Chính phủ Nhật Bản đã chính thức thông qua luật mới cho phép các doanh nghiệp Nhật Bản tiếp nhận lao động nước ngoài theo dạng visa mới có tên là visa kỹ năng đặc định. Visa đặc định Tokutei Ginou cho phép người lao động có thể ở lại Nhật trong thời gian dài hơn và có thể bảo lãnh gia đình sang sống cùng trong suốt thời hạn lao động. Ngoài ra, người lao động cũng được phép chuyển việc làm, chuyển công ty trong giới hạn ngành nghề mà visa quy định.</span></span></div>\r\n	<div>\r\n		&nbsp;</div>\r\n	<div>\r\n		<span style=\"font-size:14px;\"><span style=\"font-family:comic sans ms,cursive;\">So với visa của chương trình thực tập sinh kỹ năng hiện hành thì loại visa mới này có phạm vi ngành nghề được nới rộng hơn và các yêu cầu về bằng cấp, chuyên môn cũng khá nới lỏng.</span></span></div>\r\n	<div>\r\n		&nbsp;</div>\r\n</div>\r\n<p>\r\n	&nbsp;</p>', '', '', '', 1, 1, 1, 0, '86', 'product', 1, 1, 0, 0, 1569057278, 1577933520);
 INSERT INTO `categories_multi` VALUES (90, 'Góc tư vấn', 'goc-tu-van', 1, NULL, NULL, NULL, NULL, NULL, '', '', '', '', 1, 1, 0, 0, '90', 'news', 0, 1, 0, 0, 1576467988, 1576467988);
+
+-- ----------------------------
+-- Table structure for configuration
+-- ----------------------------
+DROP TABLE IF EXISTS `configuration`;
+CREATE TABLE `configuration`  (
+  `con_id` int(11) NOT NULL AUTO_INCREMENT,
+  `con_page_size` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_left_size` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_right_size` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_admin_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_site_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_meta_description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `con_meta_keywords` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `con_currency` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_mod_rewrite` tinyint(1) NULL DEFAULT 0,
+  `con_lang_id` int(11) NULL DEFAULT 1,
+  `con_extenstion` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '\'html\'',
+  `lang_id` int(11) NULL DEFAULT 1,
+  `con_contact` int(11) NULL DEFAULT 0,
+  `con_hotline` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_hotline_banhang` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_hotline_hotro_kythuat` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_background_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_background_color` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_address` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `con_image_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_picture_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_background_homepage` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_theme_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_info_payment` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `con_fee_transport` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `con_buy_shop` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `con_contact_sale` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `con_info_company` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `con_logo_top` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_logo_bottom` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_page_fb` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `con_link_fb` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_link_twiter` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_link_insta` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `con_map` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `con_footer` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `con_content_ship` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  PRIMARY KEY (`con_id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of configuration
+-- ----------------------------
+INSERT INTO `configuration` VALUES (1, '1133', '215', '230', 'simvn@gmail.com', 'Kho sim lớn nhất Việt Nam | Sim.Vn', '', '', 'VND', 1, 1, 'html', 1, 0, '024.62.968.968', '04 632 77 555', '04 632 95 012', '', '#f6ebcf', 'Số 22 Thành Công, Ba Đình, Hà Nội', '', '', 'ktm1540045257.png', '', '<p style=\"margin: 0px; padding: 3px 10px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">Vietcombank:</strong>&nbsp;Trần xu&acirc;n diện : 0721000523747 Chi nh&aacute;nh Kỳ đồng<br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">Sacombank:</strong>&nbsp;Trần xu&acirc;n diện : 060099383677 CN Trung t&acirc;m<br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">Đ&ocirc;ng &Aacute;:</strong>&nbsp;Nguyễn thị tuyết trinh 0103674795 Chi nh&aacute;nh quy nhơn<br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">Agribank:&nbsp;</strong>Nguyễn thị tuyết trinh 1604205302028 CN Ph&uacute; nhuận<br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">Nam &Aacute;:</strong>&nbsp;Trần xu&acirc;n diện 701019611100001 CN B&igrave;nh Phước</p>\r\n<p style=\"margin: 0px; padding: 3px 10px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\"><a href=\"http://dathangsi.vn/bangia\" style=\"margin: 0px; padding: 0px; font-size: 16px; color: rgb(0, 102, 51); line-height: 20px; box-sizing: border-box; text-decoration-line: none; border: 0px;\">DOWNLOAD BẢNG GI&Aacute; SỈ</a></strong></p>\r\n<p style=\"margin: 0px; padding: 3px 10px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\"><a href=\"http://dathangsi.vn/bangia/printer.php\" style=\"margin: 0px; padding: 0px; font-size: 16px; color: rgb(0, 102, 51); line-height: 20px; box-sizing: border-box; text-decoration-line: none; border: 0px;\">IN BẢNG GI&Aacute; SỈ</a></strong></p>\r\n', '<p style=\"margin: 0px; padding: 3px 10px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">Th&agrave;nh phố Hồ Ch&iacute; Minh​</strong><br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	- Nội th&agrave;nh ph&iacute;:&nbsp;<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">25K&nbsp;</strong><br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	-&nbsp;Ngoại th&agrave;nh ph&iacute;:&nbsp;<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">30K</strong><br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	- Huyện ngoại th&agrave;nh ph&iacute;:&nbsp;<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">35K</strong></p>\r\n<p style=\"margin: 0px; padding: 3px 10px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">Tỉnh th&agrave;nh kh&aacute;c&nbsp;</strong>-&nbsp;<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">TL dưới 1Kg&nbsp;</strong><br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	- Miền Nam -&nbsp;T&acirc;y Nguy&ecirc;n ph&iacute;:&nbsp;<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">55K</strong><br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	- Miền Trung - Miền Bắc&nbsp;ph&iacute;:&nbsp;<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">60K</strong></p>\r\n<p style=\"margin: 0px; padding: 3px 10px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">H&agrave;ng cồng kềnh hoặc số lượng nhiều</strong><br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	Gủi ch&agrave;nh xe chi ph&iacute; từ&nbsp;<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">50K&nbsp;</strong>đến&nbsp;<strong style=\"margin: 0px; padding: 0px; line-height: 22px; box-sizing: border-box;\">100K</strong></p>\r\n<div>\r\n	&nbsp;</div>\r\n', '<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(255, 102, 0); line-height: 22px; box-sizing: border-box;\">ĐỊA CHỈ:&nbsp;</strong><strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">37 Đường C27, Phường 12, Q.T&acirc;n B&igrave;nh, Tp.HCM&nbsp;<br style=\"margin: 0px; padding: 0px; font-size: 13px; color: rgb(102, 102, 102); line-height: 20px; box-sizing: border-box;\" />\r\n	( Ho&agrave;ng Hoa Th&aacute;m &raquo; Nguyễn Minh Ho&agrave;n &raquo; Hẻm 58 &raquo; Đường C27 )</strong></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 3px 10px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<a href=\"https://www.google.com/maps/place/%C4%90%C6%B0%E1%BB%9Dng+C27,+Ph%C6%B0%E1%BB%9Dng+12,+T%C3%A2n+B%C3%ACnh,+H%E1%BB%93+Ch%C3%AD+Minh,+Vi%E1%BB%87t+Nam/@10.7986851,106.6466218,17z/data=!4m5!3m4!1s0x317529496640fa6d:0x640e38f05c0947ee!8m2!3d10.7979895!4d106.6491324\" style=\"margin: 0px; padding: 0px; font-size: 16px; color: rgb(0, 102, 51); line-height: 20px; box-sizing: border-box; text-decoration-line: none; border: 0px;\" target=\"_blank\"><strong style=\"margin: 0px; padding: 0px; font-size: 15px; color: rgb(0, 0, 255); line-height: 22px; box-sizing: border-box;\">&nbsp;Bản đồ chỉ dẫn đường đi</strong></a></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 3px 10px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(0, 0, 255); line-height: 22px; box-sizing: border-box;\">GIỜ L&Agrave;M VIỆC: T2- T7 : TỪ 8h ĐẾN 18H !!!</strong></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 3px 10px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(0, 0, 255); line-height: 22px; box-sizing: border-box; text-transform: uppercase;\">NGHĨ TRƯA TỪ 12H ĐẾN 13H30</strong></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 3px 10px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 102); line-height: 22px; box-sizing: border-box;\">QU&Iacute; KH&Aacute;CH VUI L&Ograve;NG TỚI TRONG GIỜ L&Agrave;M VIỆC</strong></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 3px 10px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 102); line-height: 22px; box-sizing: border-box;\">XIN CH&Acirc;N TH&Agrave;NH CẢM ƠN!!!</strong></p>\r\n', '<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">Kh&aacute;ch HCM</strong>&nbsp;<br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(255, 0, 0); line-height: 22px; box-sizing: border-box; font-size: 20px !important;\">0902 985 499</strong>&nbsp;<i style=\"margin: 0px; padding: 0px 5px; font-size: 13px; color: rgb(153, 51, 0); line-height: 20px; box-sizing: border-box; font-weight: bold;\">(Ms Th&uacute;y)</i></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">Kh&aacute;ch Tỉnh</strong>&nbsp;<br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(255, 0, 0); line-height: 22px; box-sizing: border-box; font-size: 20px !important;\">0932 621 233</strong>&nbsp;<i style=\"margin: 0px; padding: 0px 5px; font-size: 13px; color: rgb(153, 51, 0); line-height: 20px; box-sizing: border-box; font-weight: bold;\">(Ms Hương)</i></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">Mua sỉ sll, nhận order</strong>&nbsp;<br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(255, 0, 0); line-height: 22px; box-sizing: border-box; font-size: 20px !important;\">0934 030 287&nbsp;</strong><i style=\"margin: 0px; padding: 0px 5px; font-size: 13px; color: rgb(153, 51, 0); line-height: 20px; box-sizing: border-box; font-weight: bold;\">(Ms Trinh)</i></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">H&agrave;ng bảo h&agrave;nh kh&aacute;ch tỉnh</strong>&nbsp;<br style=\"margin: 0px; padding: 0px; font-size: 13px; line-height: 20px; box-sizing: border-box;\" />\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(255, 0, 0); line-height: 22px; box-sizing: border-box; font-size: 20px !important;\">0974 947 857&nbsp;</strong><i style=\"margin: 0px; padding: 0px 5px; font-size: 13px; color: rgb(153, 51, 0); line-height: 20px; box-sizing: border-box; font-weight: bold;\">(Mr Trường)</i></p>\r\n', '<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(255, 102, 0); line-height: 22px; box-sizing: border-box;\">ĐỊA CHỈ:&nbsp;</strong><strong style=\"margin: 0px; padding: 0px; color: rgb(255, 0, 255); line-height: 22px; box-sizing: border-box;\">37 Đường C27, Phường 12, Q.T&acirc;n B&igrave;nh, Tp.HCM&nbsp;<br style=\"margin: 0px; padding: 0px; font-size: 13px; color: rgb(102, 102, 102); line-height: 20px; box-sizing: border-box;\" />\r\n	( Ho&agrave;ng Hoa Th&aacute;m &raquo; Nguyễn Minh Ho&agrave;n &raquo; Hẻm 58 &raquo; Đường C27 )</strong></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<a href=\"https://www.google.com/maps/place/%C4%90%C6%B0%E1%BB%9Dng+C27,+Ph%C6%B0%E1%BB%9Dng+12,+T%C3%A2n+B%C3%ACnh,+H%E1%BB%93+Ch%C3%AD+Minh,+Vi%E1%BB%87t+Nam/@10.7986851,106.6466218,17z/data=!4m5!3m4!1s0x317529496640fa6d:0x640e38f05c0947ee!8m2!3d10.7979895!4d106.6491324\" style=\"margin: 0px; padding: 0px; font-size: 16px; color: rgb(0, 102, 51); line-height: 20px; box-sizing: border-box; text-decoration-line: none; border: 0px;\" target=\"_blank\"><strong style=\"margin: 0px; padding: 0px; font-size: 15px; color: rgb(0, 0, 255); line-height: 22px; box-sizing: border-box;\">&nbsp;Bản đồ chỉ dẫn đường đi</strong></a></p>\r\n<p>\r\n	<strong style=\"margin: 0px; padding: 0px; font-family: Arial; font-size: 15px; color: rgb(0, 102, 204); line-height: 22px; box-sizing: border-box; text-align: center;\">&nbsp;&nbsp;</strong><span style=\"color: rgb(102, 102, 102); font-family: Arial; font-size: 13px; text-align: center;\">&nbsp;</span><br style=\"margin: 0px; padding: 0px; font-family: Arial; font-size: 13px; color: rgb(102, 102, 102); line-height: 20px; box-sizing: border-box; text-align: center;\" />\r\n	<strong style=\"margin: 0px; padding: 0px; font-family: Arial; color: rgb(255, 0, 0); line-height: 22px; box-sizing: border-box; text-align: center; font-size: 20px !important;\">LI&Ecirc;N HỆ MUA SỈ V&Agrave; Đ&Oacute;NG H&Agrave;NG ĐI TỈNH</strong></p>\r\n<p style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box; text-align: center;\">\r\n	&nbsp;</p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">Kh&aacute;ch HCM</strong>&nbsp;<strong style=\"margin: 0px; padding: 0px; color: rgb(255, 0, 0); line-height: 22px; box-sizing: border-box; font-size: 20px !important;\">0902 985 499</strong>&nbsp;<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">Ms Th&uacute;y</strong></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">Kh&aacute;ch Tỉnh</strong>&nbsp;<strong style=\"margin: 0px; padding: 0px; color: rgb(255, 0, 0); line-height: 22px; box-sizing: border-box; font-size: 20px !important;\">0932 621 233</strong>&nbsp;<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">Ms Hương</strong></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">Mua sỉ sll, nhận order</strong>&nbsp;<strong style=\"margin: 0px; padding: 0px; color: rgb(255, 0, 0); line-height: 22px; box-sizing: border-box; font-size: 20px !important;\">0934 030 287&nbsp;</strong><strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">Ms Trinh</strong></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">H&agrave;ng bảo h&agrave;nh kh&aacute;ch tỉnh</strong>&nbsp;<strong style=\"margin: 0px; padding: 0px; color: rgb(255, 0, 0); line-height: 22px; box-sizing: border-box; font-size: 20px !important;\">0974 947 857&nbsp;</strong><strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">Mr Trường</strong></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 0); line-height: 22px; box-sizing: border-box;\">Gmail:&nbsp;trinh240887@gmail.com</strong></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(0, 0, 255); line-height: 22px; box-sizing: border-box;\">GIỜ L&Agrave;M VIỆC: T2 - T7 : TỪ 8h ĐẾN 18H !!!</strong></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(0, 0, 255); line-height: 22px; box-sizing: border-box; text-transform: uppercase;\">NGHĨ TRƯA TỪ 12H ĐẾN 13H30</strong></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(153, 51, 102); line-height: 22px; box-sizing: border-box;\">QU&Iacute; KH&Aacute;CH VUI L&Ograve;NG GỌI TRONG GIỜ L&Agrave;M VIỆC. XIN CẢM ƠN!!!!</strong></p>\r\n<p>\r\n	<strong style=\"margin: 0px; padding: 0px; font-family: Arial; font-size: 15px; color: rgb(0, 102, 204); line-height: 22px; box-sizing: border-box; text-align: center;\">&nbsp;&nbsp;</strong><span style=\"color: rgb(102, 102, 102); font-family: Arial; font-size: 13px; text-align: center;\">&nbsp;</span></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(255, 157, 0); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(0, 102, 204); line-height: 22px; box-sizing: border-box;\">ĐỐI VỚI KH&Aacute;C H&Agrave;NG ĐẾN VĂN PH&Ograve;NG</strong>&nbsp;<br style=\"margin: 0px; padding: 0px; font-size: 13px; color: rgb(102, 102, 102); line-height: 20px; box-sizing: border-box;\" />\r\n	NHỮNG SẢN PHẨM BAO TEST KH&Aacute;CH H&Agrave;NG MUA V&Agrave; KIỂM TẠI CHỖ, KIỂM TRA ĐẦY ĐỦ H&Agrave;NG H&Oacute;A TRƯỚC KHI RA VỀ, SẢN PHẨM ĐƯỢC ĐỔI TRẢ TRONG 7 NG&Agrave;Y QU&Iacute; KH&Aacute;CH ĐEM H&Oacute;A ĐƠN THEO ĐỂ ĐC ĐỔI H&Agrave;NG, KH&Ocirc;NG BẢO H&Agrave;NH NHỮNG TRƯỜNG HỢP SẢN PHẨM BỊ BIẾN DẠNG, CH&Aacute;Y NỔ V&Agrave; PHỤ KIỆN ĐI K&Egrave;M!!!&nbsp;<br style=\"margin: 0px; padding: 0px; font-size: 13px; color: rgb(102, 102, 102); line-height: 20px; box-sizing: border-box;\" />\r\n	XIN CH&Acirc;N TH&Agrave;NH CẢM ƠN.&nbsp;<br style=\"margin: 0px; padding: 0px; font-size: 13px; color: rgb(102, 102, 102); line-height: 20px; box-sizing: border-box;\" />\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(0, 102, 204); line-height: 22px; box-sizing: border-box;\">&nbsp;&nbsp;</strong></p>\r\n<p align=\"center\" style=\"margin: 0px; padding: 5px 0px; font-family: Arial; font-size: 15px; color: rgb(102, 102, 102); line-height: 25px; box-sizing: border-box;\">\r\n	<strong style=\"margin: 0px; padding: 0px; color: rgb(0, 128, 0); line-height: 22px; box-sizing: border-box;\">GIAO H&Agrave;NG MIỄN PH&Iacute; NỘI TH&Agrave;NH VỚI H&Oacute;A ĐƠN TỪ 1TR5 TRỞ L&Ecirc;N, DƯỚI 1.5 TRIỆU PH&Iacute; GIAO H&Agrave;NG 30K</strong></p>\r\n<p align=\"center\">\r\n	<a href=\"http://dathangsi.vn/bangia\" style=\"font-weight:bold; color:#063; text-transform:uppercase; font-size:16px\">BẢNG B&Aacute;O GI&Aacute; MỚI NHẤT</a></p>\r\n', 'thg1571712124.png', 'zma1540045297.png', '', '', '', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for face_captured
@@ -11011,84 +11062,87 @@ CREATE TABLE `members`  (
   `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `active` bit(1) NOT NULL,
   `mem_id_role` int(255) NOT NULL,
+  `mem_workshift` int(255) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `FK_members_role_employee`(`mem_id_role`) USING BTREE,
-  CONSTRAINT `FK_members_role_employee` FOREIGN KEY (`mem_id_role`) REFERENCES `role_employee` (`rol_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  INDEX `FK_members_workshift`(`mem_workshift`) USING BTREE,
+  CONSTRAINT `FK_members_role_employee` FOREIGN KEY (`mem_id_role`) REFERENCES `role_employee` (`rol_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_members_workshift` FOREIGN KEY (`mem_workshift`) REFERENCES `workshift` (`wor_idShift`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 75 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of members
 -- ----------------------------
-INSERT INTO `members` VALUES (1, '2020-02-08 11:45:26', 1, 'Ngô Quốc Hùng', '2020-07-03 15:25:24', '/member-avatars/5e76470c-b059-4739-b32c-b7702ef0d102.jpg', '2d02836e-89d8-4a4b-934d-cfd2adf61cc4', 'Developer', b'0', 0);
-INSERT INTO `members` VALUES (2, '2020-02-08 11:45:26', 1, 'Quan Văn Trường', '2020-07-03 15:26:32', '/member-avatars/d9502910-e0a2-4150-83b8-2431363db3fc.jpg', '6b60dbf6-4675-46ab-babe-a9b83262695a', 'Developer', b'0', 0);
-INSERT INTO `members` VALUES (3, '2020-02-10 14:19:49', 1, 'Bùi Đức Thiện', '2020-07-03 15:26:42', '/member-avatars/e53b2ad3-9931-44d5-8438-d108b83b7bbc.jpg', '53602f9c-1b6e-40da-8f5b-b56a60ac128e', 'Developer', b'1', 0);
-INSERT INTO `members` VALUES (7, '2020-05-17 11:28:07', 1, 'Lê Triều Dương', '2020-07-03 15:27:10', '/member-avatars/21261f24-1737-4098-9497-a396d8b4f9ee.jpg', '2f9c86b2-26ef-4a9f-a207-010192739744', 'Nhân viên', b'0', 11);
-INSERT INTO `members` VALUES (9, '2020-05-17 11:30:16', 1, 'Nguyễn Hữu Lợi', '2020-07-07 10:48:05', '/member-avatars/ffe7993f-5730-4de3-8447-bce71e206895.jpg', 'ee7ea6d0-a213-4de3-9e3b-fcce158520c6', 'Kinh doanh', b'0', 8);
-INSERT INTO `members` VALUES (10, '2020-05-17 14:08:46', 1, 'Nguyễn Thùy Dương', NULL, '/member-avatars/33edd921-7b2b-42d5-bca7-3094104b4638.jpg', '3fb4daf1-08b0-4a2e-a8cf-346ba3d12dc0', 'Giám đốc', b'0', 5);
-INSERT INTO `members` VALUES (11, '2020-05-17 14:09:22', 1, 'Hà Anh', '2020-05-17 14:09:34', '/member-avatars/05d36c35-6cb5-4139-ac29-2331f94ceccc.jpg', 'a3252b82-149f-45f6-b2b4-f32e39fa8cef', 'Nhân viên', b'0', 11);
-INSERT INTO `members` VALUES (12, '2020-05-17 14:11:38', 1, 'Lưu Tuyết San', '2020-07-17 14:19:45', '/member-avatars/f94d9ca3-4f5e-4721-82ea-f73cf68f67a9.jpg', 'ad899686-f429-4c2f-b678-5b8932256e99', 'Nhân viên', b'0', 11);
-INSERT INTO `members` VALUES (13, '2020-07-16 13:51:24', 1, 'Đỗ Phi Long', '2020-07-16 13:54:09', '/member-avatars/1bebfb7a-4253-4357-9ca0-1363def0cb28.jpg', '05f69385-56a2-4d32-bfe3-49ee7c570293', 'Nhân viên sản xuất', b'1', 12);
-INSERT INTO `members` VALUES (14, '2020-07-16 13:54:44', 1, 'Nguyễn Huy Minh', '2020-07-16 13:55:27', '/member-avatars/759a8db9-e968-4b95-80ca-d3c0dcd6c18a.jpg', '7968fd6f-72f9-412b-a567-fbab95f7b969', 'Kế Toán Trưởng', b'1', 7);
-INSERT INTO `members` VALUES (15, '2020-07-16 13:56:03', 1, 'Nguyễn Thị An', '2020-07-16 13:56:52', '/member-avatars/f3df3537-b25c-4ac8-8523-e40742d6511f.jpg', '5ea9fa7a-abe0-4bdd-bb90-813dc65a0135', 'Tạp vụ/Nhà bếp', b'1', 16);
-INSERT INTO `members` VALUES (16, '2020-07-16 13:57:38', 1, 'Nguyễn Thị Linh', '2020-07-16 13:57:57', '/member-avatars/57f8dfc9-061b-418b-bc73-bb6bd6ab2070.jpg', '69c3e58a-e585-44cb-a81a-a7857af9c2f9', 'Lao công', b'1', 10);
-INSERT INTO `members` VALUES (17, '2020-07-16 13:59:12', 1, 'Nguyễn Thị Loan', '2020-07-16 14:00:11', '/member-avatars/6b53c2f2-56fb-4067-972e-4801ab31ae55.jpg', 'c266cb02-72b6-4e8b-a9f0-f0b586917505', 'Tạp vụ/Nhà bếp', b'1', 16);
-INSERT INTO `members` VALUES (18, '2020-07-16 14:00:48', 1, 'Vũ Minh Tuấn', '2020-07-16 14:01:06', '/member-avatars/ffc66654-2ada-4c16-bd9e-de2d52188f81.jpg', 'ef921ee6-b8da-4fb0-b325-5122d15debd9', 'Sản xuất', b'1', 15);
-INSERT INTO `members` VALUES (19, '2020-07-16 14:02:20', 1, 'Ngô Đức Anh', '2020-07-16 14:20:59', '/member-avatars/8ee33baa-9f9c-485e-92b8-92263a06d549.jpg', 'ce930546-2fb9-445a-b356-15ab73d120d6', 'Giám đốc điều hành', b'1', 6);
-INSERT INTO `members` VALUES (20, '2020-07-18 13:36:21', 1, 'Lê Thị Hợp', '2020-07-18 13:37:27', '/member-avatars/a112484b-7fd2-4a8b-b2dd-1362b1de61d4.jpg', 'a9a92ee0-9cec-4ef8-90cc-3be942024c7e', 'Quản lý', b'1', 14);
-INSERT INTO `members` VALUES (21, '2020-07-18 17:13:44', 1, 'Nông Ngọc Trung', '2020-07-18 17:16:39', '/member-avatars/202b2f72-8b6f-4a95-a3a3-915df8b314f9.png', '26b29b18-3231-4416-a2f9-bbb4c49f55d6', 'Chủ tịch HĐQT', b'1', 3);
-INSERT INTO `members` VALUES (22, '2020-08-06 17:00:58', 1, 'Anh Vượng', NULL, '/member-avatars/3a3e7921-2f99-4e43-974c-d38145028afa.jpg', '28993761-0e37-4dbd-bf65-b17d28bab771', 'Bảo vệ', b'1', 2);
-INSERT INTO `members` VALUES (23, '2020-08-06 17:02:37', 1, 'Vũ Văn Dũng', NULL, '/member-avatars/3912194e-6196-4099-9d87-694073bfa245.jpg', 'ca0f839a-3297-4566-95e3-7d7ef91459ef', 'Sản xuất', b'1', 15);
-INSERT INTO `members` VALUES (24, '2020-08-06 17:05:19', 1, 'Nguyễn Văn Tuấn', '2020-08-06 17:05:34', '/member-avatars/6eb68681-4d54-423d-9bfa-62d193dc7236.jpg', 'f9932767-b8da-43de-b2fc-0da06fabb929', 'Sản xuất', b'1', 15);
-INSERT INTO `members` VALUES (25, '2020-08-06 17:06:20', 1, 'Lê Thị Thu Hà', '2020-08-06 17:08:21', '/member-avatars/e0d5024b-ef94-45c0-a210-6e8977b583d5.jpg', 'da55a99b-8f06-40ff-9f9e-93e2d837d02a', 'Phó chủ tịch HĐQT', b'1', 13);
-INSERT INTO `members` VALUES (26, '2020-08-11 16:33:09', 1, 'Vũ Xuân Huy', '2020-08-11 16:33:59', '/member-avatars/f63b8bca-251c-4f0c-ad45-1c742ec86fe9.jpg', '909fd8a3-59a9-45bb-8b0a-8b4692f017f5', 'Xưởng giấy', b'1', 17);
-INSERT INTO `members` VALUES (27, '2020-08-11 16:35:06', 1, 'Lê Trung Anh', NULL, '/member-avatars/1c13f5c0-aab1-4569-8b75-88f3a8515c41.jpg', 'a22eb8d3-9123-4308-ac34-7dde24660502', 'Xưởng Giấy', b'1', 17);
-INSERT INTO `members` VALUES (28, '2020-08-13 14:50:48', 1, 'Dương Văn Đại', NULL, '/member-avatars/35755efe-cb21-476e-b6bb-9f6fa707a54a.jpg', '3d979764-7671-4d32-aa23-e2580e073f99', 'Nhân viên sản xuất', b'1', 12);
-INSERT INTO `members` VALUES (29, '2020-08-19 11:55:25', 1, 'Trần Quang Hưng', NULL, '/member-avatars/b9471d92-8761-4ac4-acb1-b38f811f2be8.jpg', '2cd1e489-3e8c-4dbf-866c-4b3491faf3d8', 'Kỹ Thuật Viên', b'1', 9);
-INSERT INTO `members` VALUES (30, '2020-08-21 10:31:10', 1, 'Vũ Anh Trung', '2020-08-21 10:31:22', '/member-avatars/09996ec1-4fc2-40de-9c0c-36151e00fff5.jpg', '8454eb56-a2e4-499f-b9b5-db9c37a5513b', 'Sản xuất', b'1', 15);
-INSERT INTO `members` VALUES (31, '2020-10-02 16:14:24', 1, 'Âu Thị Hiền', NULL, '/member-avatars/2261a289-63ed-4924-92f7-9f2f628ced5b.jpg', 'b2816356-36bb-4baa-a18e-6827cb2f322e', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (32, '2020-10-02 16:14:42', 1, 'Bạch Thị Thùy', '2020-10-02 16:22:27', '/member-avatars/d4897301-56e0-4419-9d27-57be20b4bddd.jpg', '5b359aba-b6cc-4245-99f9-bb4b4d9c4964', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (33, '2020-10-02 16:15:05', 1, 'Bùi Thị Liên', '2020-10-02 16:44:47', '/member-avatars/a3cdf553-bc08-4050-86ef-65c11eccfdf2.jpg', '2161e61a-56a0-4a78-b021-b549a23d98ab', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (34, '2020-10-02 16:15:18', 1, 'Chu Thị Liễu', '2020-10-02 16:38:14', '/member-avatars/334d85eb-f79d-45eb-8e1c-2b5435a7305b.jpg', '709d3680-7e8a-439e-b57d-a0f0ddedd5d6', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (35, '2020-10-02 16:15:29', 1, 'Đặng Thị Đỉnh', '2020-10-02 16:38:48', '/member-avatars/caad4181-b6bd-4057-a16f-20216291a014.jpg', 'df206fe6-fec5-4c7d-9f2c-4495f1ea8774', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (36, '2020-10-02 16:15:38', 1, 'Đặng Thị Hiền', '2020-10-02 16:39:20', '/member-avatars/f07f5b3a-0540-4dc8-8945-e2bf333abf82.jpg', 'b38540e3-5d03-47ef-9557-34d3e799c56d', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (37, '2020-10-02 16:15:44', 1, 'Đỗ Thị Hà', '2020-10-02 16:39:48', '/member-avatars/fe8e0842-a289-4399-b0e4-3437ca78a5e3.jpg', '1f21f8e3-6e98-4c01-bd9b-3bda4e681b07', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (38, '2020-10-02 16:15:54', 1, 'Đỗ Thị Hương', '2020-10-02 16:41:05', '/member-avatars/7683f1be-3b3e-4000-84e6-6d73d37ade22.jpg', 'c0d8494e-16f2-4d3a-a7d3-21577dc1898a', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (39, '2020-10-02 16:16:04', 1, 'Đỗ Thị Huyền', '2020-10-02 16:41:33', '/member-avatars/93badbf9-6f86-4eb6-aff2-8808a3397f3a.jpg', 'dfe3bcec-c7bd-450e-8935-b787a3d51d41', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (40, '2020-10-02 16:16:12', 1, 'Đỗ Trường Giang', '2020-10-02 16:42:13', '/member-avatars/82cf7a9b-33a3-4a3d-839a-f164fe9142bc.jpg', 'c088fbff-3e4a-468a-9452-29e20eff211d', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (41, '2020-10-02 16:16:19', 1, 'Đoàn Thị Diệu Linh', '2020-10-02 16:42:41', '/member-avatars/bd004552-be36-4029-9ad8-ae0fb008ead7.jpg', 'c188d797-ac5b-49b7-8c91-53ba97835361', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (42, '2020-10-02 16:16:28', 1, 'Dương Thị Chúc', '2020-10-02 16:43:12', '/member-avatars/d30034fe-c231-42dd-81cb-3bb62156d3c6.jpg', 'e6f70cb9-54c9-474e-b27c-fd9a875338d5', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (43, '2020-10-02 16:16:36', 1, 'Dương Thị Liên', '2020-10-02 16:43:41', '/member-avatars/ca562e98-27ea-44d0-bad2-df68303ad4d3.jpg', '0b8d367e-a69f-453e-816c-bdc941e0f0aa', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (44, '2020-10-02 16:16:44', 1, 'Hà Thị Mùi', '2020-10-02 16:44:06', '/member-avatars/cd98a957-9413-4b83-9127-00e53b4bcfc9.jpg', 'e50ed753-a9d7-491b-951c-c74136fc21d9', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (45, '2020-10-02 16:16:50', 1, 'Lê Thị Hồng', '2020-10-02 16:45:10', '/member-avatars/3c7f503d-3bc6-478b-aad8-ea448574b24a.jpg', '0c28ce30-d81e-4f19-9729-192e0da5d825', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (46, '2020-10-02 16:17:09', 1, 'Nguyễn Thị Hải Yến', '2020-10-02 16:45:56', '/member-avatars/6130dfac-2ab4-4bac-a79d-8ac98218024a.jpg', '73c0a504-5a47-4932-b512-16a4fe536a06', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (47, '2020-10-02 16:17:22', 1, 'Nguyễn Thị Hảo', '2020-10-02 16:46:28', '/member-avatars/aa231e9d-d8c8-42c6-934a-5367cb3ed4d9.jpg', '63f7177c-21f8-4559-935d-1ed7669a9afa', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (48, '2020-10-02 16:17:29', 1, 'Nguyễn Thị Hậu', '2020-10-02 16:47:00', '/member-avatars/61698869-10a4-4e0d-ae4d-d8676b317ce1.jpg', 'f423c26c-0b3b-4575-8f87-832bce2c545a', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (49, '2020-10-02 16:17:43', 1, 'Nguyễn Thị Hồng Út', '2020-10-02 16:47:37', '/member-avatars/b2d7dbc1-a205-4f98-9a14-d29f9ddcc0d0.jpg', '1ee4d357-bfb9-4b5e-b1e2-a38ccbeb7aa9', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (50, '2020-10-02 16:17:50', 1, 'Nguyễn Thị Liên', '2020-10-02 16:37:23', '/member-avatars/c502f2ee-3cca-4378-8ccd-cae46a39a29e.jpg', 'a5555824-fd69-4257-9391-7ac645c9d2eb', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (51, '2020-10-02 16:18:01', 1, 'Nguyễn Thị Nga', '2020-10-02 16:36:37', '/member-avatars/5b44bcea-e020-4976-a0ce-6e41f10af6a7.jpg', 'b4b088cb-d5f6-46fe-b313-8c3b989e9d4a', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (52, '2020-10-02 16:18:08', 1, 'Nguyễn Thị Ngọc A', '2020-10-02 16:36:07', '/member-avatars/0970caa1-5bfb-4ca6-8694-7405fe7125e0.jpg', '85f35009-8a68-4ead-9080-0912059dad7b', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (53, '2020-10-02 16:18:15', 1, 'Nguyễn Thị Ngọc B', '2020-10-02 16:35:39', '/member-avatars/3ab2046a-7a16-4473-ad81-862c7efea5fc.jpg', 'e9c9d9f1-85e1-4668-80f5-70645eca869a', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (54, '2020-10-02 16:18:22', 1, 'Nguyễn Thị Nhã', '2020-10-02 16:33:34', '/member-avatars/f7aad970-1c17-44f3-81f4-88d0da1b88ef.jpg', 'cc371211-2d03-4e2d-98ab-70c9940ffaae', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (55, '2020-10-02 16:18:29', 1, 'Nguyễn Thị Thanh Tâm', '2020-10-02 16:32:31', '/member-avatars/3c6e2ea1-ef41-43d2-8fb1-09e417ee2812.jpg', 'c480e948-30d5-40c3-abf7-79f8255e7ffa', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (56, '2020-10-02 16:18:35', 1, 'Nguyễn Thị Thu Hà', '2020-10-02 16:31:41', '/member-avatars/5e22f25f-e9ed-4c38-acc6-2eccea6ac73a.jpg', '2f5f70d1-f615-446e-851f-5f6c99955b24', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (57, '2020-10-02 16:18:42', 1, 'Nguyễn Thị Xuân', '2020-10-02 16:30:14', '/member-avatars/a1cf1940-ad92-4000-b61f-1e183b0ac79c.jpg', '93923d69-b53d-4dec-9963-4e624338f199', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (58, '2020-10-02 16:18:50', 1, 'Nguyễn Trường Sơn', '2020-10-02 16:29:27', '/member-avatars/6e4640ce-7ded-4568-8092-5c13530f9c36.jpg', '346e013c-2ea4-4fb5-a625-cc7527749380', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (59, '2020-10-02 16:18:56', 1, 'Nguyễn Trường Thiên', '2020-10-02 16:28:58', '/member-avatars/bb887967-07b3-4a0f-8230-57d0471b8c45.jpg', '9d708e2c-70f7-4cc9-a92f-2f15818d4f2c', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (60, '2020-10-02 16:19:03', 1, 'Nguyễn Văn Hậu', '2020-10-02 16:28:12', '/member-avatars/fdd89329-6c9e-411a-ab2b-2e863c7ee865.jpg', '27371e04-5637-42e2-8e21-b122329ecee5', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (61, '2020-10-02 16:19:09', 1, 'Nguyễn Xuân Hiển', '2020-10-02 16:27:43', '/member-avatars/f4936cf7-32af-41ee-b3c0-be73c1bd6886.jpg', 'd367d20a-f81c-4537-8b77-856e1db42aa7', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (62, '2020-10-02 16:19:16', 1, 'Phạm Thị Lương', '2020-10-02 16:27:15', '/member-avatars/0270c38b-fdb0-426b-beb9-c86e3d6f3d61.jpg', '632412bd-6695-4adb-b2ba-7a945c9a8350', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (63, '2020-10-02 16:19:26', 1, 'Phan Văn Hoàng', '2020-10-02 16:26:47', '/member-avatars/6502cd6a-ddfc-4ee7-8b07-48a2119b1e2b.jpg', 'd87963ac-5fae-4c02-96d0-c0e35846e7e6', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (64, '2020-10-02 16:19:33', 1, 'Sái Thị Thơ', '2020-10-02 16:26:22', '/member-avatars/ac0ef209-1525-4d69-a4e8-4578abbd15a0.jpg', 'a1e4594a-269e-463b-99e7-de538d61184e', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (65, '2020-10-02 16:19:41', 1, 'Tạ Thị Thanh Bình', '2020-10-02 16:25:49', '/member-avatars/57a3f4c6-1242-4a59-9fe4-db1a9666299a.jpg', '5ac444ae-d42e-4dd4-a34a-218b1ddcd937', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (66, '2020-10-02 16:19:49', 1, 'Trần Quang Huy', '2020-10-02 16:25:22', '/member-avatars/1e6ce4a6-3451-47d5-916f-156280c3d36a.jpg', '28c04290-5fac-43dd-8beb-234a71e4c5f3', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (67, '2020-10-02 16:19:55', 1, 'Trần Thị Khuê', '2020-10-02 16:24:59', '/member-avatars/016a18f6-1a46-4818-b6df-ca3be594fa6f.jpg', '568a3d3e-fa40-43fc-a4a0-15703b52724d', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (68, '2020-10-02 16:20:01', 1, 'Triệu Trung Hiếu', '2020-10-02 16:24:30', '/member-avatars/82f6fa7a-934f-4ac6-95cb-b0d3e1fc4841.jpg', '23d595ca-4dd6-456b-8f4b-8ad82a708c80', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (69, '2020-10-02 16:20:08', 1, 'Trịnh Thị Hương', '2020-10-02 16:23:51', '/member-avatars/f960a3d4-c082-41b9-bb83-ab095c9ea670.jpg', '2e0044e1-e503-45cf-b48a-5a7a3a4e342e', '', b'1', 0);
-INSERT INTO `members` VALUES (70, '2020-10-02 16:20:15', 1, 'Trương Thị Phượng', '2020-10-02 16:23:12', '/member-avatars/1f4d27e3-59bb-4b66-a7e3-aac5859875f4.jpg', '05f491ba-33d3-446c-991f-5ae0f540063c', '', b'1', 0);
-INSERT INTO `members` VALUES (71, '2020-10-02 17:40:37', 1, 'Lê Thị Dung', NULL, '/member-avatars/971dfce8-b2d7-4da1-9bcf-5c72f7f348a1.jpg', '0aa62ea9-8bf3-4f36-aea3-8524e1f3022e', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (72, '2020-10-02 17:41:18', 1, 'Lò Văn Nghiệp', NULL, '/member-avatars/2b0e7499-a627-49d4-adbe-2ef234cf0b67.jpg', '0c2ea02d-7e26-429d-b554-3160eba3a5ec', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (73, '2020-10-02 17:41:57', 1, 'Nguyễn Thị Châm', '2020-10-02 17:42:14', '/member-avatars/45f43988-5a96-4549-858a-4461b57bfe20.jpg', '6254a69e-25e4-4d54-ab4b-bd2a8a16e4fe', 'Công nhân', b'1', 4);
-INSERT INTO `members` VALUES (74, '2020-10-02 17:44:12', 1, 'Lường Thị Hương', NULL, '/member-avatars/ffead280-6ecb-4f13-91f8-c9c1694ad257.jpg', 'e6df541c-d065-44cf-8cf2-a536315f16f4', 'Công nhân', b'1', 4);
+INSERT INTO `members` VALUES (1, '2020-02-08 11:45:26', 1, 'Ngô Quốc Hùng', '2020-07-03 15:25:24', '/member-avatars/5e76470c-b059-4739-b32c-b7702ef0d102.jpg', '2d02836e-89d8-4a4b-934d-cfd2adf61cc4', 'Developer', b'0', 0, 1);
+INSERT INTO `members` VALUES (2, '2020-02-08 11:45:26', 1, 'Quan Văn Trường', '2020-07-03 15:26:32', '/member-avatars/d9502910-e0a2-4150-83b8-2431363db3fc.jpg', '6b60dbf6-4675-46ab-babe-a9b83262695a', 'Developer', b'0', 0, 1);
+INSERT INTO `members` VALUES (3, '2020-02-10 14:19:49', 1, 'Bùi Đức Thiện', '2020-07-03 15:26:42', '/member-avatars/e53b2ad3-9931-44d5-8438-d108b83b7bbc.jpg', '53602f9c-1b6e-40da-8f5b-b56a60ac128e', 'Developer', b'1', 0, 1);
+INSERT INTO `members` VALUES (7, '2020-05-17 11:28:07', 1, 'Lê Triều Dương', '2020-07-03 15:27:10', '/member-avatars/21261f24-1737-4098-9497-a396d8b4f9ee.jpg', '2f9c86b2-26ef-4a9f-a207-010192739744', 'Nhân viên', b'0', 11, 1);
+INSERT INTO `members` VALUES (9, '2020-05-17 11:30:16', 1, 'Nguyễn Hữu Lợi', '2020-07-07 10:48:05', '/member-avatars/ffe7993f-5730-4de3-8447-bce71e206895.jpg', 'ee7ea6d0-a213-4de3-9e3b-fcce158520c6', 'Kinh doanh', b'0', 8, 1);
+INSERT INTO `members` VALUES (10, '2020-05-17 14:08:46', 1, 'Nguyễn Thùy Dương', NULL, '/member-avatars/33edd921-7b2b-42d5-bca7-3094104b4638.jpg', '3fb4daf1-08b0-4a2e-a8cf-346ba3d12dc0', 'Giám đốc', b'0', 5, 1);
+INSERT INTO `members` VALUES (11, '2020-05-17 14:09:22', 1, 'Hà Anh', '2020-05-17 14:09:34', '/member-avatars/05d36c35-6cb5-4139-ac29-2331f94ceccc.jpg', 'a3252b82-149f-45f6-b2b4-f32e39fa8cef', 'Nhân viên', b'0', 11, 1);
+INSERT INTO `members` VALUES (12, '2020-05-17 14:11:38', 1, 'Lưu Tuyết San', '2020-07-17 14:19:45', '/member-avatars/f94d9ca3-4f5e-4721-82ea-f73cf68f67a9.jpg', 'ad899686-f429-4c2f-b678-5b8932256e99', 'Nhân viên', b'0', 11, 1);
+INSERT INTO `members` VALUES (13, '2020-07-16 13:51:24', 1, 'Đỗ Phi Long', '2020-07-16 13:54:09', '/member-avatars/1bebfb7a-4253-4357-9ca0-1363def0cb28.jpg', '05f69385-56a2-4d32-bfe3-49ee7c570293', 'Nhân viên sản xuất', b'1', 12, 1);
+INSERT INTO `members` VALUES (14, '2020-07-16 13:54:44', 1, 'Nguyễn Huy Minh', '2020-07-16 13:55:27', '/member-avatars/759a8db9-e968-4b95-80ca-d3c0dcd6c18a.jpg', '7968fd6f-72f9-412b-a567-fbab95f7b969', 'Kế Toán Trưởng', b'1', 7, 1);
+INSERT INTO `members` VALUES (15, '2020-07-16 13:56:03', 1, 'Nguyễn Thị An', '2020-07-16 13:56:52', '/member-avatars/f3df3537-b25c-4ac8-8523-e40742d6511f.jpg', '5ea9fa7a-abe0-4bdd-bb90-813dc65a0135', 'Tạp vụ/Nhà bếp', b'1', 16, 1);
+INSERT INTO `members` VALUES (16, '2020-07-16 13:57:38', 1, 'Nguyễn Thị Linh', '2020-07-16 13:57:57', '/member-avatars/57f8dfc9-061b-418b-bc73-bb6bd6ab2070.jpg', '69c3e58a-e585-44cb-a81a-a7857af9c2f9', 'Lao công', b'1', 10, 1);
+INSERT INTO `members` VALUES (17, '2020-07-16 13:59:12', 1, 'Nguyễn Thị Loan', '2020-07-16 14:00:11', '/member-avatars/6b53c2f2-56fb-4067-972e-4801ab31ae55.jpg', 'c266cb02-72b6-4e8b-a9f0-f0b586917505', 'Tạp vụ/Nhà bếp', b'1', 16, 1);
+INSERT INTO `members` VALUES (18, '2020-07-16 14:00:48', 1, 'Vũ Minh Tuấn', '2020-07-16 14:01:06', '/member-avatars/ffc66654-2ada-4c16-bd9e-de2d52188f81.jpg', 'ef921ee6-b8da-4fb0-b325-5122d15debd9', 'Sản xuất', b'1', 15, 1);
+INSERT INTO `members` VALUES (19, '2020-07-16 14:02:20', 1, 'Ngô Đức Anh', '2020-07-16 14:20:59', '/member-avatars/8ee33baa-9f9c-485e-92b8-92263a06d549.jpg', 'ce930546-2fb9-445a-b356-15ab73d120d6', 'Giám đốc điều hành', b'1', 6, 1);
+INSERT INTO `members` VALUES (20, '2020-07-18 13:36:21', 1, 'Lê Thị Hợp', '2020-07-18 13:37:27', '/member-avatars/a112484b-7fd2-4a8b-b2dd-1362b1de61d4.jpg', 'a9a92ee0-9cec-4ef8-90cc-3be942024c7e', 'Quản lý', b'1', 14, 1);
+INSERT INTO `members` VALUES (21, '2020-07-18 17:13:44', 1, 'Nông Ngọc Trung', '2020-07-18 17:16:39', '/member-avatars/202b2f72-8b6f-4a95-a3a3-915df8b314f9.png', '26b29b18-3231-4416-a2f9-bbb4c49f55d6', 'Chủ tịch HĐQT', b'1', 3, 1);
+INSERT INTO `members` VALUES (22, '2020-08-06 17:00:58', 1, 'Anh Vượng', NULL, '/member-avatars/3a3e7921-2f99-4e43-974c-d38145028afa.jpg', '28993761-0e37-4dbd-bf65-b17d28bab771', 'Bảo vệ', b'1', 2, 1);
+INSERT INTO `members` VALUES (23, '2020-08-06 17:02:37', 1, 'Vũ Văn Dũng', NULL, '/member-avatars/3912194e-6196-4099-9d87-694073bfa245.jpg', 'ca0f839a-3297-4566-95e3-7d7ef91459ef', 'Sản xuất', b'1', 15, 1);
+INSERT INTO `members` VALUES (24, '2020-08-06 17:05:19', 1, 'Nguyễn Văn Tuấn', '2020-08-06 17:05:34', '/member-avatars/6eb68681-4d54-423d-9bfa-62d193dc7236.jpg', 'f9932767-b8da-43de-b2fc-0da06fabb929', 'Sản xuất', b'1', 15, 1);
+INSERT INTO `members` VALUES (25, '2020-08-06 17:06:20', 1, 'Lê Thị Thu Hà', '2020-08-06 17:08:21', '/member-avatars/e0d5024b-ef94-45c0-a210-6e8977b583d5.jpg', 'da55a99b-8f06-40ff-9f9e-93e2d837d02a', 'Phó chủ tịch HĐQT', b'1', 13, 1);
+INSERT INTO `members` VALUES (26, '2020-08-11 16:33:09', 1, 'Vũ Xuân Huy', '2020-08-11 16:33:59', '/member-avatars/f63b8bca-251c-4f0c-ad45-1c742ec86fe9.jpg', '909fd8a3-59a9-45bb-8b0a-8b4692f017f5', 'Xưởng giấy', b'1', 17, 1);
+INSERT INTO `members` VALUES (27, '2020-08-11 16:35:06', 1, 'Lê Trung Anh', NULL, '/member-avatars/1c13f5c0-aab1-4569-8b75-88f3a8515c41.jpg', 'a22eb8d3-9123-4308-ac34-7dde24660502', 'Xưởng Giấy', b'1', 17, 1);
+INSERT INTO `members` VALUES (28, '2020-08-13 14:50:48', 1, 'Dương Văn Đại', NULL, '/member-avatars/35755efe-cb21-476e-b6bb-9f6fa707a54a.jpg', '3d979764-7671-4d32-aa23-e2580e073f99', 'Nhân viên sản xuất', b'1', 12, 1);
+INSERT INTO `members` VALUES (29, '2020-08-19 11:55:25', 1, 'Trần Quang Hưng', NULL, '/member-avatars/b9471d92-8761-4ac4-acb1-b38f811f2be8.jpg', '2cd1e489-3e8c-4dbf-866c-4b3491faf3d8', 'Kỹ Thuật Viên', b'1', 9, 1);
+INSERT INTO `members` VALUES (30, '2020-08-21 10:31:10', 1, 'Vũ Anh Trung', '2020-08-21 10:31:22', '/member-avatars/09996ec1-4fc2-40de-9c0c-36151e00fff5.jpg', '8454eb56-a2e4-499f-b9b5-db9c37a5513b', 'Sản xuất', b'1', 15, 1);
+INSERT INTO `members` VALUES (31, '2020-10-02 16:14:24', 1, 'Âu Thị Hiền', NULL, '/member-avatars/2261a289-63ed-4924-92f7-9f2f628ced5b.jpg', 'b2816356-36bb-4baa-a18e-6827cb2f322e', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (32, '2020-10-02 16:14:42', 1, 'Bạch Thị Thùy', '2020-10-02 16:22:27', '/member-avatars/d4897301-56e0-4419-9d27-57be20b4bddd.jpg', '5b359aba-b6cc-4245-99f9-bb4b4d9c4964', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (33, '2020-10-02 16:15:05', 1, 'Bùi Thị Liên', '2020-10-02 16:44:47', '/member-avatars/a3cdf553-bc08-4050-86ef-65c11eccfdf2.jpg', '2161e61a-56a0-4a78-b021-b549a23d98ab', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (34, '2020-10-02 16:15:18', 1, 'Chu Thị Liễu', '2020-10-02 16:38:14', '/member-avatars/334d85eb-f79d-45eb-8e1c-2b5435a7305b.jpg', '709d3680-7e8a-439e-b57d-a0f0ddedd5d6', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (35, '2020-10-02 16:15:29', 1, 'Đặng Thị Đỉnh', '2020-10-02 16:38:48', '/member-avatars/caad4181-b6bd-4057-a16f-20216291a014.jpg', 'df206fe6-fec5-4c7d-9f2c-4495f1ea8774', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (36, '2020-10-02 16:15:38', 1, 'Đặng Thị Hiền', '2020-10-02 16:39:20', '/member-avatars/f07f5b3a-0540-4dc8-8945-e2bf333abf82.jpg', 'b38540e3-5d03-47ef-9557-34d3e799c56d', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (37, '2020-10-02 16:15:44', 1, 'Đỗ Thị Hà', '2020-10-02 16:39:48', '/member-avatars/fe8e0842-a289-4399-b0e4-3437ca78a5e3.jpg', '1f21f8e3-6e98-4c01-bd9b-3bda4e681b07', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (38, '2020-10-02 16:15:54', 1, 'Đỗ Thị Hương', '2020-10-02 16:41:05', '/member-avatars/7683f1be-3b3e-4000-84e6-6d73d37ade22.jpg', 'c0d8494e-16f2-4d3a-a7d3-21577dc1898a', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (39, '2020-10-02 16:16:04', 1, 'Đỗ Thị Huyền', '2020-10-02 16:41:33', '/member-avatars/93badbf9-6f86-4eb6-aff2-8808a3397f3a.jpg', 'dfe3bcec-c7bd-450e-8935-b787a3d51d41', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (40, '2020-10-02 16:16:12', 1, 'Đỗ Trường Giang', '2020-10-02 16:42:13', '/member-avatars/82cf7a9b-33a3-4a3d-839a-f164fe9142bc.jpg', 'c088fbff-3e4a-468a-9452-29e20eff211d', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (41, '2020-10-02 16:16:19', 1, 'Đoàn Thị Diệu Linh', '2020-10-02 16:42:41', '/member-avatars/bd004552-be36-4029-9ad8-ae0fb008ead7.jpg', 'c188d797-ac5b-49b7-8c91-53ba97835361', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (42, '2020-10-02 16:16:28', 1, 'Dương Thị Chúc', '2020-10-02 16:43:12', '/member-avatars/d30034fe-c231-42dd-81cb-3bb62156d3c6.jpg', 'e6f70cb9-54c9-474e-b27c-fd9a875338d5', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (43, '2020-10-02 16:16:36', 1, 'Dương Thị Liên', '2020-10-02 16:43:41', '/member-avatars/ca562e98-27ea-44d0-bad2-df68303ad4d3.jpg', '0b8d367e-a69f-453e-816c-bdc941e0f0aa', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (44, '2020-10-02 16:16:44', 1, 'Hà Thị Mùi', '2020-10-02 16:44:06', '/member-avatars/cd98a957-9413-4b83-9127-00e53b4bcfc9.jpg', 'e50ed753-a9d7-491b-951c-c74136fc21d9', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (45, '2020-10-02 16:16:50', 1, 'Lê Thị Hồng', '2020-10-02 16:45:10', '/member-avatars/3c7f503d-3bc6-478b-aad8-ea448574b24a.jpg', '0c28ce30-d81e-4f19-9729-192e0da5d825', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (46, '2020-10-02 16:17:09', 1, 'Nguyễn Thị Hải Yến', '2020-10-02 16:45:56', '/member-avatars/6130dfac-2ab4-4bac-a79d-8ac98218024a.jpg', '73c0a504-5a47-4932-b512-16a4fe536a06', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (47, '2020-10-02 16:17:22', 1, 'Nguyễn Thị Hảo', '2020-10-02 16:46:28', '/member-avatars/aa231e9d-d8c8-42c6-934a-5367cb3ed4d9.jpg', '63f7177c-21f8-4559-935d-1ed7669a9afa', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (48, '2020-10-02 16:17:29', 1, 'Nguyễn Thị Hậu', '2020-10-02 16:47:00', '/member-avatars/61698869-10a4-4e0d-ae4d-d8676b317ce1.jpg', 'f423c26c-0b3b-4575-8f87-832bce2c545a', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (49, '2020-10-02 16:17:43', 1, 'Nguyễn Thị Hồng Út', '2020-10-02 16:47:37', '/member-avatars/b2d7dbc1-a205-4f98-9a14-d29f9ddcc0d0.jpg', '1ee4d357-bfb9-4b5e-b1e2-a38ccbeb7aa9', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (50, '2020-10-02 16:17:50', 1, 'Nguyễn Thị Liên', '2020-10-02 16:37:23', '/member-avatars/c502f2ee-3cca-4378-8ccd-cae46a39a29e.jpg', 'a5555824-fd69-4257-9391-7ac645c9d2eb', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (51, '2020-10-02 16:18:01', 1, 'Nguyễn Thị Nga', '2020-10-02 16:36:37', '/member-avatars/5b44bcea-e020-4976-a0ce-6e41f10af6a7.jpg', 'b4b088cb-d5f6-46fe-b313-8c3b989e9d4a', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (52, '2020-10-02 16:18:08', 1, 'Nguyễn Thị Ngọc A', '2020-10-02 16:36:07', '/member-avatars/0970caa1-5bfb-4ca6-8694-7405fe7125e0.jpg', '85f35009-8a68-4ead-9080-0912059dad7b', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (53, '2020-10-02 16:18:15', 1, 'Nguyễn Thị Ngọc B', '2020-10-02 16:35:39', '/member-avatars/3ab2046a-7a16-4473-ad81-862c7efea5fc.jpg', 'e9c9d9f1-85e1-4668-80f5-70645eca869a', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (54, '2020-10-02 16:18:22', 1, 'Nguyễn Thị Nhã', '2020-10-02 16:33:34', '/member-avatars/f7aad970-1c17-44f3-81f4-88d0da1b88ef.jpg', 'cc371211-2d03-4e2d-98ab-70c9940ffaae', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (55, '2020-10-02 16:18:29', 1, 'Nguyễn Thị Thanh Tâm', '2020-10-02 16:32:31', '/member-avatars/3c6e2ea1-ef41-43d2-8fb1-09e417ee2812.jpg', 'c480e948-30d5-40c3-abf7-79f8255e7ffa', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (56, '2020-10-02 16:18:35', 1, 'Nguyễn Thị Thu Hà', '2020-10-02 16:31:41', '/member-avatars/5e22f25f-e9ed-4c38-acc6-2eccea6ac73a.jpg', '2f5f70d1-f615-446e-851f-5f6c99955b24', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (57, '2020-10-02 16:18:42', 1, 'Nguyễn Thị Xuân', '2020-10-02 16:30:14', '/member-avatars/a1cf1940-ad92-4000-b61f-1e183b0ac79c.jpg', '93923d69-b53d-4dec-9963-4e624338f199', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (58, '2020-10-02 16:18:50', 1, 'Nguyễn Trường Sơn', '2020-10-02 16:29:27', '/member-avatars/6e4640ce-7ded-4568-8092-5c13530f9c36.jpg', '346e013c-2ea4-4fb5-a625-cc7527749380', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (59, '2020-10-02 16:18:56', 1, 'Nguyễn Trường Thiên', '2020-10-02 16:28:58', '/member-avatars/bb887967-07b3-4a0f-8230-57d0471b8c45.jpg', '9d708e2c-70f7-4cc9-a92f-2f15818d4f2c', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (60, '2020-10-02 16:19:03', 1, 'Nguyễn Văn Hậu', '2020-10-02 16:28:12', '/member-avatars/fdd89329-6c9e-411a-ab2b-2e863c7ee865.jpg', '27371e04-5637-42e2-8e21-b122329ecee5', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (61, '2020-10-02 16:19:09', 1, 'Nguyễn Xuân Hiển', '2020-10-02 16:27:43', '/member-avatars/f4936cf7-32af-41ee-b3c0-be73c1bd6886.jpg', 'd367d20a-f81c-4537-8b77-856e1db42aa7', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (62, '2020-10-02 16:19:16', 1, 'Phạm Thị Lương', '2020-10-02 16:27:15', '/member-avatars/0270c38b-fdb0-426b-beb9-c86e3d6f3d61.jpg', '632412bd-6695-4adb-b2ba-7a945c9a8350', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (63, '2020-10-02 16:19:26', 1, 'Phan Văn Hoàng', '2020-10-02 16:26:47', '/member-avatars/6502cd6a-ddfc-4ee7-8b07-48a2119b1e2b.jpg', 'd87963ac-5fae-4c02-96d0-c0e35846e7e6', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (64, '2020-10-02 16:19:33', 1, 'Sái Thị Thơ', '2020-10-02 16:26:22', '/member-avatars/ac0ef209-1525-4d69-a4e8-4578abbd15a0.jpg', 'a1e4594a-269e-463b-99e7-de538d61184e', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (65, '2020-10-02 16:19:41', 1, 'Tạ Thị Thanh Bình', '2020-10-02 16:25:49', '/member-avatars/57a3f4c6-1242-4a59-9fe4-db1a9666299a.jpg', '5ac444ae-d42e-4dd4-a34a-218b1ddcd937', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (66, '2020-10-02 16:19:49', 1, 'Trần Quang Huy', '2020-10-02 16:25:22', '/member-avatars/1e6ce4a6-3451-47d5-916f-156280c3d36a.jpg', '28c04290-5fac-43dd-8beb-234a71e4c5f3', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (67, '2020-10-02 16:19:55', 1, 'Trần Thị Khuê', '2020-10-02 16:24:59', '/member-avatars/016a18f6-1a46-4818-b6df-ca3be594fa6f.jpg', '568a3d3e-fa40-43fc-a4a0-15703b52724d', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (68, '2020-10-02 16:20:01', 1, 'Triệu Trung Hiếu', '2020-10-02 16:24:30', '/member-avatars/82f6fa7a-934f-4ac6-95cb-b0d3e1fc4841.jpg', '23d595ca-4dd6-456b-8f4b-8ad82a708c80', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (69, '2020-10-02 16:20:08', 1, 'Trịnh Thị Hương', '2020-10-02 16:23:51', '/member-avatars/f960a3d4-c082-41b9-bb83-ab095c9ea670.jpg', '2e0044e1-e503-45cf-b48a-5a7a3a4e342e', '', b'1', 0, 1);
+INSERT INTO `members` VALUES (70, '2020-10-02 16:20:15', 1, 'Trương Thị Phượng', '2020-10-02 16:23:12', '/member-avatars/1f4d27e3-59bb-4b66-a7e3-aac5859875f4.jpg', '05f491ba-33d3-446c-991f-5ae0f540063c', '', b'1', 0, 1);
+INSERT INTO `members` VALUES (71, '2020-10-02 17:40:37', 1, 'Lê Thị Dung', NULL, '/member-avatars/971dfce8-b2d7-4da1-9bcf-5c72f7f348a1.jpg', '0aa62ea9-8bf3-4f36-aea3-8524e1f3022e', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (72, '2020-10-02 17:41:18', 1, 'Lò Văn Nghiệp', NULL, '/member-avatars/2b0e7499-a627-49d4-adbe-2ef234cf0b67.jpg', '0c2ea02d-7e26-429d-b554-3160eba3a5ec', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (73, '2020-10-02 17:41:57', 1, 'Nguyễn Thị Châm', '2020-10-02 17:42:14', '/member-avatars/45f43988-5a96-4549-858a-4461b57bfe20.jpg', '6254a69e-25e4-4d54-ab4b-bd2a8a16e4fe', 'Công nhân', b'1', 4, 1);
+INSERT INTO `members` VALUES (74, '2020-10-02 17:44:12', 1, 'Lường Thị Hương', NULL, '/member-avatars/ffead280-6ecb-4f13-91f8-c9c1694ad257.jpg', 'e6df541c-d065-44cf-8cf2-a536315f16f4', 'Công nhân', b'1', 4, 1);
 
 -- ----------------------------
 -- Table structure for modules
@@ -11112,6 +11166,37 @@ INSERT INTO `modules` VALUES (1, 'Quản lý Administrators', 'admin_user', 'Th�
 INSERT INTO `modules` VALUES (12, 'Checkin', 'TimeKeeping', 'Danh Sách', 'calculation.php', 0, NULL);
 INSERT INTO `modules` VALUES (3, 'Quản lý Kiểu khuôn mặt', 'questions', 'Thêm mới|Danh sách', 'add.php|listing.php', 1, NULL);
 INSERT INTO `modules` VALUES (8, 'Duyệt Ảnh', 'users_photos', 'Danh sách', 'listing.php', 0, NULL);
+
+-- ----------------------------
+-- Table structure for questions
+-- ----------------------------
+DROP TABLE IF EXISTS `questions`;
+CREATE TABLE `questions`  (
+  `que_id` int(11) NOT NULL AUTO_INCREMENT,
+  `que_stt` int(2) NULL DEFAULT 1,
+  `que_content` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `que_required` tinyint(1) NULL DEFAULT 1,
+  `que_img_example` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `que_active` tinyint(1) NULL DEFAULT 1,
+  `que_created_at` int(11) NULL DEFAULT NULL,
+  `que_updated_at` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`que_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of questions
+-- ----------------------------
+INSERT INTO `questions` VALUES (2, 2, 'Ảnh tự nhiên (Chính diện, cảm xúc tự nhiên, không đeo kính)', 1, 'mil1588653334.JPG', 1, 1588418165, 1588653334);
+INSERT INTO `questions` VALUES (3, 1, 'Ảnh thẻ/Ảnh CMT/Ảnh hộ chiếu', 1, 'hvv1588843178.JPG', 1, 1588418311, 1588843178);
+INSERT INTO `questions` VALUES (4, 4, 'Ảnh nghiêng bên trái', 1, 'vln1588653345.JPG', 1, 1588481723, 1588653345);
+INSERT INTO `questions` VALUES (5, 5, 'Ảnh nghiêng bên phải', 1, 'fun1588653350.JPG', 1, 1588481729, 1588653350);
+INSERT INTO `questions` VALUES (6, 6, 'Ảnh hơi cúi đầu (Nếu có)', 0, 'tiw1588653355.JPG', 1, 1588481734, 1588653355);
+INSERT INTO `questions` VALUES (7, 7, 'Ảnh nghiêng bên trái có kính (Nếu có)', 0, 'qez1588653361.JPG', 1, 1588481739, 1588653361);
+INSERT INTO `questions` VALUES (8, 8, 'Ảnh nghiêng bên phải có kính (Nếu có)', 0, 'fxz1588653366.JPG', 1, 1588481745, 1588653366);
+INSERT INTO `questions` VALUES (9, 9, 'Ảnh chụp xa (Khoảng 2m-3m, nếu bạn thường đeo kính thì có thể chụp với kính)', 1, 'txa1588653371.JPG', 1, 1588481751, 1588653371);
+INSERT INTO `questions` VALUES (10, 10, 'Ảnh có bàn tay (Bạn có thể dùng tay che 1 bộ phận trên khuôn mặt) (Nếu có)', 0, 'jul1588653375.JPG', 1, 1588482063, 1588653375);
+INSERT INTO `questions` VALUES (11, 11, 'Ảnh mang khẩu trang (Nếu có)', 0, 'vca1588653380.JPG', 1, 1588482067, 1588653380);
+INSERT INTO `questions` VALUES (15, 0, 'Ảnh khi bạn đeo kính cận (nếu có)', 0, 'cva1588843424.JPG', 1, 1588843424, NULL);
 
 -- ----------------------------
 -- Table structure for ref_session_member
@@ -11251,6 +11336,191 @@ CREATE TABLE `users`  (
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for users_photos
+-- ----------------------------
+DROP TABLE IF EXISTS `users_photos`;
+CREATE TABLE `users_photos`  (
+  `up_id` int(11) NOT NULL AUTO_INCREMENT,
+  `up_user_id` int(11) NOT NULL,
+  `up_question_id` int(11) NOT NULL,
+  `up_picture` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `up_created_time` int(11) NULL DEFAULT 0,
+  `up_updated_time` int(11) NULL DEFAULT 0,
+  PRIMARY KEY (`up_id`) USING BTREE,
+  UNIQUE INDEX `up_user_id`(`up_user_id`, `up_question_id`) USING BTREE,
+  INDEX `up_question_id`(`up_question_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 176 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of users_photos
+-- ----------------------------
+INSERT INTO `users_photos` VALUES (1, 1, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (2, 1, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (3, 1, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (4, 1, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (5, 1, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (6, 2, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (7, 2, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (8, 2, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (9, 2, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (10, 2, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (11, 3, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (12, 3, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (13, 3, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (14, 3, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (15, 3, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (16, 4, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (17, 4, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (18, 4, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (19, 4, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (20, 4, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (21, 5, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (22, 5, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (23, 5, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (24, 5, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (25, 5, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (26, 6, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (27, 6, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (28, 6, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (29, 6, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (30, 6, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (31, 7, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (32, 7, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (33, 7, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (34, 7, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (35, 7, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (36, 8, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (37, 8, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (38, 8, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (39, 8, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (40, 8, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (41, 9, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (42, 9, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (43, 9, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (44, 9, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (45, 9, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (46, 10, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (47, 10, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (48, 10, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (49, 10, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (50, 10, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (51, 11, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (52, 11, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (53, 11, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (54, 11, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (55, 11, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (56, 12, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (57, 12, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (58, 12, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (59, 12, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (60, 13, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (61, 13, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (62, 13, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (63, 13, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (64, 13, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (65, 14, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (66, 14, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (67, 14, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (68, 14, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (69, 14, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (70, 15, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (71, 15, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (72, 15, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (73, 15, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (74, 15, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (75, 16, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (76, 16, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (77, 16, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (78, 16, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (79, 16, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (80, 17, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (81, 17, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (82, 17, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (83, 17, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (84, 17, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (85, 18, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (86, 18, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (87, 18, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (88, 18, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (89, 18, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (90, 19, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (91, 19, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (92, 19, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (93, 19, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (94, 19, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (95, 20, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (96, 20, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (97, 20, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (98, 20, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (99, 20, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (100, 21, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (101, 21, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (102, 21, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (103, 21, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (104, 21, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (105, 22, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (106, 22, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (107, 22, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (108, 22, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (109, 22, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (110, 23, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (111, 23, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (112, 23, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (113, 23, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (114, 23, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (115, 24, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (116, 24, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (117, 24, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (118, 24, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (119, 24, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (120, 25, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (121, 25, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (122, 25, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (123, 25, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (124, 25, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (125, 26, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (126, 26, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (127, 26, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (128, 26, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (129, 26, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (130, 27, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (131, 27, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (132, 27, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (133, 27, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (134, 27, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (135, 28, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (136, 28, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (137, 28, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (138, 28, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (139, 28, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (140, 29, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (141, 29, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (142, 29, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (143, 29, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (144, 29, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (145, 30, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (146, 30, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (147, 30, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (148, 30, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (149, 30, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (150, 31, 3, '01_user_001.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (151, 31, 2, '01_user_002.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (152, 31, 4, '01_user_003.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (153, 31, 5, '01_user_004.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (154, 31, 9, '01_user_005.jpg', 1592625759, 1592625759);
+INSERT INTO `users_photos` VALUES (165, 32, 15, 'cmj1592627504.jpeg', 1592627504, 1592627504);
+INSERT INTO `users_photos` VALUES (166, 32, 3, 'njs1592627507.jpeg', 1592627507, 1592627507);
+INSERT INTO `users_photos` VALUES (167, 32, 2, 'ift1592627511.jpeg', 1592627511, 1592627511);
+INSERT INTO `users_photos` VALUES (168, 32, 4, 'avk1592627513.jpeg', 1592627513, 1592627513);
+INSERT INTO `users_photos` VALUES (169, 32, 5, 'nky1592627517.jpeg', 1592627517, 1592627517);
+INSERT INTO `users_photos` VALUES (170, 32, 6, 'oit1592627519.jpeg', 1592627519, 1592627519);
+INSERT INTO `users_photos` VALUES (171, 32, 7, 'seg1592627523.jpeg', 1592627523, 1592627523);
+INSERT INTO `users_photos` VALUES (172, 32, 8, 'kvo1592627526.jpeg', 1592627526, 1592627526);
+INSERT INTO `users_photos` VALUES (173, 32, 9, 'lxx1592627529.jpeg', 1592627529, 1592627529);
+INSERT INTO `users_photos` VALUES (174, 32, 10, 'teo1592627532.jpeg', 1592627532, 1592627532);
+INSERT INTO `users_photos` VALUES (175, 32, 11, 'eeo1592627535.jpeg', 1592627535, 1592627535);
 
 -- ----------------------------
 -- Table structure for workshift

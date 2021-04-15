@@ -94,16 +94,17 @@ table.table-sticky tr.stick td {
 }
 
 .no-data {
-    width: 300px;
+    /* width: 300px; */
+    width: 100%;
     height:250px;
     position: absolute;
     top: 230px;
-    left: 37%;
+    left: 0;
     overflow: hidden;
 }
 
 .no-data img {
-    width: 30%;
+    width: 90px;
     height: auto;
     display: block;
     margin: 40px auto;
@@ -143,3 +144,46 @@ table.table-sticky tr.stick td {
 .table-color2 tr:nth-child(1n+2) td {
     background-color: white;
 }
+
+#loading {
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    position: absolute;
+    right: 135px;
+    bottom: 14px;
+    display: none;
+}
+
+#loading .loader {
+    border: 3px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 3px solid silver;
+    width: 25px;
+    height: 25px;
+    animation: spin 2s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+}
+
+#excel-button {
+    width: 110px;
+    height: auto;
+    float: right;
+    position: relative;
+}
+
+#excel-button #blur {
+    background-color: rgba(255,255,255,0.5);
+    position: absolute;
+    width: 110px;
+    height: 35px;
+    top: 0;
+    left: 0;
+    display: none;  
+}
+

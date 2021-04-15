@@ -33,6 +33,8 @@ class fsDataGird
 	var $delete 			= true;
 	var $delete_all 		= true;
 
+	var $detail_count       = '';
+
 
 	//add cac truong va tieu de vao
 	function __construct($field_id,$field_name,$title){
@@ -151,7 +153,6 @@ class fsDataGird
 			foreach($this->arrayField as $key=>$field){
 
 				$this->html .= $this->checkType($row,$key);
-
 			}
 
 			$this->html .= '</tr>';
@@ -165,6 +166,248 @@ class fsDataGird
 		$this->html	.= "<div class='footer'>" . $this->footer() . "</div>";
 		//khet thuc phan template
 		$this->html .= template_bottom();
+
+		return $this->html;
+	}
+
+	function showTableDetail($db, $db_child = "", $db_child2 = "", $foreign_key = "", $multi = 0, $type_search = 0)
+	{
+		//goi phan template
+		$this->html .= template_top($this->title, $this->urlsearch($type_search), $this->html_ext());
+		// khoi tao table
+		$this->html .= '<div class="content"><table cellpadding="5" cellspacing="0" width="100%" class="table table-hover table-bordered">';
+
+		//phan header
+
+		$this->html .= '<tr class="warning">';
+ 
+		$this->total_list 		= $multi;
+
+		//trường STT
+		if ($this->showstt) {
+			$this->html .= '<td class="h" width="40" style="text-align: center;">STT</td>';
+		}
+
+		//phan checkbok all
+		if ($this->delete_all) $this->html .= '<td width="50" class="h check"><input type="checkbox" id="check_all" onclick="checkall(' . $this->total_list . ')"></td>';
+
+		if ($this->quickEdit) {
+			//phan quick edit
+			$this->html .= '<td class="h"><img src="' . $this->image_path . 'qedit.png" border="0"></td>';
+		}
+
+		foreach ($this->arrayLabel as $key => $lable) {
+
+			$this->html .= '<td class="h">' . $lable . $this->urlsort($this->arrayField[$key]) . ' </td>';
+		}
+
+		$this->html .= '<td class="h"> Xóa </td>';
+
+		$this->html .= '<td class="h" width=55> Chi tiết </td>';
+
+		$this->html .= '</tr>';
+
+
+		$i = 0;
+		$count = 0;
+
+		$page = getValue("page");
+		if ($page < 1) $page = 1;
+
+		if($db_child != ""){
+			while ($row = mysqli_fetch_assoc($db->result)) {
+				$i++;
+				$count++;
+
+				$info_db = $db_child . " AND " . $foreign_key . " = " . $row[$this->field_id];
+
+				$workshift_detail_db = new db_query($info_db);
+
+				$workshift_id = $row[$this->field_id];
+
+				$delete_db = $db_child2 . " = " . $row[$this->field_id];
+
+				$this->html .= '<tr id="tr_' . $row[$this->field_id] . '" class="tr_' . $row["wor_delete_flag"] . '">';
+
+				//phan so thu tu
+				if ($this->showstt) {
+					$this->html .= '<td width=40 style="text-align:center"><span style="color:#142E62; font-weight:bold">' . ($i + (($page - 1) * $this->page_size)) . '</span></td>';
+				}
+
+				//phan checkbok cho tung record
+				if ($this->delete_all)  $this->html .= '<td class="check" style="text-align: center;"><input type="checkbox" class="check" name="record_id[]" id="record_' . $i . '" value="' . $row[$this->field_id] . '"></td>';
+
+				if ($this->quickEdit) {
+					//phan quick edit
+					$this->html .= '<td width=15 align="center"><a class="thickbox" rel="tooltip" title="' . translate_text("Do you want quick edit basic") . '" href="quickedit.php?record_id=' . $row[$this->field_id] . '&url=' . base64_encode($_SERVER['REQUEST_URI']) . '&KeepThis=true&TB_iframe=true&height=300&width=400"><img src="' . $this->image_path . 'qedit.png" border="0"></a></td>';
+				}
+
+				foreach ($this->arrayField as $key => $field) {
+
+					$this->html .= $this->checkType($row, $key);
+				}
+
+				$this->html .= '<td width=10 align="center">
+									<div class="delete-container">
+										<div id="delete_' . $row[$this->field_id] . '" style="width: 25px; height:25px; margin-top: 1px; cursor: pointer"> 
+											<img src="' . $this->image_path . 'delete.gif" alt="delete icon" style="width:16px; height: 16px"> 
+										</div>
+								';
+
+				$this->html .= '<div id="black_'. $row[$this->field_id] .'" style="position: fixed; top: 0; right: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); z-index: 10; display: none"></div> ';
+					
+				$this->html .= '<div id="deleteBox_' . $row[$this->field_id] . '" style="background-color: white; border-radius: 6px; width: 480px; height: 200px; position: absolute; top: 20%; right: 29%; z-index: 11; display: none"> 
+									<div>
+										<img src="' . $this->image_path . 'delete-icon2.jpg" alt="delete icon box" style="margin: 20px auto; width: 10%; height: auto">
+									</div>
+									<div style="font-size: 20px; font-weight: bold; color: rgb(90, 90, 90)"> Bạn có muốn xóa dữ liệu? </div>
+									<form method="post" action="">
+										<div style="margin-top: 23px">
+											<button type="submit" id="deleteButton_' . $row[$this->field_id] . '" class="btn btn-danger" name="del_submit_' . $row[$this->field_id] . '" style="outline: none; width: 80px; margin-right: 5px"> Đồng ý </button>
+											<button type="button" id="cancelButton_' . $row[$this->field_id] . '" class="btn btn-primary" style="outline: none; width: 80px"> Hủy </button>
+										</div>
+									</form>
+								</div>';
+
+				$this->html .= '<div id="deleteAlert" style="background-color:white; position: absolute; top: 0; right: 5%; border-radius: 6px; border: 2px solid rgb(57, 230, 0); box-shadow: 5px 5px 6px 2px rgba(0, 0, 0, 0.1); width:22%; height:70px;">
+									<img src="' . $this->image_path . 'check-icon1.png" alt="check icon" style="width: 52px; height: 40px; display: inline-block; margin-top: -3px">
+									<p style="color: rgb(90, 90, 90); font-size: 14px; font-weight: bold; margin-top: 25px; margin-right: 8%; display: inline-block"> Xóa thành công! </p>
+								</div>';
+
+				$this->html .= '</div>';
+
+				$this->html .= '</td>';
+
+				if(isset($_POST['del_submit_' . $row[$this->field_id] . '']))
+				{
+					$delete_flag = new db_execute($delete_db, 1);
+					if ($delete_flag->row_affect > 0) {
+						echo "<script type='text/javascript'> 
+								location.reload();
+							  </script>";
+					} else {
+						echo "<script type='text/javascript'> alert('Xóa không thành công!'); </script>";
+					}
+					unset($delete_flag);
+				}
+
+
+				$this->html .= '<script type="text/javascript">
+									$(document).ready(function() {
+										$("#delete_' . $row[$this->field_id] . '").click(function() {
+											$("#black_' . $row[$this->field_id] . '").fadeIn("fast");
+											$("#deleteBox_' . $row[$this->field_id] . '").fadeIn("fast");
+										});
+
+										$("#black_' . $row[$this->field_id] . '").click(function() {
+											$("#black_' . $row[$this->field_id] . '").fadeOut("fast");
+											$("#deleteBox_' . $row[$this->field_id] . '").fadeOut("fast");
+										});
+
+										$("#cancelButton_' . $row[$this->field_id] . '").click(function() {
+											$("#black_' . $row[$this->field_id] . '").fadeOut("fast");
+											$("#deleteBox_' . $row[$this->field_id] . '").fadeOut("fast");
+										});
+
+										var delAlert = $("#deleteAlert").fadeIn("fast");
+
+										window.onload = function() {
+											setTimeout(delAlert, 3000);
+										}
+									});
+								</script>';
+
+				$this->html .= '<td width=12 align="center">
+									<div style="position: relative">
+										<div id="btn_' . $workshift_id .'" style="width: 25px; height:25px; margin-top: 1px; cursor: pointer"> 
+											<img src="' . $this->image_path . 'magnify-icon2.png" alt="magnifying glass icon" style="width:20px;height: 20px"> 
+										</div> ';
+
+				while ($show_detail = mysqli_fetch_assoc($workshift_detail_db->result)) {
+					$this->html .= '<div id="info_' . $workshift_id . '" style="border: 1px solid silver; border-radius: 5px; background-color: rgb(255, 255, 204); width: 230px; height: auto; position: absolute; top: -83px; right: 50px; z-index: 10; display: none;">
+										<table style="width: 90%; height: auto; margin: 11px 11px 11px 10px;">
+											<tr>
+												<td colspan="2" style="text-align: center; background-color: rgb(255, 255, 204); padding-bottom: 5px; font-weight: bold"> Chi tiết đi muộn </td>
+											</tr>
+											<tr>
+												<td style="border: 1px solid silver; width: 60%; padding: 8px 0 8px 8px; background-color: rgb(255, 255, 204)"> Bắt đầu đi muộn: </td>
+												<td style="border: 1px solid silver; padding-left: 5px; background-color: rgb(255, 255, 204)"> ' . $show_detail["lat_time_start"] . '</td>
+											</tr>
+											<tr>
+												<td style="border: 1px solid silver; padding: 8px 0 8px 8px; background-color: rgb(255, 255, 204)"> Kết thúc đi muộn: </td>
+												<td style="border: 1px solid silver; padding-left: 5px; background-color: rgb(255, 255, 204)"> ' . $show_detail["lat_time_finish"] . ' </td>
+											</tr>
+											<tr>
+												<td style="border: 1px solid silver; padding: 8px 0 8px 8px; background-color: rgb(255, 255, 204)"> Mã phạt: </td>
+												<td style="border: 1px solid silver; padding-left: 5px; background-color: rgb(255, 255, 204)"> ' . $show_detail["lat_idpunish"] . '</td>
+											</tr>
+											<tr>
+												<td style="border: 1px solid silver; padding: 8px 0 8px 8px; background-color: rgb(255, 255, 204)"> Mức phạt: </td>
+												<td style="border: 1px solid silver; padding-left: 5px; background-color: rgb(255, 255, 204)"> ' . $show_detail["lat_punisher"] . '</td>
+											</tr>
+										</table>
+
+										<div style="border-top: 12px solid transparent; border-left: 25px solid rgb(255, 255, 204); border-bottom: 12px solid transparent; width:0; height: 0; position: absolute; top: 80px; right: -20px; z-index: 10"></div>
+										<div style="border-top: 11px solid transparent; border-left: 22px solid silver; border-bottom: 11px solid transparent; width:0; height: 0; position: absolute; top: 81px; right: -22px; z-index: 9"></div>
+									</div> 
+
+									<div id="close_detail_' . $workshift_id . '" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 9; display: none;"></div>
+									';
+
+					$this->html .= '<script type="text/javascript">
+										$(document).ready(function() {
+											var s' . $workshift_id . ' = 0;
+
+											$("#btn_' . $workshift_id . '").click(function() {
+												if (s' . $workshift_id . ' == 0) {
+													$("#info_' . $workshift_id . '").fadeIn("fast");
+													$("#close_detail_' . $workshift_id . '").fadeIn("fast");
+													s' . $workshift_id . '++;
+												}
+												else {
+													$("#info_' . $workshift_id . '").fadeOut("fast");
+													$("#close_detail_' . $workshift_id . '").fadeOut("fast");
+													s' . $workshift_id . '--;
+												}
+											});
+
+											$("#close_detail_' . $workshift_id . '").click(function() {
+												$("#info_' . $workshift_id . '").fadeOut("fast");
+												$("#close_detail_' . $workshift_id . '").fadeOut("fast");
+												s' . $workshift_id . '--;
+											});
+										});
+
+										var myDel = $("#tr_' . $row[$this->field_id] . '").attr("class");
+
+										for (var ii = 0; ii <= ' . $i . '; ii++) {
+											if (myDel = "tr_1") {
+												$(".tr_1").remove();
+											}
+										} 
+
+									</script>';
+				}
+
+	
+				$this->html .= '</div>';
+				$this->html .= '</td>';
+				$this->html .= '</tr>';
+
+			}
+
+			$this->html .= '</table>';
+		}
+
+		$this->html	.= '</div>';
+
+		// Phần footer
+		$this->html	.= "<div class='footer'>" . $this->footer() . "</div>";
+		//khet thuc phan template
+		$this->html .= template_bottom();
+
+
+		// $this->html = $this->html . $this->html_detail;
 
 		return $this->html;
 	}
@@ -869,6 +1112,5 @@ class fsDataGird
 			exit();
 		}
 	}
-
 }
 ?>

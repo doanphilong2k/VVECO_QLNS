@@ -175,11 +175,18 @@ $loginName	= isset($_SESSION["userlogin"]) ? $_SESSION["userlogin"] : "";
 			$('.dropdown').click(function() {
 				if (swap == 0) {
 					$('.sub-container').fadeIn('fast');
+					$('.sub-close').fadeIn('fast');
 					swap++;
 				} else {
 					$('.sub-container').fadeOut('fast');
 					swap--;
 				}
+			});
+
+			$('.sub-close').click(function() {
+				$('.sub-container').fadeOut('fast');
+				$('.sub-close').fadeOut('fast');
+				swap--;
 			});
 		});
 

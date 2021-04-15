@@ -58,6 +58,7 @@
 						</tr>
 					</table>
 				</div>
+				<div class="sub-close"></div>
 			</td>
 		</tr>
 	</table>

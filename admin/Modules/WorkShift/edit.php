@@ -38,8 +38,8 @@ if ($record_id > 0) {
 }
 
 
-$wor_id = getValue("wor_id", "int", "POST", $wor_id, 3);
-$wor_name = getValue("wor_name", "str", "POST", $wor_name, 3);
+$wor_idShift = getValue("wor_idShift", "int", "POST", $wor_idShift, 3);
+$wor_Name = getValue("wor_Name", "str", "POST", $wor_Name, 3);
 $wor_StartTime = getValue("wor_StartTime", "str", "POST", $wor_StartTime, 3);
 // $wor_StartTime = strtotime(str_replace('/', '-', $wor_StartTime));
 // if (empty($wor_StartTime)) {
@@ -57,7 +57,7 @@ $wor_FinishTime = getValue("wor_FinishTime", "str", "POST", $wor_FinishTime, 3);
 
 //Call Class generate_form();
 $myform = new generate_form();
-$myform->add("wor_Name", "wor_name", 0, 1, "", 1, "Tên ca làm việc không được để trống.", 0, "");
+$myform->add("wor_Name", "wor_Name", 0, 1, "", 1, "Tên ca làm việc không được để trống.", 0, "");
 $myform->add("wor_StartTime", "wor_StartTime", 0, 1, "", 1, "Bạn chưa chọn thời gian bắt đầu.", 0, "");
 $myform->add("wor_FinishTime", "wor_FinishTime", 0, 1, "", 1, "Bạn chưa chọn thời gian kết thúc.", 0, "");
 $myform->addTable($fs_table);
@@ -117,7 +117,7 @@ if ($action == "execute") {
         <?= $form->errorMsg($fs_errorMsg) ?>
 
 
-        <?= $form->text("Tên ca làm việc", "wor_name", "wor_name", $wor_name, "Tên ca làm việc", 1, 250, "", 255, "", "", "") ?>
+        <?= $form->text("Tên ca làm việc", "wor_Name", "wor_Name", $wor_Name, "Tên ca làm việc", 1, 250, "", 255, "", "", "") ?>
         <?= $form->text("Thời gian bắt đầu", "wor_StartTime", "wor_StartTime", $wor_StartTime, "Thời gian bắt đầu", 1, 250, "", 50, "", "", "") ?>
         <!-- <tr>
             <td class="form_name">Thời gian bắt đầu:</td>

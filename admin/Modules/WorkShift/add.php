@@ -19,10 +19,9 @@ $wor_FinishTime = getValue("wor_FinishTime", "str", "POST", "", 3);
 $rol_id = getValue("rol_id", "str", "POST", "", 3);
 
 $myform = new generate_form();
-$myform->add("wor_name", "wor_name", 0, 0, "", 1, "Bạn chưa nhập Tên Ca Làm Việc.", 0, "");
+$myform->add("wor_Name", "wor_name", 0, 0, "", 1, "Bạn chưa nhập Tên Ca Làm Việc.", 0, "");
 $myform->add("wor_StartTime", "wor_StartTime", 0, 0, "", 1, "Bạn chưa nhập thời gian bắt đầu.", 0, "");
 $myform->add("wor_FinishTime", "wor_FinishTime", 0, 0, "", 1, "Bạn chưa nhập thời gian kết thúc.", 0, "");
-$myform->add("rol_id", "rol_id", 0, 0, "", 1, "Bạn chưa nhập quyền hạn.", 0, "");
 $myform->addTable($fs_table);
 //Get action variable for add new data
 $action = getValue("action", "str", "POST", "");
@@ -76,7 +75,6 @@ if ($action == "execute") {
 		<?= $form->text("Tên ca làm việc", "wor_name", "wor_name", $wor_name, "Tên ca làm việc", 1, 250, "", 255, "", "", "") ?>
 		<?= $form->text("Thời gian bắt đầu", "wor_StartTime", "wor_StartTime", $wor_StartTime, "Thời gian bắt đầu", 1, 250, "", 255, "", "", "") ?>
 		<?= $form->text("Thời gian kết thúc", "wor_FinishTime", "wor_FinishTime", $wor_FinishTime, "Thời gian bắt đầu", 1, 250, "", 255, "", "", "") ?>
-		<?= $form->text("Quyền hạn", "rol_id", "rol_id", $rol_id, "Quyền hạn", 1, 250, "", 255, "", "", "") ?>
 		<?= $form->radio("Sau khi lưu dữ liệu", "add_new" . $form->ec . "return_listing", "after_save_data", $add . $form->ec . $listing, $after_save_data, "Thêm mới" . $form->ec . "Quay về danh sách", 0, $form->ec, ""); ?>
 		<?= $form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", $form->ec, ""); ?>
 		<?= $form->hidden("action", "action", "execute", ""); ?>

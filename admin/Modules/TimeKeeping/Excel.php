@@ -529,16 +529,8 @@ if ($action == "export") {
     header('Content-Disposition: attachment; filename="Checkin_' . time() . '.xlsx"');
     ob_end_clean();
     PHPExcel_IOFactory::createWriter($excel, 'Excel2007')->save('php://output');
+
 }
 
 ?>
-<style type="text/css">
-    #form_export .form-control,
-    #form_import .form-control {
-        width: 100% !important;
-        height: 30px;
-        line-height: 30px;
-    }
-</style>
-<!-- Modal export-->
 
