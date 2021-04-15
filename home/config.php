@@ -1,4 +1,4 @@
-<?
+<?php
 // Require class
 require_once("../classes/database.php");
 
