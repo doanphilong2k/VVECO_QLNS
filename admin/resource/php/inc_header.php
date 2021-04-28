@@ -9,7 +9,7 @@
 			<td>
 				<i id="sidenav-hide" class="fas fa-bars" onclick="hideNav()"></i>
 			</td>
-			<td style="text-transform: uppercase; font-size: 16px; text-align: left; padding-left: 80px; font-family: 'Roboto';">Hệ thống chấm công nhân viên</td>
+			<td style="text-transform: uppercase; font-size: 16px; text-align: left; padding-left: 80px; font-family: 'Roboto';">Website Multiple Management</td>
 			<td style="width:46px">
 				<div class="userAvatar">
 					<img src="../../../images/user-icon3.png" alt="user avatar">
