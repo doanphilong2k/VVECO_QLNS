@@ -43,7 +43,9 @@ $fs_scriptpath = "../../resource/js/";
 $fs_denypath = "../../error.php";
 $wys_cssadd = array();
 $wys_cssadd = "/css/all.css";
-$fs_category = checkAccessCategory();
+
+//Check Acess not necessary 
+//$fs_category = checkAccessCategory();
 //phan include file css
 
 //$load_header 			= '<link href="../../resource/css/css.css" rel="stylesheet" type="text/css">' . "\n";

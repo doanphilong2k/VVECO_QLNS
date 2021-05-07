@@ -28,6 +28,7 @@ $sql = '';
 if($isAdmin != 1){
 	$sql = ' INNER JOIN admin_user_right ON(adu_admin_module_id  = mod_id AND adu_admin_id = ' . $user_id . ')';
 }
+
 $db_order = new db_query("SELECT * FROM admin_menu_order WHERE amo_admin = " . $user_id . " ORDER BY amo_order ASC");
 
 $db_menu = new db_query("SELECT *
@@ -56,7 +57,7 @@ unset($db_order);
 	<?
 	$i=0;
 	foreach($arrayModule as $key=>$row){
-
+		
 		if(file_exists("modules/" . $row["mod_path"] . "/inc_security.php")===true){
 			$i++;
 			?>
