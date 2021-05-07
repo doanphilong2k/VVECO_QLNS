@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once("inc_security.php");
 require_once("Excel.php");
 
@@ -71,7 +71,7 @@ if ($start_date != "" && $finish_date == "") {
         <span id="finish-remove" class="glyphicon glyphicon-remove"></span>
     </div>
 
-    <?
+    <php?
 }
 if ($start_date == "" && $finish_date != "") {
     ?>
