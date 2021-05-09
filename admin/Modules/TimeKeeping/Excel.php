@@ -527,10 +527,9 @@ if ($action == "export") {
 
 
     // Create PHPExcel_IOFactory object to write into file
-    
     header('Content-Disposition: attachment; filename="Checkin_' . time() . '.xlsx"');
     ob_end_clean();
-    PHPExcel_IOFactory::createWriter($excel, 'Excel5')->save('php://output');
+    PHPExcel_IOFactory::createWriter($excel, 'Excel2007')->save('php://output');
 
 }
 
